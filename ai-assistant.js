@@ -255,13 +255,37 @@
     .tfai-send{height:38px;padding:0 14px;border-radius:10px;border:0;background:#57c1ff;color:#07080a;font:700 13px/1 'Vazirmatn',sans-serif;cursor:pointer;flex:0 0 auto}
     .tfai-send:disabled{opacity:.5;cursor:not-allowed}
 
-    @media(max-width:600px){
+    /* Persistent Bottom Mini Audio Player */
+    .tfai-mini{position:fixed;left:0;right:0;bottom:0;z-index:48;display:none;align-items:center;gap:12px;padding:10px 20px;background:rgba(12,14,20,.94);border-top:1px solid rgba(168,85,247,.38);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:0 -10px 34px rgba(0,0,0,.6);direction:rtl;font-family:'Vazirmatn','Inter',system-ui,sans-serif;color:#e5e7ef}
+    .tfai-mini.show{display:flex}
+    .tfai-mini-play{width:38px;height:38px;border-radius:999px;border:0;background:#fff;color:#07080a;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+    .tfai-mini-play:hover{transform:scale(1.05)}
+    .tfai-mini-info{min-width:0;max-width:210px;cursor:pointer;flex:0 1 auto}
+    .tfai-mini-info b{display:block;font-size:12.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
+    .tfai-mini-info small{display:block;font-size:11px;color:#c084fc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+    .tfai-mini-seekwrap{flex:1 1 auto;display:flex;align-items:center;gap:10px;min-width:120px}
+    .tfai-mini-seek{flex:1 1 auto;accent-color:#a855f7;cursor:pointer;direction:ltr;min-width:60px}
+    .tfai-mini-time{font:500 11.5px/1 'Inter',sans-serif;color:#9da2ad;direction:ltr;white-space:nowrap;flex:0 0 auto}
+    .tfai-mini-btn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#e5e7ef;border-radius:8px;height:30px;padding:0 9px;font:600 11.5px/1 'Inter',sans-serif;cursor:pointer;flex:0 0 auto}
+    .tfai-mini-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+    .tfai-mini-close{border:0;background:rgba(255,255,255,.07);color:#b8bcc6;width:30px;height:30px;border-radius:8px;font-size:18px;line-height:1;cursor:pointer;flex:0 0 auto}
+    .tfai-mini-close:hover{background:rgba(255,97,97,.22);color:#fff}
+    body.tfai-has-mini{padding-bottom:76px}
+    body.tfai-has-mini .tfai-fab{bottom:78px}
+
+    @media(max-width:640px){
       .tfai-fab{left:14px;bottom:14px;height:46px;padding:0 14px;font-size:12.5px}
+      body.tfai-has-mini{padding-bottom:108px}
+      body.tfai-has-mini .tfai-fab{bottom:106px}
       .tfai-panel{left:0;right:0;bottom:0;width:100%;height:82dvh;border-radius:18px 18px 0 0;border-bottom:0}
       .tfai-qbar{gap:6px}
       .tfai-qbtn{font-size:12px;padding:6px 11px}
+      .tfai-mini{flex-wrap:wrap;padding:8px 12px 10px;gap:8px}
+      .tfai-mini-info{max-width:none;flex:1 1 auto}
+      .tfai-mini-seekwrap{order:10;flex:1 0 100%;gap:8px}
+      .tfai-mini-skip{display:none}
     }
-    @media print{.tfai-fab,.tfai-panel,.tfai-backdrop,.tfai-qbar{display:none!important}}
+    @media print{.tfai-fab,.tfai-panel,.tfai-backdrop,.tfai-qbar,.tfai-mini{display:none!important}}
   `;
   document.head.appendChild(style);
 
@@ -350,9 +374,36 @@
     </div>
   `;
 
+  const mini = document.createElement('div');
+  mini.className = 'tfai-mini';
+  mini.setAttribute('aria-label', 'پخش‌کننده صوتی گزارش');
+  mini.innerHTML = `
+    <button type="button" class="tfai-mini-play" id="tfai-mplay" aria-label="پخش یا توقف">▶</button>
+    <div class="tfai-mini-info" id="tfai-minfo" title="باز کردن پنل صوتی">
+      <b>${esc(isBenchmark ? 'خلاصه صوتی بنچمارک CRM' : 'خلاصه صوتی ایشوهای CRM')}</b>
+      <small>🎙️ NotebookLM Audio</small>
+    </div>
+    <button type="button" class="tfai-mini-btn tfai-mini-skip" id="tfai-mback">-15s</button>
+    <button type="button" class="tfai-mini-btn tfai-mini-skip" id="tfai-mfwd">+15s</button>
+    <div class="tfai-mini-seekwrap">
+      <input type="range" class="tfai-mini-seek" id="tfai-mseek" min="0" max="100" value="0" step="0.1">
+      <span class="tfai-mini-time" id="tfai-mtime">00:00 / 00:00</span>
+    </div>
+    <button type="button" class="tfai-mini-btn" id="tfai-mspd">1x</button>
+    <button type="button" class="tfai-mini-close" id="tfai-mclose" aria-label="بستن پخش‌کننده">×</button>
+  `;
+
   document.body.appendChild(backdrop);
+  document.body.appendChild(mini);
   document.body.appendChild(fab);
   document.body.appendChild(panel);
+
+  let miniActive = false;
+  function syncMiniVisibility() {
+    const visible = miniActive && !panel.classList.contains('open');
+    mini.classList.toggle('show', visible);
+    document.body.classList.toggle('tfai-has-mini', visible);
+  }
 
   function setTab(name) {
     panel.querySelectorAll('.tfai-tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
@@ -363,6 +414,7 @@
     if (tab) setTab(tab);
     panel.classList.add('open');
     backdrop.classList.add('open');
+    syncMiniVisibility();
     if (tab === 'chat') {
       setTimeout(() => { const inp = panel.querySelector('#tfai-in'); if (inp) inp.focus(); }, 100);
     }
@@ -371,6 +423,7 @@
   function closePanel() {
     panel.classList.remove('open');
     backdrop.classList.remove('open');
+    syncMiniVisibility();
   }
 
   fab.addEventListener('click', () => (panel.classList.contains('open') ? closePanel() : openPanel('chat')));
@@ -388,7 +441,7 @@
     btn.addEventListener('click', () => setTab(btn.dataset.goTab));
   });
 
-  // Audio Player Logic
+  // Audio Player Logic (Modal + Persistent Bottom Mini-Player synced)
   const aud = panel.querySelector('#tfai-audio');
   const playBtn = panel.querySelector('#tfai-play');
   const seek = panel.querySelector('#tfai-seek');
@@ -397,6 +450,11 @@
   const spdBtn = panel.querySelector('#tfai-spd');
   const audPlayerWrap = panel.querySelector('#tfai-aud-player');
   const audEmpty = panel.querySelector('#tfai-aud-empty');
+
+  const mPlayBtn = mini.querySelector('#tfai-mplay');
+  const mSeek = mini.querySelector('#tfai-mseek');
+  const mTime = mini.querySelector('#tfai-mtime');
+  const mSpdBtn = mini.querySelector('#tfai-mspd');
   const speeds = [1, 1.25, 1.5, 2];
   let spdIdx = 0;
 
@@ -407,8 +465,37 @@
     return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
   }
 
+  function syncAudioUI() {
+    const cur = fmtTime(aud.currentTime);
+    const dur = fmtTime(aud.duration);
+    curEl.textContent = cur;
+    durEl.textContent = dur;
+    mTime.textContent = cur + ' / ' + dur;
+    if (aud.duration) {
+      const pct = (aud.currentTime / aud.duration) * 100;
+      seek.value = pct;
+      mSeek.value = pct;
+    }
+  }
+
+  function togglePlay() {
+    if (aud.paused) {
+      aud.play().catch(() => {});
+    } else {
+      aud.pause();
+    }
+  }
+
+  function cycleSpeed() {
+    spdIdx = (spdIdx + 1) % speeds.length;
+    aud.playbackRate = speeds[spdIdx];
+    const lbl = speeds[spdIdx] + 'x';
+    spdBtn.textContent = lbl;
+    mSpdBtn.textContent = lbl;
+  }
+
   aud.addEventListener('loadedmetadata', () => {
-    durEl.textContent = fmtTime(aud.duration);
+    syncAudioUI();
     audEmpty.classList.remove('show');
     audPlayerWrap.style.display = '';
   });
@@ -416,24 +503,41 @@
     audPlayerWrap.style.display = 'none';
     audEmpty.classList.add('show');
   });
-  aud.addEventListener('timeupdate', () => {
-    curEl.textContent = fmtTime(aud.currentTime);
-    if (aud.duration) seek.value = (aud.currentTime / aud.duration) * 100;
+  aud.addEventListener('timeupdate', syncAudioUI);
+  aud.addEventListener('play', () => {
+    playBtn.textContent = '⏸';
+    mPlayBtn.textContent = '⏸';
+    miniActive = true;
+    syncMiniVisibility();
   });
-  aud.addEventListener('play', () => { playBtn.textContent = '⏸'; });
-  aud.addEventListener('pause', () => { playBtn.textContent = '▶'; });
-  aud.addEventListener('ended', () => { playBtn.textContent = '▶'; });
+  aud.addEventListener('pause', () => {
+    playBtn.textContent = '▶';
+    mPlayBtn.textContent = '▶';
+  });
+  aud.addEventListener('ended', () => {
+    playBtn.textContent = '▶';
+    mPlayBtn.textContent = '▶';
+  });
 
-  playBtn.addEventListener('click', () => (aud.paused ? aud.play().catch(() => {}) : aud.pause()));
+  playBtn.addEventListener('click', togglePlay);
+  mPlayBtn.addEventListener('click', togglePlay);
   panel.querySelector('#tfai-back').addEventListener('click', () => { aud.currentTime = Math.max(0, aud.currentTime - 15); });
   panel.querySelector('#tfai-fwd').addEventListener('click', () => { aud.currentTime = Math.min(aud.duration || 0, aud.currentTime + 15); });
-  spdBtn.addEventListener('click', () => {
-    spdIdx = (spdIdx + 1) % speeds.length;
-    aud.playbackRate = speeds[spdIdx];
-    spdBtn.textContent = speeds[spdIdx] + 'x';
-  });
+  mini.querySelector('#tfai-mback').addEventListener('click', () => { aud.currentTime = Math.max(0, aud.currentTime - 15); });
+  mini.querySelector('#tfai-mfwd').addEventListener('click', () => { aud.currentTime = Math.min(aud.duration || 0, aud.currentTime + 15); });
+  spdBtn.addEventListener('click', cycleSpeed);
+  mSpdBtn.addEventListener('click', cycleSpeed);
   seek.addEventListener('input', () => {
     if (aud.duration) aud.currentTime = (Number(seek.value) / 100) * aud.duration;
+  });
+  mSeek.addEventListener('input', () => {
+    if (aud.duration) aud.currentTime = (Number(mSeek.value) / 100) * aud.duration;
+  });
+  mini.querySelector('#tfai-minfo').addEventListener('click', () => openPanel('audio'));
+  mini.querySelector('#tfai-mclose').addEventListener('click', () => {
+    aud.pause();
+    miniActive = false;
+    syncMiniVisibility();
   });
 
   // Chat Logic
