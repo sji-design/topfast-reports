@@ -17,6 +17,10 @@
     close: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
     send: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
     bot: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="3"/><path d="M12 2v6"/><circle cx="9" cy="14" r="1" fill="currentColor"/><circle cx="15" cy="14" r="1" fill="currentColor"/></svg>',
+    back15: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>',
+    fwd15: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>',
+    vol: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>',
+    mute: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
   };
 
   const isMdViewer = /report-viewer/i.test(location.pathname) || !!window.__MD_REPORT_DATA__;
@@ -278,22 +282,44 @@
     .tfai-cta-inline{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 12px;border-radius:10px;border:1px solid rgba(87,193,255,.35);background:rgba(87,193,255,.1);color:#bfe6ff;font:600 12.5px/1.4 'Vazirmatn',sans-serif;cursor:pointer;text-align:center}
     .tfai-cta-inline:hover{background:rgba(87,193,255,.2);color:#fff}
 
-    /* Audio Pane */
-    .tfai-aud-box{background:linear-gradient(180deg,rgba(168,85,247,.12) 0%,rgba(87,193,255,.06) 100%);border:1px solid rgba(168,85,247,.32);border-radius:14px;padding:16px}
-    .tfai-aud-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(168,85,247,.2);border:1px solid rgba(168,85,247,.4);color:#e9d5ff;font-size:11px;font-weight:600;margin-bottom:10px}
-    .tfai-aud-box h4{margin:0 0 6px;font-size:15px;color:#fff}
-    .tfai-aud-box p{margin:0 0 14px;font-size:12.5px;color:#b8bcc6;line-height:1.7}
-    .tfai-aud-ctrl{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-    .tfai-play{width:44px;height:44px;border-radius:999px;border:0;background:#fff;color:#07080a;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto;transition:transform .14s}
-    .tfai-play:hover{transform:scale(1.04)}
-    .tfai-skip{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;border-radius:8px;height:34px;padding:0 10px;font:600 11.5px/1 'Inter',sans-serif;cursor:pointer}
-    .tfai-skip:hover{background:rgba(255,255,255,.14)}
-    .tfai-spd{margin-inline-start:auto;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#e9d5ff;border-radius:8px;height:34px;padding:0 10px;font:700 12px/1 'Inter',sans-serif;cursor:pointer}
-    .tfai-range{width:100%;accent-color:#a855f7;cursor:pointer;direction:ltr}
-    .tfai-time{display:flex;justify-content:space-between;font:500 11.5px/1.3 'Inter',sans-serif;color:#9da2ad;direction:ltr;margin-top:4px}
-    .tfai-aud-dl{display:inline-flex;align-items:center;gap:6px;margin-top:12px;color:#93d5ff;font-size:12px;text-decoration:none}
-    .tfai-aud-dl:hover{text-decoration:underline}
-    .tfai-aud-empty{padding:14px;border-radius:10px;border:1px dashed rgba(255,255,255,.2);background:rgba(0,0,0,.25);font-size:12.5px;line-height:1.7;color:#b8bcc6;display:none}
+    /* Spotify-Style Full-Height Audio Pane */
+    .tfai-pane[data-pane="audio"]{padding:0;background:linear-gradient(180deg,rgba(29,185,84,.22) 0%,rgba(16,28,22,.62) 40%,rgba(11,13,18,.98) 100%)}
+    .tfai-sp{display:flex;flex-direction:column;justify-content:space-between;min-height:100%;padding:20px 22px 22px;gap:18px}
+    .tfai-sp-top{display:flex;align-items:center;justify-content:space-between;font:600 10.5px/1.2 'Inter',sans-serif;letter-spacing:1.1px;text-transform:uppercase;color:#a7f3c5}
+    .tfai-sp-top span{display:inline-flex;align-items:center;gap:6px}
+    .tfai-sp-pill{padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.08);color:#d8dce4;letter-spacing:.6px}
+    .tfai-sp-art{position:relative;width:100%;aspect-ratio:1/1;max-height:270px;margin:0 auto;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 28% 24%,rgba(29,185,84,.48),transparent 58%),radial-gradient(circle at 78% 76%,rgba(87,193,255,.32),transparent 56%),linear-gradient(145deg,#12241b 0%,#0b1016 100%);border:1px solid rgba(255,255,255,.12);box-shadow:0 22px 54px rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+    .tfai-sp-art::before{content:"";position:absolute;inset:14px;border-radius:12px;border:1px solid rgba(255,255,255,.07);pointer-events:none}
+    .tfai-sp-disc{width:76px;height:76px;border-radius:999px;background:rgba(29,185,84,.18);border:1px solid rgba(29,185,84,.45);color:#1ed760;display:flex;align-items:center;justify-content:center;box-shadow:0 0 36px rgba(29,185,84,.25)}
+    .tfai-sp-disc .tfai-ic{width:32px;height:32px}
+    .tfai-sp-eq{display:flex;align-items:flex-end;gap:5px;height:28px}
+    .tfai-sp-eq i{display:block;width:4px;height:8px;border-radius:999px;background:#1ed760;opacity:.55;transition:height .2s}
+    .tfai-sp.playing .tfai-sp-eq i{opacity:1;animation:tfaiEq .9s ease-in-out infinite alternate}
+    .tfai-sp.playing .tfai-sp-eq i:nth-child(2){animation-delay:.18s}
+    .tfai-sp.playing .tfai-sp-eq i:nth-child(3){animation-delay:.36s}
+    .tfai-sp.playing .tfai-sp-eq i:nth-child(4){animation-delay:.12s}
+    .tfai-sp.playing .tfai-sp-eq i:nth-child(5){animation-delay:.28s}
+    @keyframes tfaiEq{0%{height:7px}100%{height:26px}}
+    .tfai-sp-meta{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+    .tfai-sp-meta h4{margin:0 0 4px;font-size:17px;line-height:1.35;font-weight:800;color:#fff}
+    .tfai-sp-meta p{margin:0;font-size:12.5px;color:#9da5b0}
+    .tfai-aud-dl{width:36px;height:36px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#d6d8de;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;flex:0 0 auto;transition:background .15s,color .15s}
+    .tfai-aud-dl:hover{background:rgba(29,185,84,.22);border-color:rgba(29,185,84,.5);color:#fff}
+    .tfai-sp-prog{display:flex;flex-direction:column;gap:6px}
+    .tfai-range{width:100%;height:5px;accent-color:#1ed760;cursor:pointer;direction:ltr}
+    .tfai-time{display:flex;justify-content:space-between;font:500 11.5px/1.2 'Inter',sans-serif;color:#9da5b0;direction:ltr}
+    .tfai-aud-ctrl{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0}
+    .tfai-sp-mid{display:flex;align-items:center;gap:16px}
+    .tfai-play{width:58px;height:58px;border-radius:999px;border:0;background:#fff;color:#07080a;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 10px 28px rgba(0,0,0,.45);transition:transform .14s,background .14s}
+    .tfai-play .tfai-ic-fill{width:22px;height:22px}
+    .tfai-play:hover{transform:scale(1.06);background:#1ed760}
+    .tfai-skip,.tfai-vol{width:38px;height:38px;border-radius:999px;border:0;background:transparent;color:#d0d4dc;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;position:relative;transition:background .15s,color .15s}
+    .tfai-skip:hover,.tfai-vol:hover{background:rgba(255,255,255,.09);color:#fff}
+    .tfai-skip small{position:absolute;bottom:2px;font:700 8.5px/1 'Inter',sans-serif;color:#9da5b0}
+    .tfai-spd{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#e2e6ee;border-radius:999px;height:30px;min-width:44px;padding:0 10px;font:700 11.5px/1 'Inter',sans-serif;cursor:pointer}
+    .tfai-spd:hover{border-color:rgba(29,185,84,.5);color:#1ed760}
+    .tfai-sp-hint{text-align:center;font-size:11.5px;color:#868d98;padding-top:8px;border-top:1px solid rgba(255,255,255,.07)}
+    .tfai-aud-empty{padding:16px;border-radius:12px;border:1px dashed rgba(255,255,255,.2);background:rgba(0,0,0,.28);font-size:12.5px;line-height:1.7;color:#b8bcc6;display:none}
     .tfai-aud-empty.show{display:block}
 
     /* Chat Pane */
@@ -397,25 +423,42 @@
     <div class="tfai-pane on" data-pane="summary">${buildSummaryHTML()}</div>
     ${hasAudio ? `
     <div class="tfai-pane" data-pane="audio">
-      <div class="tfai-aud-box">
-        <span class="tfai-aud-badge">${ICO.mic}<span>NotebookLM Audio Overview</span></span>
-        <h4>شنیدن خلاصه صوتی گزارش بدون نیاز به خواندن</h4>
-        <p>نسخه صوتی تهیه‌شده با NotebookLM برای مرور سریع نکات کلیدی، ریسک‌ها و پیشنهادهای بهبود در مسیر یا جلسه.</p>
+      <div class="tfai-sp" id="tfai-sp">
+        <div class="tfai-sp-top">
+          <span>${ICO.mic}<span>NOW PLAYING · NOTEBOOKLM</span></span>
+          <span class="tfai-sp-pill">M4A · فارسی</span>
+        </div>
+        <div class="tfai-sp-art">
+          <div class="tfai-sp-disc">${ICO.audio}</div>
+          <div class="tfai-sp-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
         <audio id="tfai-audio" preload="metadata" src="${esc(audioSrc)}"></audio>
-        <div id="tfai-aud-player">
-          <div class="tfai-aud-ctrl">
-            <button type="button" class="tfai-play" id="tfai-play" aria-label="پخش یا توقف">${ICO.play}</button>
-            <button type="button" class="tfai-skip" id="tfai-back">-15s</button>
-            <button type="button" class="tfai-skip" id="tfai-fwd">+15s</button>
-            <button type="button" class="tfai-spd" id="tfai-spd">1x</button>
+        <div id="tfai-aud-player" style="display:flex;flex-direction:column;gap:14px">
+          <div class="tfai-sp-meta">
+            <div>
+              <h4>${esc(isBenchmark ? 'خلاصه صوتی بنچمارک UX فلوهای CRM' : (isIssues ? 'خلاصه صوتی ایرادات پیاده‌سازی CRM' : (document.title || 'خلاصه صوتی گزارش')))}</h4>
+              <p>TopFast Product Intelligence · پادکست فارسی</p>
+            </div>
+            <a class="tfai-aud-dl" href="${esc(audioSrc)}" download title="دانلود فایل صوتی">${ICO.download}</a>
           </div>
-          <input type="range" class="tfai-range" id="tfai-seek" min="0" max="100" value="0" step="0.1">
-          <div class="tfai-time"><span id="tfai-cur">00:00</span><span id="tfai-dur">00:00</span></div>
-          <a class="tfai-aud-dl" href="${esc(audioSrc)}" download>${ICO.download}<span>دانلود فایل صوتی (M4A)</span></a>
+          <div class="tfai-sp-prog">
+            <input type="range" class="tfai-range" id="tfai-seek" min="0" max="100" value="0" step="0.1">
+            <div class="tfai-time"><span id="tfai-cur">00:00</span><span id="tfai-dur">00:00</span></div>
+          </div>
+          <div class="tfai-aud-ctrl">
+            <button type="button" class="tfai-spd" id="tfai-spd" title="سرعت پخش">1x</button>
+            <div class="tfai-sp-mid">
+              <button type="button" class="tfai-skip" id="tfai-back" aria-label="۱۵ ثانیه عقب" title="۱۵ ثانیه عقب">${ICO.back15}<small>15</small></button>
+              <button type="button" class="tfai-play" id="tfai-play" aria-label="پخش یا توقف">${ICO.play}</button>
+              <button type="button" class="tfai-skip" id="tfai-fwd" aria-label="۱۵ ثانیه جلو" title="۱۵ ثانیه جلو">${ICO.fwd15}<small>15</small></button>
+            </div>
+            <button type="button" class="tfai-vol" id="tfai-vol" aria-label="قطع یا وصل صدا" title="صدا">${ICO.vol}</button>
+          </div>
         </div>
         <div class="tfai-aud-empty" id="tfai-aud-empty">
           فایل صوتی این گزارش (<code>${esc(audioSrc)}</code>) در دسترس نیست. لطفاً اتصال اینترنت را بررسی کنید یا صفحه را رفرش کنید.
         </div>
+        <div class="tfai-sp-hint">با بستن پنل، پخش در نوار پایین صفحه ادامه می‌یابد</div>
       </div>
     </div>` : ''}
     <div class="tfai-pane" data-pane="chat" style="padding:0">
@@ -564,19 +607,31 @@
       audEmpty.classList.add('show');
     });
     aud.addEventListener('timeupdate', syncAudioUI);
+    const spWrap = panel.querySelector('#tfai-sp');
+    const volBtn = panel.querySelector('#tfai-vol');
+    if (volBtn) {
+      volBtn.addEventListener('click', () => {
+        aud.muted = !aud.muted;
+        volBtn.innerHTML = aud.muted ? ICO.mute : ICO.vol;
+      });
+    }
+
     aud.addEventListener('play', () => {
       playBtn.innerHTML = ICO.pause;
       mPlayBtn.innerHTML = ICO.pause;
+      if (spWrap) spWrap.classList.add('playing');
       miniActive = true;
       syncMiniVisibility();
     });
     aud.addEventListener('pause', () => {
       playBtn.innerHTML = ICO.play;
       mPlayBtn.innerHTML = ICO.play;
+      if (spWrap) spWrap.classList.remove('playing');
     });
     aud.addEventListener('ended', () => {
       playBtn.innerHTML = ICO.play;
       mPlayBtn.innerHTML = ICO.play;
+      if (spWrap) spWrap.classList.remove('playing');
     });
 
     playBtn.addEventListener('click', togglePlay);
