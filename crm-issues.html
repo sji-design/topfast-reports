@@ -136,6 +136,64 @@ mark{background:transparent;color:var(--e-focus);font-weight:700}
 .rep-footer{margin-top:64px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#9c9c9d}
 .rep-footer .cr{font:500 12px/1.4 'Inter',sans-serif;direction:ltr;letter-spacing:.2px}
 .rep-footer .cr b{color:#f4f4f6;font-weight:600}
+
+/* Responsive Fixes */
+html{overflow-x:clip}
+.box,.why p,.row em{overflow-wrap:anywhere}
+code{word-break:break-word}
+@media(max-width:720px){
+  .wrap{padding:28px 16px 56px}
+  .back-hub{margin-bottom:14px;font-size:12.5px;padding:5px 12px}
+  .eyebrow{font-size:10px;letter-spacing:.7px}
+  h1{font-size:25px;line-height:1.3}
+  .sub{font-size:14px;line-height:1.7}
+  .rep-author{flex-wrap:wrap;border-radius:12px;font-size:12px;padding:6px 12px}
+  .bar{margin:24px 0 14px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .card{padding:14px 14px}
+  .ct b{font-size:26px}
+  .pc{font-size:11px;padding:2px 6px}
+  .card span{font-size:13px;margin-top:4px}
+  .card small{font-size:9.5px;letter-spacing:.5px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:2px}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;padding:10px 12px;font-size:13px;gap:6px}
+  .frow{flex-direction:column;align-items:stretch;gap:10px;margin-top:12px}
+  .pills{gap:6px}
+  .pill{height:32px;padding:0 12px;font-size:12.5px}
+  .sw{width:100%}
+  .sug{left:0;right:0;width:100%;max-height:55vh;overflow-y:auto}
+  section{margin-top:32px}
+  .sh{flex-wrap:wrap;gap:6px 8px;margin-bottom:10px}
+  h2{font-size:18px}
+  .sh small{font-size:10px;letter-spacing:.5px}
+  .cnt{font-size:12px}
+  .row{grid-template-columns:auto 1fr;align-items:start;gap:10px;padding:13px 14px}
+  .row em{font-size:13.5px;line-height:1.6}
+  .row svg{display:none}
+  .tag{font-size:11px;padding:2px 7px;white-space:nowrap}
+  .mb{padding:12px 10px}
+  .m{border-radius:12px}
+  .mh{padding:14px 16px 12px;gap:10px}
+  .mh h3{font-size:17px;margin-top:8px}
+  .mbody{padding:0 16px 18px}
+  .why{padding:12px 14px}
+  .why p{font-size:13px;line-height:1.7}
+  .diff{grid-template-columns:1fr;gap:10px}
+  .box{padding:12px 14px;font-size:13px;line-height:1.7}
+  .links{gap:6px;margin:12px 0}
+  .links a{font-size:12px;padding:4px 10px;word-break:break-all}
+  figure{margin:14px 0 0}
+  .lb{padding:10px}
+  .rep-footer{margin-top:36px;padding-top:16px;font-size:11.5px;flex-direction:column;align-items:flex-start;gap:6px}
+}
+@media(max-width:420px){
+  .wrap{padding:20px 12px 48px}
+  h1{font-size:22px}
+  .cards{gap:8px}
+  .card{padding:12px 12px}
+  .ct b{font-size:22px}
+}
 </style>
 </head>
 <body>

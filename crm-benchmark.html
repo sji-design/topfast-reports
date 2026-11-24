@@ -218,6 +218,88 @@ code{font:12px ui-monospace,Consolas,monospace;background:rgba(255,255,255,.08);
 .rep-footer{margin-top:64px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;color:#9c9c9d}
 .rep-footer .cr{font:500 12px/1.4 'Inter',sans-serif;direction:ltr;letter-spacing:.2px}
 .rep-footer .cr b{color:#f4f4f6;font-weight:600}
+
+/* Responsive Fixes */
+html{overflow-x:clip}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.box,.why p,.cbox,.cell-txt{overflow-wrap:anywhere}
+code{word-break:break-word}
+@media(hover:none),(pointer:coarse){
+  .cur-arr{display:none!important}
+  .tscroll.edge-scroll,.tscroll.edge-scroll *{cursor:auto!important}
+}
+@media(max-width:860px){
+  .wrap{padding:28px 16px 64px}
+  .back-hub{margin-bottom:14px;font-size:12.5px;padding:5px 12px}
+  .eyebrow{font-size:10px;letter-spacing:.7px}
+  h1{font-size:24px;line-height:1.3}
+  .sub{font-size:13.5px;line-height:1.7}
+  .rep-author{flex-wrap:wrap;border-radius:12px;font-size:12px;padding:6px 12px}
+  .bar{margin:20px 0 14px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:18px}
+  .card{padding:13px 14px}
+  .ct b{font-size:24px}
+  .pc{font-size:11px;padding:2px 6px}
+  .card span{font-size:12.5px;margin-top:4px}
+  .card small{font-size:9.5px;letter-spacing:.4px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:2px}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;padding:10px 12px;font-size:13px;gap:6px}
+  .frow{flex-direction:column;align-items:stretch;gap:10px;margin-top:12px}
+  .fgrp{gap:6px}
+  .pill{height:32px;padding:0 11px;font-size:12px}
+  .sw{width:100%}
+  .sug{left:0;right:0;width:100%;max-height:55vh;overflow-y:auto}
+  section{margin-top:28px}
+  .sh{flex-wrap:wrap;gap:6px 8px;margin-bottom:10px}
+  h2{font-size:17px}
+  .sh small{font-size:10px;letter-spacing:.4px}
+  .cnt{font-size:12px}
+  .tscroll{-webkit-overflow-scrolling:touch}
+  table.mx{font-size:12.5px;line-height:1.65}
+  table.mx thead th{padding:10px 12px;font-size:12px}
+  table.mx tbody td{padding:11px 12px}
+  .col-crit{position:static;box-shadow:none;min-width:190px;max-width:220px}
+  .col-tf,.col-best,.col-rec,.col-crm{min-width:225px;max-width:265px}
+  .ctitle{font-size:13px}
+  .img-btn{font-size:11.5px;padding:5px 10px}
+  .diff,.comp-grid,.rate-banner{grid-template-columns:1fr}
+  .rate-banner{padding:12px 14px;gap:10px}
+  .rate-vs{justify-self:stretch;text-align:center}
+  .mb{padding:12px 10px}
+  .m{border-radius:12px}
+  .mh{padding:14px 16px 12px;gap:10px}
+  .mh h3{font-size:16px;margin-top:6px}
+  .mbody{padding:14px 16px 20px}
+  .why{padding:12px 14px}
+  .why p{font-size:13px}
+  .box{padding:13px 14px;font-size:13px;line-height:1.7}
+  .box h4{flex-wrap:wrap;gap:4px 8px}
+  .cbox{padding:12px 14px;font-size:13px}
+  .cmp-fig{padding:8px}
+  .lb{padding:10px}
+  .exec-wrap{margin-top:24px}
+  .exec-list{padding:0 16px 0 0;font-size:13px;line-height:1.75}
+  .tbl{overflow:visible}
+  .rm-tbl,.rm-tbl tbody{display:block;width:100%}
+  .rm-tbl thead{display:none}
+  .rm-tbl tr{display:block;padding:14px;border-bottom:1px solid var(--hair2)}
+  .rm-tbl tr:last-child{border-bottom:0}
+  .rm-tbl td{display:block;padding:5px 0;border:0;font-size:13px;line-height:1.7}
+  .rm-tbl td.rm-flow{font-size:14.5px;padding-bottom:6px;margin-bottom:4px;border-bottom:1px solid var(--hair);white-space:normal}
+  .rm-tbl td:nth-child(2)::before{content:"اولویت P0 (فوری): ";display:block;font-size:11.5px;font-weight:700;color:#ff8585;margin-bottom:2px}
+  .rm-tbl td:nth-child(3)::before{content:"اولویت P1 (ارتقا): ";display:block;font-size:11.5px;font-weight:700;color:#ffd466;margin-bottom:2px}
+  .rm-tbl td.rm-ref{direction:rtl;text-align:start;white-space:normal;padding-top:8px}
+  .rm-tbl td.rm-ref::before{content:"الگوی مرجع: ";font-family:'Vazirmatn',sans-serif;font-size:11.5px;font-weight:700;color:var(--mute)}
+  .rep-footer{margin-top:36px;padding-top:16px;font-size:11.5px;flex-direction:column;align-items:flex-start;gap:6px}
+}
+@media(max-width:420px){
+  .wrap{padding:20px 12px 48px}
+  h1{font-size:21px}
+  .cards{gap:8px}
+  .card{padding:11px 12px}
+  .ct b{font-size:21px}
+}
 </style>
 </head>
 <body>
