@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>پنل مدیریت گزارش‌ها — TopFast Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--canvas:#07080a;--ink:#f4f4f6;--body:#c9cbd0;--mute:#93969e;--hair:rgba(255,255,255,.09);--hair2:rgba(255,255,255,.17);--glass:rgba(255,255,255,.035);--blue:#57c1ff;--green:#59d499;--red:#ff6161;--amber:#ffc533}
+*{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;min-height:100vh;background:var(--canvas);color:var(--body);font:400 14.5px/1.75 'Vazirmatn','Inter',system-ui,sans-serif;overflow-x:hidden}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(87,193,255,.14),transparent 72%)}
+.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:40px 22px 84px}
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+.back-hub{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--hair2);color:var(--ink);text-decoration:none;font-size:13px;font-weight:500}
+.back-hub:hover{background:rgba(87,193,255,.15);border-color:rgba(87,193,255,.45)}
+h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
+.sub{margin:0 0 26px;font-size:14.5px;color:var(--mute)}
+.panel{padding:24px;border-radius:16px;background:var(--glass);border:1px solid var(--hair);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.auth-box{max-width:420px;margin:48px auto;text-align:center}
+.auth-box input{width:100%;height:42px;padding:0 14px;margin:14px 0 12px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;text-align:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 16px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.06);color:var(--ink);font:600 13px/1 'Vazirmatn',sans-serif;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#07080a;font-weight:700}
+.btn.pri:hover{opacity:.92}
+.btn.del{background:rgba(255,97,97,.14);border-color:rgba(255,97,97,.4);color:#ff9494}
+.btn.del:hover{background:rgba(255,97,97,.26);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.msg{margin-top:12px;padding:10px 14px;border-radius:10px;font-size:13px;display:none}
+.msg.ok{display:block;background:rgba(89,212,153,.14);border:1px solid rgba(89,212,153,.4);color:#c2f5db}
+.msg.err{display:block;background:rgba(255,97,97,.14);border:1px solid rgba(255,97,97,.4);color:#ffb3b3}
+.sec-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 14px}
+.sec-h h2{margin:0;font-size:18px;color:var(--ink)}
+.list{display:flex;flex-direction:column;gap:10px}
+.item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair)}
+.item-info{min-width:0;flex:1 1 260px}
+.item-info b{display:block;font-size:15px;color:var(--ink);margin-bottom:3px}
+.item-info small{display:block;font-size:12.5px;color:var(--mute)}
+.item-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(87,193,255,.14);color:#8ad4ff;margin-inline-start:6px}
+.editor-wrap{margin-top:22px;display:none}
+.editor-wrap.open{display:block}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.04);color:var(--ink);font:inherit;font-size:13.5px}
+.field textarea.md-area{min-height:320px;font-family:ui-monospace,Consolas,'Vazirmatn',monospace;line-height:1.75;resize:vertical}
+.empty{padding:28px;text-align:center;color:var(--mute);border:1px dashed var(--hair2);border-radius:12px;font-size:13.5px}
+@media(max-width:720px){
+  .wrap{padding:24px 14px 64px}
+  h1{font-size:24px}
+  .panel{padding:16px}
+  .row2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<main class="wrap">
+  <div class="topbar">
+    <a class="back-hub" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      <span>بازگشت به مرکز گزارش‌ها</span>
+    </a>
+    <a class="back-hub" href="submit.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>ارسال گزارش جدید (.md)</span>
+    </a>
+  </div>
+
+  <div id="auth-view" class="panel auth-box">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#57c1ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <h1 style="font-size:22px;margin-top:10px">ورود به پنل مدیریت گزارش‌ها</h1>
+    <p class="sub" style="margin-bottom:8px">برای ویرایش یا حذف گزارش‌ها، کد ادمین را وارد کنید.</p>
+    <form id="auth-form">
+      <input id="admin-pass" type="password" placeholder="کد ادمین (پیش‌فرض همان کد تیمی)" required autocomplete="current-password">
+      <button class="btn pri" style="width:100%" id="auth-btn" type="submit">ورود به مدیریت</button>
+    </form>
+    <div id="auth-msg" class="msg"></div>
+  </div>
+
+  <div id="dash-view" style="display:none">
+    <h1>پنل مدیریت گزارش‌ها</h1>
+    <p class="sub">گزارش‌های منتشرشده با فرمت Markdown را مستقیم اینجا ویرایش یا حذف کنید (تغییرات خودکار روی GitHub Pages اعمال می‌شوند).</p>
+
+    <section class="panel" style="margin-bottom:20px">
+      <div class="sec-h">
+        <h2>گزارش‌های Markdown (قابل ویرایش و حذف زنده)</h2>
+        <button class="btn" id="refresh-btn" type="button">بروزرسانی لیست</button>
+      </div>
+      <div id="md-list" class="list"><div class="empty">در حال بارگذاری...</div></div>
+      <div id="dash-msg" class="msg"></div>
+    </section>
+
+    <section id="editor-wrap" class="panel editor-wrap">
+      <div class="sec-h">
+        <h2 id="ed-heading">ویرایش گزارش</h2>
+        <button class="btn" id="ed-cancel" type="button">بستن ویرایشگر</button>
+      </div>
+      <form id="ed-form">
+        <input type="hidden" id="ed-slug">
+        <div class="row2">
+          <div class="field"><label for="ed-title">عنوان گزارش</label><input id="ed-title" required></div>
+          <div class="field"><label for="ed-author">نویسنده</label><input id="ed-author" required></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="ed-cat">دسته‌بندی</label>
+            <select id="ed-cat">
+              <option value="UX Benchmark">UX Benchmark</option>
+              <option value="UI/UX Audit">UI/UX Audit</option>
+              <option value="Product Research">Product Research</option>
+              <option value="Technical Report">Technical Report</option>
+            </select>
+          </div>
+          <div class="field"><label for="ed-date">تاریخ شمسی</label><input id="ed-date"></div>
+        </div>
+        <div class="field"><label for="ed-sum">خلاصه کوتاه</label><input id="ed-sum"></div>
+        <div class="field"><label for="ed-md">محتوای کامل Markdown (.md)</label><textarea id="ed-md" class="md-area" required></textarea></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn pri" id="ed-save" type="submit">ذخیره تغییرات و انتشار روی سایت</button>
+          <button class="btn del" id="ed-del" type="button">حذف کامل این گزارش</button>
+        </div>
+        <div id="ed-msg" class="msg"></div>
+      </form>
+    </section>
+
+    <section class="panel" style="margin-top:20px">
+      <div class="sec-h"><h2>گزارش‌های اصلی HTML (بنچمارک و ایشوها)</h2></div>
+      <div class="list">
+        <div class="item">
+          <div class="item-info"><b>بنچمارک UX فلوهای CRM TopFast <span class="badge">HTML</span></b><small>crm-benchmark.html · فایل کامل شامل ۱۵۱ اسکرین‌شات</small></div>
+          <div class="item-acts">
+            <a class="btn" href="crm-benchmark.html" target="_blank">مشاهده</a>
+            <a class="btn" href="https://github.com/sji-design/topfast-reports/blob/main/crm-benchmark.html" target="_blank" rel="noopener">مدیریت در GitHub</a>
+          </div>
+        </div>
+        <div class="item">
+          <div class="item-info"><b>ایرادات پیاده‌سازی CRM (Live vs Figma) <span class="badge">HTML</span></b><small>crm-issues.html · ممیزی ۹ صفحه در دو تم Light/Dark</small></div>
+          <div class="item-acts">
+            <a class="btn" href="crm-issues.html" target="_blank">مشاهده</a>
+            <a class="btn" href="https://github.com/sji-design/topfast-reports/blob/main/crm-issues.html" target="_blank" rel="noopener">مدیریت در GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="ai-config.js"></script>
+<script>
+(function(){
+  const ep = ((window.TOPFAST_AI_CONFIG && window.TOPFAST_AI_CONFIG.endpoint) || '').replace(/\/$/,'');
+  let passcode = sessionStorage.getItem('tf_admin_pass') || '';
+  let itemsCache = [];
+
+  const authView = document.getElementById('auth-view');
+  const dashView = document.getElementById('dash-view');
+  const authMsg = document.getElementById('auth-msg');
+  const dashMsg = document.getElementById('dash-msg');
+  const edMsg = document.getElementById('ed-msg');
+  const mdList = document.getElementById('md-list');
+  const edWrap = document.getElementById('editor-wrap');
+
+  function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function showMsg(el, type, txt){ el.className = 'msg ' + type; el.textContent = txt; }
+
+  async function api(path, payload){
+    const res = await fetch(ep + path, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({...payload, passcode})
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || ('خطای سرور: ' + res.status));
+    return data;
+  }
+
+  async function loadList(){
+    mdList.innerHTML = '<div class="empty">در حال بارگذاری لیست گزارش‌ها از GitHub...</div>';
+    try{
+      const data = await api('/admin/list', {});
+      itemsCache = Array.isArray(data.items) ? data.items : [];
+      if(!itemsCache.length){
+        mdList.innerHTML = '<div class="empty">هنوز هیچ گزارش Markdown منتشر نشده است. از صفحه «ارسال گزارش جدید (.md)» می‌توانید اولین گزارش را اضافه کنید.</div>';
+        return;
+      }
+      mdList.innerHTML = itemsCache.map(it => `
+        <div class="item">
+          <div class="item-info">
+            <b>${esc(it.title)} <span class="badge">${esc(it.category || 'Report')}</span></b>
+            <small>نویسنده: ${esc(it.author)} · تاریخ: ${esc(it.dateFa || it.dateEn || '-')} · شناسه: <code>${esc(it.slug)}</code></small>
+          </div>
+          <div class="item-acts">
+            <a class="btn" href="report-viewer.html?slug=${encodeURIComponent(it.slug)}" target="_blank">مشاهده</a>
+            <button class="btn pri" type="button" data-edit="${esc(it.slug)}">ویرایش</button>
+            <button class="btn del" type="button" data-del="${esc(it.slug)}">حذف</button>
+          </div>
+        </div>
+      `).join('');
+      mdList.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditor(b.dataset.edit)));
+      mdList.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteReport(b.dataset.del)));
+    }catch(err){
+      mdList.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
+    }
+  }
+
+  async function openEditor(slug){
+    const meta = itemsCache.find(x => x.slug === slug) || {};
+    edWrap.classList.add('open');
+    edMsg.className = 'msg';
+    document.getElementById('ed-heading').textContent = 'ویرایش: ' + (meta.title || slug);
+    document.getElementById('ed-slug').value = slug;
+    document.getElementById('ed-title').value = meta.title || '';
+    document.getElementById('ed-author').value = meta.author || '';
+    document.getElementById('ed-cat').value = meta.category || 'UX Benchmark';
+    document.getElementById('ed-date').value = meta.dateFa || '';
+    document.getElementById('ed-sum').value = meta.summary || '';
+    document.getElementById('ed-md').value = 'در حال دریافت متن فایل...';
+    edWrap.scrollIntoView({behavior:'smooth'});
+    try{
+      const data = await api('/admin/get', {slug});
+      document.getElementById('ed-md').value = data.markdown || '';
+    }catch(err){
+      showMsg(edMsg, 'err', err.message);
+    }
+  }
+
+  async function deleteReport(slug){
+    const meta = itemsCache.find(x => x.slug === slug) || {};
+    if(!confirm('آیا از حذف کامل گزارش «' + (meta.title || slug) + '» مطمئن هستید؟ این عمل غیرقابل بازگشت است.')) return;
+    try{
+      await api('/admin/delete', {slug});
+      edWrap.classList.remove('open');
+      showMsg(dashMsg, 'ok', 'گزارش با موفقیت از GitHub حذف شد (تا ~۳۰ ثانیه از سایت حذف می‌شود).');
+      loadList();
+    }catch(err){
+      showMsg(dashMsg, 'err', err.message);
+    }
+  }
+
+  document.getElementById('ed-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('ed-save');
+    btn.disabled = true;
+    try{
+      await api('/admin/update', {
+        slug: document.getElementById('ed-slug').value,
+        title: document.getElementById('ed-title').value.trim(),
+        author: document.getElementById('ed-author').value.trim(),
+        category: document.getElementById('ed-cat').value,
+        dateFa: document.getElementById('ed-date').value.trim(),
+        summary: document.getElementById('ed-sum').value.trim(),
+        markdown: document.getElementById('ed-md').value,
+      });
+      showMsg(edMsg, 'ok', 'تغییرات با موفقیت روی GitHub ذخیره شد (تا ~۳۰ ثانیه روی سایت زنده می‌شود).');
+      loadList();
+    }catch(err){
+      showMsg(edMsg, 'err', err.message);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  document.getElementById('ed-del').addEventListener('click', () => deleteReport(document.getElementById('ed-slug').value));
+  document.getElementById('ed-cancel').addEventListener('click', () => edWrap.classList.remove('open'));
+  document.getElementById('refresh-btn').addEventListener('click', loadList);
+
+  async function tryAuth(code){
+    passcode = code;
+    await api('/admin/auth', {});
+    sessionStorage.setItem('tf_admin_pass', passcode);
+    authView.style.display = 'none';
+    dashView.style.display = 'block';
+    loadList();
+  }
+
+  document.getElementById('auth-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('auth-btn');
+    btn.disabled = true;
+    try{
+      await tryAuth(document.getElementById('admin-pass').value.trim());
+    }catch(err){
+      showMsg(authMsg, 'err', err.message);
+      passcode = '';
+    }finally{
+      btn.disabled = false;
+    }
+  });
+
+  if(passcode){ tryAuth(passcode).catch(()=>{ sessionStorage.removeItem('tf_admin_pass'); passcode = ''; }); }
+})();
+</script>
+</body>
+</html>
