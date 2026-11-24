@@ -358,21 +358,23 @@
     .tfai-send:disabled{opacity:.5;cursor:not-allowed}
 
     /* Persistent Bottom Mini Audio Player (#165EF6 Brand Theme) */
-    .tfai-mini{position:fixed;left:0;right:0;bottom:0;z-index:48;display:none;align-items:center;gap:12px;padding:10px 20px;background:rgba(11,14,22,.95);border-top:1px solid rgba(22,94,246,.45);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:0 -10px 34px rgba(0,0,0,.6);direction:rtl;font-family:'Vazirmatn','Inter',system-ui,sans-serif;color:#e5e7ef}
+    .tfai-mini{position:fixed;left:0;right:0;bottom:0;z-index:48;display:none;align-items:center;gap:14px;padding:10px 20px;background:rgba(11,14,22,.95);border-top:1px solid rgba(22,94,246,.45);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:0 -10px 34px rgba(0,0,0,.6);direction:rtl;font-family:'Vazirmatn','Inter',system-ui,sans-serif;color:#e5e7ef}
     .tfai-mini.show{display:flex}
-    .tfai-mini-play{width:38px;height:38px;border-radius:999px;border:0;background:#165EF6;color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 4px 16px rgba(22,94,246,.4);transition:transform .14s,background .14s}
-    .tfai-mini-play:hover{transform:scale(1.05);background:#2b6ff8}
-    .tfai-mini-info{min-width:0;max-width:220px;cursor:pointer;flex:0 1 auto}
+    .tfai-mini-right{display:flex;align-items:center;gap:10px;min-width:0;max-width:260px;flex:0 1 auto}
+    .tfai-mini-close{border:0;background:rgba(255,255,255,.07);color:#b8bcc6;width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;transition:background .15s,color .15s}
+    .tfai-mini-close:hover{background:rgba(255,97,97,.22);color:#fff}
+    .tfai-mini-info{min-width:0;cursor:pointer;flex:1 1 auto}
     .tfai-mini-info b{display:block;font-size:12.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
     .tfai-mini-info small{display:flex;align-items:center;gap:4px;font-size:11px;color:#6ea0ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
     .tfai-mini-info small .tfai-ic{width:12px;height:12px}
     .tfai-mini-seekwrap{flex:1 1 auto;display:flex;align-items:center;gap:10px;min-width:120px}
     .tfai-mini-seek{flex:1 1 auto;accent-color:#165EF6;cursor:pointer;direction:ltr;min-width:60px}
     .tfai-mini-time{font:500 11.5px/1 'Inter',sans-serif;color:#9da2ad;direction:ltr;white-space:nowrap;flex:0 0 auto}
-    .tfai-mini-btn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#e5e7ef;border-radius:8px;height:30px;padding:0 9px;font:600 11.5px/1 'Inter',sans-serif;cursor:pointer;flex:0 0 auto}
-    .tfai-mini-btn:hover{background:rgba(255,255,255,.14);color:#fff}
-    .tfai-mini-close{border:0;background:rgba(255,255,255,.07);color:#b8bcc6;width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto}
-    .tfai-mini-close:hover{background:rgba(255,97,97,.22);color:#fff}
+    .tfai-mini-ctrls{display:flex;align-items:center;gap:8px;direction:ltr;flex:0 0 auto}
+    .tfai-mini-play{width:40px;height:40px;border-radius:999px;border:0;background:#165EF6;color:#ffffff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 4px 16px rgba(22,94,246,.42);transition:transform .14s,background .14s}
+    .tfai-mini-play:hover{transform:scale(1.06);background:#2b6ff8}
+    .tfai-mini-btn{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#e5e7ef;border-radius:8px;height:32px;padding:0 9px;font:600 11.5px/1 'Inter',sans-serif;cursor:pointer;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s,color .15s}
+    .tfai-mini-btn:hover{background:rgba(22,94,246,.2);border-color:rgba(22,94,246,.5);color:#fff}
     body.tfai-has-mini{padding-bottom:76px}
     body.tfai-has-mini .tfai-fab{bottom:78px}
 
@@ -399,8 +401,8 @@
       .tfai-panel.open{transform:translateY(0)}
       .tfai-qbar{gap:6px}
       .tfai-qbtn{font-size:12px;padding:6px 11px}
-      .tfai-mini{flex-wrap:wrap;padding:8px 12px 10px;gap:8px}
-      .tfai-mini-info{max-width:none;flex:1 1 auto}
+      .tfai-mini{flex-wrap:wrap;padding:8px 12px 10px;gap:8px;justify-content:space-between}
+      .tfai-mini-right{max-width:none;flex:1 1 0;min-width:0}
       .tfai-mini-seekwrap{order:10;flex:1 0 100%;gap:8px}
       .tfai-mini-skip{display:none}
     }
@@ -516,19 +518,23 @@
   mini.className = 'tfai-mini';
   mini.setAttribute('aria-label', 'پخش‌کننده صوتی گزارش');
   mini.innerHTML = `
-    <button type="button" class="tfai-mini-play" id="tfai-mplay" aria-label="پخش یا توقف">${ICO.play}</button>
-    <div class="tfai-mini-info" id="tfai-minfo" title="باز کردن پنل صوتی">
-      <b>${esc(isBenchmark ? 'خلاصه صوتی بنچمارک CRM' : (isIssues ? 'خلاصه صوتی ایشوهای CRM' : (document.title || 'خلاصه صوتی گزارش')))}</b>
-      <small>${ICO.mic}<span>NotebookLM Audio</span></small>
+    <div class="tfai-mini-right">
+      <button type="button" class="tfai-mini-close" id="tfai-mclose" aria-label="بستن پخش‌کننده" title="بستن پخش‌کننده">${ICO.close}</button>
+      <div class="tfai-mini-info" id="tfai-minfo" title="باز کردن پنل صوتی">
+        <b>${esc(isBenchmark ? 'خلاصه صوتی بنچمارک CRM' : (isIssues ? 'خلاصه صوتی ایشوهای CRM' : (document.title || 'خلاصه صوتی گزارش')))}</b>
+        <small>${ICO.mic}<span>NotebookLM Audio</span></small>
+      </div>
     </div>
-    <button type="button" class="tfai-mini-btn tfai-mini-skip" id="tfai-mback">-15s</button>
-    <button type="button" class="tfai-mini-btn tfai-mini-skip" id="tfai-mfwd">+15s</button>
     <div class="tfai-mini-seekwrap">
       <input type="range" class="tfai-mini-seek" id="tfai-mseek" min="0" max="100" value="0" step="0.1">
       <span class="tfai-mini-time" id="tfai-mtime">00:00 / 00:00</span>
     </div>
-    <button type="button" class="tfai-mini-btn" id="tfai-mspd">1x</button>
-    <button type="button" class="tfai-mini-close" id="tfai-mclose" aria-label="بستن پخش‌کننده">${ICO.close}</button>
+    <div class="tfai-mini-ctrls">
+      <button type="button" class="tfai-mini-btn" id="tfai-mspd" title="سرعت پخش">1x</button>
+      <button type="button" class="tfai-mini-btn tfai-mini-skip" id="tfai-mback" title="۱۵ ثانیه عقب">-15s</button>
+      <button type="button" class="tfai-mini-play" id="tfai-mplay" aria-label="پخش یا توقف">${ICO.play}</button>
+      <button type="button" class="tfai-mini-btn tfai-mini-skip" id="tfai-mfwd" title="۱۵ ثانیه جلو">+15s</button>
+    </div>
   `;
 
   const edgeClose = document.createElement('button');
