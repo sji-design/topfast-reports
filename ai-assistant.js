@@ -34,11 +34,15 @@
   const audioSrc = (mdData && mdData.audio) || (cfg.audio && cfg.audio[pageKey]) || '';
   const dataObj = typeof D !== 'undefined' ? D : null;
 
-  // Apply live admin content edits from data-benchmark.json / data-issues.json without touching 16MB HTML
+  // Apply live admin content edits (instant from Cloudflare KV if available, fallback to data-*.json)
   if (!isMdViewer && dataObj && Array.isArray(dataObj.CATEGORIES) && (isBenchmark || isIssues)) {
-    const dataFile = isBenchmark ? './data-benchmark.json' : './data-issues.json';
-    fetch(dataFile + '?t=' + Date.now())
-      .then((r) => (r.ok ? r.json() : null))
+    const repKey = isBenchmark ? 'benchmark' : 'issues';
+    const liveUrl = endpoint ? (endpoint.replace(/\/$/, '') + '/live/data/' + repKey + '?t=' + Date.now()) : '';
+    const staticUrl = './data-' + repKey + '.json?t=' + Date.now();
+    const fetchPatch = liveUrl
+      ? fetch(liveUrl).then((r) => (r.ok ? r.json() : Promise.reject())).catch(() => fetch(staticUrl).then((r) => (r.ok ? r.json() : null)))
+      : fetch(staticUrl).then((r) => (r.ok ? r.json() : null));
+    fetchPatch
       .then((patch) => {
         if (!patch || !Array.isArray(patch.categories)) return;
         const h1El = document.querySelector('h1');

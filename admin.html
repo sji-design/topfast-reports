@@ -59,6 +59,12 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#165EF6;background-color:#131824;box-shadow:0 0 0 3px rgba(22,94,246,.22)}
 .field textarea.md-area{min-height:320px;font-family:ui-monospace,Consolas,'Vazirmatn',monospace;line-height:1.75;resize:vertical}
 .empty{padding:26px;text-align:center;color:var(--mute);border:1px dashed var(--hair2);border-radius:12px;font-size:13.5px}
+.cfm-bg{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.68);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}
+.cfm-bg.open{display:flex}
+.cfm-box{width:100%;max-width:410px;padding:24px;border-radius:16px;background:rgba(15,18,26,.97);border:1px solid var(--hair2);box-shadow:0 24px 64px rgba(0,0,0,.72)}
+.cfm-box h3{margin:0 0 8px;font-size:17px;color:var(--ink)}
+.cfm-box p{margin:0 0 20px;font-size:13.5px;color:var(--mute);line-height:1.75}
+.cfm-acts{display:flex;gap:10px;justify-content:flex-end}
 @media(max-width:720px){
   .wrap{padding:22px 14px 64px}
   h1{font-size:24px}
@@ -75,10 +81,16 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       <span>بازگشت به مرکز گزارش‌ها</span>
     </a>
-    <a class="btn pri" href="submit.html" style="border-radius:999px;height:36px">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      <span>ارسال گزارش جدید</span>
-    </a>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <a class="btn pri" href="submit.html" style="border-radius:999px;height:36px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>ارسال گزارش جدید</span>
+      </a>
+      <button class="btn del" id="logout-btn" type="button" style="display:none;border-radius:999px;height:36px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>خروج از پنل</span>
+      </button>
+    </div>
   </div>
 
   <div id="auth-view" class="panel auth-box">
@@ -203,6 +215,16 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     </section>
   </div>
 </main>
+<div class="cfm-bg" id="cfm-modal" role="dialog" aria-modal="true">
+  <div class="cfm-box">
+    <h3 id="cfm-title">تأیید عملیات</h3>
+    <p id="cfm-text"></p>
+    <div class="cfm-acts">
+      <button type="button" class="btn" id="cfm-no">انصراف</button>
+      <button type="button" class="btn del" id="cfm-yes">تأیید</button>
+    </div>
+  </div>
+</div>
 <script src="ai-config.js"></script>
 <script>
 (function(){
@@ -240,6 +262,37 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
   function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
   function showMsg(el, type, txt){ el.className = 'msg ' + type; el.textContent = txt; }
+
+  // Custom Dark Glass Confirmation Modal
+  const cfmModal = document.getElementById('cfm-modal');
+  const cfmTitle = document.getElementById('cfm-title');
+  const cfmText = document.getElementById('cfm-text');
+  const cfmYes = document.getElementById('cfm-yes');
+  const cfmNo = document.getElementById('cfm-no');
+  let cfmResolve = null;
+  function askConfirm(title, text, yesLabel, isDanger){
+    cfmTitle.textContent = title;
+    cfmText.textContent = text;
+    cfmYes.textContent = yesLabel || 'تأیید';
+    cfmYes.className = 'btn ' + (isDanger ? 'del' : 'pri');
+    cfmModal.classList.add('open');
+    return new Promise(res => { cfmResolve = res; });
+  }
+  function closeCfm(val){ cfmModal.classList.remove('open'); if(cfmResolve){ cfmResolve(val); cfmResolve = null; } }
+  cfmYes.addEventListener('click', () => closeCfm(true));
+  cfmNo.addEventListener('click', () => closeCfm(false));
+  cfmModal.addEventListener('click', e => { if(e.target === cfmModal) closeCfm(false); });
+
+  const logoutBtn = document.getElementById('logout-btn');
+  logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('tf_admin_pass');
+    passcode = '';
+    passIn.value = '';
+    dashView.style.display = 'none';
+    logoutBtn.style.display = 'none';
+    authView.style.display = 'block';
+    authMsg.className = 'msg';
+  });
 
   async function api(path, payload){
     if(!ep) throw new Error('آدرس Cloudflare Worker در فایل ai-config.js تنظیم نشده است.');
@@ -463,11 +516,23 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   }
 
   async function toggleCoreHidden(id){
+    const def = CORE_DEFAULTS.find(x => x.id === id) || {};
     const cur = overridesCache[id] || {};
-    const next = {...overridesCache, [id]: {...cur, hidden: !cur.hidden}};
+    const willHide = !cur.hidden;
+    const title = cur.title || def.title || id;
+    const ok = await askConfirm(
+      willHide ? 'تأیید مخفی کردن گزارش' : 'تأیید نمایش مجدد گزارش',
+      willHide
+        ? `آیا مطمئن هستید که گزارش «${title}» از صفحه اصلی مخفی شود؟ هر زمان بخواهید می‌توانید دوباره نمایشش دهید.`
+        : `گزارش «${title}» دوباره در صفحه اصلی نمایش داده شود؟`,
+      willHide ? 'بله، مخفی کن' : 'بله، نمایش بده',
+      willHide
+    );
+    if(!ok) return;
+    const next = {...overridesCache, [id]: {...cur, hidden: willHide}};
     try{
       await saveOverrides(next);
-      showMsg(coreMsg, 'ok', next[id].hidden ? 'گزارش از صفحه اصلی مخفی شد (تا ~۳۰ ثانیه اعمال می‌شود).' : 'گزارش مجدداً در صفحه اصلی نمایش داده می‌شود.');
+      showMsg(coreMsg, 'ok', willHide ? 'گزارش با موفقیت مخفی شد و بلافاصله روی سایت اعمال گردید.' : 'گزارش مجدداً در صفحه اصلی فعال شد.');
     }catch(err){
       showMsg(coreMsg, 'err', err.message);
     }
@@ -557,11 +622,12 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
   async function deleteReport(slug){
     const meta = itemsCache.find(x => x.slug === slug) || {};
-    if(!confirm('آیا از حذف کامل گزارش «' + (meta.title || slug) + '» مطمئن هستید؟')) return;
+    const ok = await askConfirm('تأیید حذف کامل گزارش', 'آیا از حذف کامل گزارش «' + (meta.title || slug) + '» مطمئن هستید؟ این عمل قابل بازگشت نیست.', 'بله، حذف شود', true);
+    if(!ok) return;
     try{
       await api('/admin/delete', {slug});
       edWrap.classList.remove('open');
-      showMsg(dashMsg, 'ok', 'گزارش با موفقیت حذف شد (تا ~۳۰ ثانیه از سایت حذف می‌شود).');
+      showMsg(dashMsg, 'ok', 'گزارش با موفقیت حذف شد.');
       loadAll();
     }catch(err){
       showMsg(dashMsg, 'err', err.message);
@@ -601,6 +667,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     sessionStorage.setItem('tf_admin_pass', passcode);
     authView.style.display = 'none';
     dashView.style.display = 'block';
+    logoutBtn.style.display = 'inline-flex';
     loadAll();
   }
 
