@@ -328,19 +328,18 @@ html{overflow-x:clip}
 .site-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:36px;padding-bottom:20px;border-bottom:1px solid var(--hair)}
 .head-ctas{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .hbtn{display:inline-flex;align-items:center;gap:7px;height:38px;padding:0 16px;border-radius:999px;font:700 13px/1 'Vazirmatn','Inter',sans-serif;text-decoration:none;white-space:nowrap;transition:transform .15s,background .15s,border-color .15s,box-shadow .15s}
-.hbtn.pri{background:#57c1ff;color:#07080a;border:1px solid #57c1ff;box-shadow:0 6px 20px rgba(87,193,255,.24)}
-.hbtn.pri:hover{background:#73ccff;border-color:#73ccff;transform:translateY(-1px)}
-.hbtn.sec{background:rgba(87,193,255,.1);color:#bfe6ff;border:1px solid rgba(87,193,255,.38)}
-.hbtn.sec:hover{background:rgba(87,193,255,.2);border-color:rgba(87,193,255,.65);color:#fff;transform:translateY(-1px)}
+.hbtn.pri{background:#165EF6;color:#ffffff;border:1px solid #165EF6;box-shadow:0 6px 20px rgba(22,94,246,.32)}
+.hbtn.pri:hover{background:#2b6ff8;border-color:#2b6ff8;transform:translateY(-1px)}
+.hbtn.sec{background:rgba(22,94,246,.12);color:#dbe8ff;border:1px solid rgba(22,94,246,.42)}
+.hbtn.sec:hover{background:rgba(22,94,246,.24);border-color:rgba(22,94,246,.72);color:#fff;transform:translateY(-1px)}
 .hero{margin-bottom:42px}
 h1{letter-spacing:-.5px}
 .sub{color:#b8bcc6;line-height:1.85}
 .meta-strip{padding:14px 18px;gap:12px 18px;border-radius:14px;border-color:rgba(255,255,255,.1)}
-.fpill.on{background:#57c1ff;color:#07080a;border-color:#57c1ff}
 .grid{gap:22px}
 .rcard{padding:28px 28px 24px;border-radius:18px;border-color:rgba(255,255,255,.1)}
-.cta{background:#57c1ff;border-color:#57c1ff;color:#07080a;font-weight:700}
-.rcard:hover .cta{background:#73ccff;border-color:#73ccff;color:#07080a}
+.cta{background:color-mix(in srgb,var(--a) 14%,rgba(255,255,255,.03));border:1px solid color-mix(in srgb,var(--a) 36%,transparent);color:var(--ink);font-weight:600}
+.rcard:hover .cta{background:color-mix(in srgb,var(--a) 26%,rgba(255,255,255,.06));border-color:color-mix(in srgb,var(--a) 62%,transparent);color:#fff}
 .kpis{gap:10px;margin-bottom:22px}
 .kpi{padding:11px 13px;border-radius:11px}
 .footer{padding:22px 28px 40px}
@@ -542,11 +541,23 @@ function renderGrid() {
 renderFilters();
 renderGrid();
 
-// Load approved Markdown reports published via Telegram approval workflow
-fetch('./reports-manifest.json?t=' + Date.now())
-  .then(r => r.ok ? r.json() : [])
-  .then(items => {
-    if (!Array.isArray(items) || !items.length) return;
+// Load admin overrides for built-in flagship reports + approved Markdown reports
+Promise.all([
+  fetch('./report-overrides.json?t=' + Date.now()).then(r => r.ok ? r.json() : {}).catch(() => ({})),
+  fetch('./reports-manifest.json?t=' + Date.now()).then(r => r.ok ? r.json() : []).catch(() => [])
+]).then(([overrides, items]) => {
+  if (overrides && typeof overrides === 'object') {
+    for (let i = REPORTS.length - 1; i >= 0; i--) {
+      const ov = overrides[REPORTS[i].id];
+      if (!ov) continue;
+      if (ov.hidden) { REPORTS.splice(i, 1); continue; }
+      if (ov.title) REPORTS[i].title = ov.title;
+      if (ov.desc) REPORTS[i].desc = ov.desc;
+      if (ov.dateFa) REPORTS[i].dateFa = ov.dateFa;
+      if (ov.category) REPORTS[i].category = ov.category;
+    }
+  }
+  if (Array.isArray(items) && items.length) {
     for (const it of items) {
       if (!it || !it.slug || REPORTS.some(x => x.id === it.slug)) continue;
       REPORTS.push({
@@ -569,13 +580,15 @@ fetch('./reports-manifest.json?t=' + Date.now())
         href: './report-viewer.html?slug=' + encodeURIComponent(it.slug)
       });
     }
-    REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
-    document.getElementById('rep-count').textContent = fa(REPORTS.length) + ' گزارش';
+  }
+  REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
+  document.getElementById('rep-count').textContent = fa(REPORTS.length) + ' گزارش';
+  if (REPORTS[0]) {
     document.getElementById('latest-date').textContent = REPORTS[0].dateFa + (REPORTS[0].dateEn ? ' (' + REPORTS[0].dateEn + ')' : '');
-    renderFilters();
-    renderGrid();
-  })
-  .catch(() => {});
+  }
+  renderFilters();
+  renderGrid();
+}).catch(() => {});
 </script>
 </body>
 </html>

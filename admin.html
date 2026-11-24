@@ -8,28 +8,34 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:dark;--canvas:#07080a;--ink:#f4f4f6;--body:#c9cbd0;--mute:#93969e;--hair:rgba(255,255,255,.09);--hair2:rgba(255,255,255,.17);--glass:rgba(255,255,255,.035);--blue:#57c1ff;--green:#59d499;--red:#ff6161;--amber:#ffc533}
+:root{color-scheme:dark;--canvas:#07080a;--ink:#f4f4f6;--body:#c9cbd0;--mute:#93969e;--hair:rgba(255,255,255,.09);--hair2:rgba(255,255,255,.17);--glass:rgba(255,255,255,.035);--pri:#165EF6;--pri-h:#2b6ff8;--red:#ff6161;--green:#59d499}
 *{box-sizing:border-box}
 html{overflow-x:clip}
 body{margin:0;min-height:100vh;background:var(--canvas);color:var(--body);font:400 14.5px/1.75 'Vazirmatn','Inter',system-ui,sans-serif;overflow-x:hidden}
-.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(87,193,255,.14),transparent 72%)}
-.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:40px 22px 84px}
-.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:24px}
-.back-hub{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--hair2);color:var(--ink);text-decoration:none;font-size:13px;font-weight:500}
-.back-hub:hover{background:rgba(87,193,255,.15);border-color:rgba(87,193,255,.45)}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(22,94,246,.16),transparent 72%)}
+.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:34px 22px 84px}
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--hair)}
+.back-hub{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--hair2);color:var(--ink);text-decoration:none;font-size:13px;font-weight:500}
+.back-hub:hover{background:rgba(22,94,246,.16);border-color:rgba(22,94,246,.5)}
 h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .sub{margin:0 0 26px;font-size:14.5px;color:var(--mute)}
-.panel{padding:24px;border-radius:16px;background:var(--glass);border:1px solid var(--hair);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
-.auth-box{max-width:420px;margin:48px auto;text-align:center}
-.auth-box input{width:100%;height:42px;padding:0 14px;margin:14px 0 12px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;text-align:center}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 16px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.06);color:var(--ink);font:600 13px/1 'Vazirmatn',sans-serif;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s}
+.panel{padding:24px;border-radius:16px;background:var(--glass);border:1px solid rgba(255,255,255,.1);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.auth-box{max-width:430px;margin:52px auto;text-align:center}
+.pass-wrap{position:relative;margin:16px 0 12px}
+.pass-wrap input{width:100%;height:44px;padding:0 14px 0 44px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:14px;text-align:center;direction:ltr}
+.pass-wrap input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(22,94,246,.22)}
+.eye-btn{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;border-radius:8px;background:transparent;color:var(--mute);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.eye-btn:hover{background:rgba(255,255,255,.08);color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 16px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.06);color:var(--ink);font:600 13px/1 'Vazirmatn',sans-serif;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,transform .14s}
 .btn:hover{background:rgba(255,255,255,.12)}
-.btn.pri{background:var(--blue);border-color:var(--blue);color:#07080a;font-weight:700}
-.btn.pri:hover{opacity:.92}
+.btn.pri{background:var(--pri);border-color:var(--pri);color:#ffffff;font-weight:700;box-shadow:0 6px 20px rgba(22,94,246,.28)}
+.btn.pri:hover{background:var(--pri-h);border-color:var(--pri-h);transform:translateY(-1px)}
+.btn.soft{background:rgba(22,94,246,.14);border-color:rgba(22,94,246,.42);color:#dbe8ff}
+.btn.soft:hover{background:rgba(22,94,246,.26);color:#fff}
 .btn.del{background:rgba(255,97,97,.14);border-color:rgba(255,97,97,.4);color:#ff9494}
 .btn.del:hover{background:rgba(255,97,97,.26);color:#fff}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.msg{margin-top:12px;padding:10px 14px;border-radius:10px;font-size:13px;display:none}
+.msg{margin-top:12px;padding:11px 14px;border-radius:10px;font-size:13px;line-height:1.7;display:none;text-align:start}
 .msg.ok{display:block;background:rgba(89,212,153,.14);border:1px solid rgba(89,212,153,.4);color:#c2f5db}
 .msg.err{display:block;background:rgba(255,97,97,.14);border:1px solid rgba(255,97,97,.4);color:#ffb3b3}
 .sec-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 14px}
@@ -40,17 +46,18 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .item-info b{display:block;font-size:15px;color:var(--ink);margin-bottom:3px}
 .item-info small{display:block;font-size:12.5px;color:var(--mute)}
 .item-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(87,193,255,.14);color:#8ad4ff;margin-inline-start:6px}
-.editor-wrap{margin-top:22px;display:none}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.08);color:var(--body);margin-inline-start:6px}
+.badge.hid{background:rgba(255,97,97,.18);color:#ff9494}
+.editor-wrap{margin-top:20px;display:none}
 .editor-wrap.open{display:block}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.04);color:var(--ink);font:inherit;font-size:13.5px}
 .field textarea.md-area{min-height:320px;font-family:ui-monospace,Consolas,'Vazirmatn',monospace;line-height:1.75;resize:vertical}
-.empty{padding:28px;text-align:center;color:var(--mute);border:1px dashed var(--hair2);border-radius:12px;font-size:13.5px}
+.empty{padding:26px;text-align:center;color:var(--mute);border:1px dashed var(--hair2);border-radius:12px;font-size:13.5px}
 @media(max-width:720px){
-  .wrap{padding:24px 14px 64px}
+  .wrap{padding:22px 14px 64px}
   h1{font-size:24px}
   .panel{padding:16px}
   .row2{grid-template-columns:1fr}
@@ -65,30 +72,62 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       <span>بازگشت به مرکز گزارش‌ها</span>
     </a>
-    <a class="back-hub" href="submit.html">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      <span>ارسال گزارش جدید (.md)</span>
+    <a class="btn pri" href="submit.html" style="border-radius:999px;height:36px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span>ارسال گزارش جدید</span>
     </a>
   </div>
 
   <div id="auth-view" class="panel auth-box">
-    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#57c1ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#165EF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     <h1 style="font-size:22px;margin-top:10px">ورود به پنل مدیریت گزارش‌ها</h1>
-    <p class="sub" style="margin-bottom:8px">برای ویرایش یا حذف گزارش‌ها، کد ادمین را وارد کنید.</p>
+    <p class="sub" style="margin-bottom:6px">برای ویرایش، مخفی‌سازی یا حذف گزارش‌ها داخل پلتفرم، رمز ادمین را وارد کنید.</p>
     <form id="auth-form">
-      <input id="admin-pass" type="password" placeholder="رمز ورود ادمین" required autocomplete="current-password">
-      <button class="btn pri" style="width:100%" id="auth-btn" type="submit">ورود به مدیریت</button>
+      <div class="pass-wrap">
+        <input id="admin-pass" type="password" placeholder="رمز ورود ادمین" required autocomplete="current-password">
+        <button type="button" class="eye-btn" id="eye-btn" aria-label="نمایش یا مخفی کردن رمز" title="نمایش رمز">
+          <svg id="eye-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <button class="btn pri" style="width:100%;height:42px" id="auth-btn" type="submit">ورود به مدیریت</button>
     </form>
     <div id="auth-msg" class="msg"></div>
   </div>
 
   <div id="dash-view" style="display:none">
     <h1>پنل مدیریت گزارش‌ها</h1>
-    <p class="sub">گزارش‌های منتشرشده با فرمت Markdown را مستقیم اینجا ویرایش یا حذف کنید (تغییرات خودکار روی GitHub Pages اعمال می‌شوند).</p>
+    <p class="sub">تمام گزارش‌های پلتفرم را مستقیم همین‌جا ویرایش، مخفی یا حذف کنید — تغییرات بدون نیاز به مراجعه به GitHub روی سایت اعمال می‌شوند.</p>
 
     <section class="panel" style="margin-bottom:20px">
       <div class="sec-h">
-        <h2>گزارش‌های Markdown (قابل ویرایش و حذف زنده)</h2>
+        <h2>گزارش‌های اصلی پلتفرم (ویرایش عنوان، توضیحات، تاریخ و نمایش/مخفی‌سازی)</h2>
+      </div>
+      <div id="core-list" class="list"></div>
+      <div id="core-msg" class="msg"></div>
+    </section>
+
+    <section id="core-editor" class="panel editor-wrap" style="margin-bottom:20px">
+      <div class="sec-h">
+        <h2 id="ced-heading">ویرایش گزارش اصلی</h2>
+        <button class="btn" id="ced-cancel" type="button">بستن ویرایشگر</button>
+      </div>
+      <form id="ced-form">
+        <input type="hidden" id="ced-id">
+        <div class="row2">
+          <div class="field"><label for="ced-title">عنوان گزارش</label><input id="ced-title" required></div>
+          <div class="field"><label for="ced-cat">برچسب دسته‌بندی</label><input id="ced-cat" required></div>
+        </div>
+        <div class="field"><label for="ced-date">تاریخ شمسی نمایشی</label><input id="ced-date"></div>
+        <div class="field"><label for="ced-desc">توضیحات کارت صفحه اصلی</label><textarea id="ced-desc" style="min-height:84px"></textarea></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn pri" id="ced-save" type="submit">ذخیره تغییرات روی سایت</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel" style="margin-bottom:20px">
+      <div class="sec-h">
+        <h2>گزارش‌های Markdown ارسال‌شده (ویرایش کامل متن و حذف)</h2>
         <button class="btn" id="refresh-btn" type="button">بروزرسانی لیست</button>
       </div>
       <div id="md-list" class="list"><div class="empty">در حال بارگذاری...</div></div>
@@ -97,7 +136,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
     <section id="editor-wrap" class="panel editor-wrap">
       <div class="sec-h">
-        <h2 id="ed-heading">ویرایش گزارش</h2>
+        <h2 id="ed-heading">ویرایش گزارش Markdown</h2>
         <button class="btn" id="ed-cancel" type="button">بستن ویرایشگر</button>
       </div>
       <form id="ed-form">
@@ -126,26 +165,6 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
         <div id="ed-msg" class="msg"></div>
       </form>
     </section>
-
-    <section class="panel" style="margin-top:20px">
-      <div class="sec-h"><h2>گزارش‌های اصلی HTML (بنچمارک و ایشوها)</h2></div>
-      <div class="list">
-        <div class="item">
-          <div class="item-info"><b>بنچمارک UX فلوهای CRM TopFast <span class="badge">HTML</span></b><small>crm-benchmark.html · فایل کامل شامل ۱۵۱ اسکرین‌شات</small></div>
-          <div class="item-acts">
-            <a class="btn" href="crm-benchmark.html" target="_blank">مشاهده</a>
-            <a class="btn" href="https://github.com/sji-design/topfast-reports/blob/main/crm-benchmark.html" target="_blank" rel="noopener">مدیریت در GitHub</a>
-          </div>
-        </div>
-        <div class="item">
-          <div class="item-info"><b>ایرادات پیاده‌سازی CRM (Live vs Figma) <span class="badge">HTML</span></b><small>crm-issues.html · ممیزی ۹ صفحه در دو تم Light/Dark</small></div>
-          <div class="item-acts">
-            <a class="btn" href="crm-issues.html" target="_blank">مشاهده</a>
-            <a class="btn" href="https://github.com/sji-design/topfast-reports/blob/main/crm-issues.html" target="_blank" rel="noopener">مدیریت در GitHub</a>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
 </main>
 <script src="ai-config.js"></script>
@@ -154,47 +173,169 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   const ep = ((window.TOPFAST_AI_CONFIG && window.TOPFAST_AI_CONFIG.endpoint) || '').replace(/\/$/,'');
   let passcode = sessionStorage.getItem('tf_admin_pass') || '';
   let itemsCache = [];
+  let overridesCache = {};
+
+  const CORE_DEFAULTS = [
+    { id: 'benchmark', href: 'crm-benchmark.html', title: 'بنچمارک UX فلوهای CRM', category: 'UX Benchmark', dateFa: '۳ آذر ۱۴۰۵', desc: 'مقایسه جامع ۶ فلوی کلیدی (Register، KYC، Profile، Deposit، Withdraw و Trade) در TopFast با ۱۰ رقیب ایرانی، بین‌المللی و CRM جهانی همراه با امتیازدهی و نقشه راه بهبود.' },
+    { id: 'issues', href: 'crm-issues.html', title: 'ایرادات پیاده‌سازی CRM', category: 'Design QA', dateFa: '۱ آذر ۱۴۰۵', desc: 'ممیزی دقیق مغایرت‌های پیاده‌سازی فرانت‌اند با طراحی Figma در ۹ صفحه اصلی و در هر دو تم Light و Dark، دسته‌بندی‌شده بر اساس اولویت بحرانی تا متوسط.' }
+  ];
 
   const authView = document.getElementById('auth-view');
   const dashView = document.getElementById('dash-view');
   const authMsg = document.getElementById('auth-msg');
   const dashMsg = document.getElementById('dash-msg');
+  const coreMsg = document.getElementById('core-msg');
   const edMsg = document.getElementById('ed-msg');
   const mdList = document.getElementById('md-list');
+  const coreList = document.getElementById('core-list');
   const edWrap = document.getElementById('editor-wrap');
+  const coreEditor = document.getElementById('core-editor');
+  const passIn = document.getElementById('admin-pass');
+  const eyeBtn = document.getElementById('eye-btn');
+
+  // Password eye toggle
+  eyeBtn.addEventListener('click', () => {
+    const show = passIn.type === 'password';
+    passIn.type = show ? 'text' : 'password';
+    eyeBtn.innerHTML = show
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  });
 
   function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
   function showMsg(el, type, txt){ el.className = 'msg ' + type; el.textContent = txt; }
 
   async function api(path, payload){
-    const res = await fetch(ep + path, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({...payload, passcode})
-    });
-    const data = await res.json();
-    if(!res.ok) throw new Error(data.error || ('خطای سرور: ' + res.status));
+    if(!ep) throw new Error('آدرس Cloudflare Worker در فایل ai-config.js تنظیم نشده است.');
+    let res, data = {};
+    try{
+      res = await fetch(ep + path, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({...payload, passcode})
+      });
+      data = await res.json().catch(() => ({}));
+    }catch(_){
+      throw new Error('ارتباط با سرور Cloudflare برقرار نشد. اتصال اینترنت یا آدرس Worker را بررسی کنید.');
+    }
+    if(!res.ok){
+      const rawErr = String(data.error || '');
+      if(rawErr.includes('متن پیام خالی است') || res.status === 404){
+        throw new Error('کد جدید Worker (شامل مسیرهای پنل ادمین) هنوز روی Cloudflare Deploy نشده است. لطفاً فایل worker/index.js را در Cloudflare Worker دیپلوی کنید و دوباره تلاش کنید.');
+      }
+      if(res.status === 403){
+        throw new Error('رمز ورود ادمین اشتباه است. لطفاً رمز را با آیکون چشم چک کنید و دوباره بزنید.');
+      }
+      throw new Error(rawErr || ('خطای سرور (' + res.status + ')'));
+    }
     return data;
   }
 
-  async function loadList(){
-    mdList.innerHTML = '<div class="empty">در حال بارگذاری لیست گزارش‌ها از GitHub...</div>';
+  function renderCoreList(){
+    coreList.innerHTML = CORE_DEFAULTS.map(c => {
+      const ov = overridesCache[c.id] || {};
+      const title = ov.title || c.title;
+      const cat = ov.category || c.category;
+      const dateFa = ov.dateFa || c.dateFa;
+      const hidden = !!ov.hidden;
+      return `
+        <div class="item">
+          <div class="item-info">
+            <b>${esc(title)} <span class="badge">${esc(cat)}</span>${hidden ? '<span class="badge hid">مخفی از صفحه اصلی</span>' : ''}</b>
+            <small>تاریخ: ${esc(dateFa)} · فایل: ${esc(c.href)}</small>
+          </div>
+          <div class="item-acts">
+            <a class="btn" href="${c.href}" target="_blank">مشاهده</a>
+            <button class="btn soft" type="button" data-cedit="${c.id}">ویرایش مشخصات</button>
+            <button class="btn ${hidden ? 'pri' : 'del'}" type="button" data-ctoggle="${c.id}">${hidden ? 'نمایش مجدد' : 'مخفی کردن'}</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+    coreList.querySelectorAll('[data-cedit]').forEach(b => b.addEventListener('click', () => openCoreEditor(b.dataset.cedit)));
+    coreList.querySelectorAll('[data-ctoggle]').forEach(b => b.addEventListener('click', () => toggleCoreHidden(b.dataset.ctoggle)));
+  }
+
+  function openCoreEditor(id){
+    const def = CORE_DEFAULTS.find(x => x.id === id);
+    const ov = overridesCache[id] || {};
+    coreEditor.classList.add('open');
+    document.getElementById('ced-heading').textContent = 'ویرایش: ' + (ov.title || def.title);
+    document.getElementById('ced-id').value = id;
+    document.getElementById('ced-title').value = ov.title || def.title;
+    document.getElementById('ced-cat').value = ov.category || def.category;
+    document.getElementById('ced-date').value = ov.dateFa || def.dateFa;
+    document.getElementById('ced-desc').value = ov.desc || def.desc;
+    coreEditor.scrollIntoView({behavior:'smooth'});
+  }
+
+  async function saveOverrides(next){
+    await api('/admin/overrides-save', {overrides: next});
+    overridesCache = next;
+    renderCoreList();
+  }
+
+  async function toggleCoreHidden(id){
+    const cur = overridesCache[id] || {};
+    const next = {...overridesCache, [id]: {...cur, hidden: !cur.hidden}};
     try{
-      const data = await api('/admin/list', {});
-      itemsCache = Array.isArray(data.items) ? data.items : [];
+      await saveOverrides(next);
+      showMsg(coreMsg, 'ok', next[id].hidden ? 'گزارش از صفحه اصلی مخفی شد (تا ~۳۰ ثانیه اعمال می‌شود).' : 'گزارش مجدداً در صفحه اصلی نمایش داده می‌شود.');
+    }catch(err){
+      showMsg(coreMsg, 'err', err.message);
+    }
+  }
+
+  document.getElementById('ced-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const id = document.getElementById('ced-id').value;
+    const btn = document.getElementById('ced-save');
+    btn.disabled = true;
+    try{
+      const next = {
+        ...overridesCache,
+        [id]: {
+          ...(overridesCache[id] || {}),
+          title: document.getElementById('ced-title').value.trim(),
+          category: document.getElementById('ced-cat').value.trim(),
+          dateFa: document.getElementById('ced-date').value.trim(),
+          desc: document.getElementById('ced-desc').value.trim(),
+        }
+      };
+      await saveOverrides(next);
+      coreEditor.classList.remove('open');
+      showMsg(coreMsg, 'ok', 'تغییرات گزارش با موفقیت ذخیره شد (تا ~۳۰ ثانیه روی صفحه اصلی اعمال می‌شود).');
+    }catch(err){
+      showMsg(coreMsg, 'err', err.message);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+  document.getElementById('ced-cancel').addEventListener('click', () => coreEditor.classList.remove('open'));
+
+  async function loadAll(){
+    mdList.innerHTML = '<div class="empty">در حال بارگذاری لیست گزارش‌ها...</div>';
+    try{
+      const [ovData, listData] = await Promise.all([
+        api('/admin/overrides-get', {}).catch(() => ({overrides:{}})),
+        api('/admin/list', {})
+      ]);
+      overridesCache = (ovData && ovData.overrides) || {};
+      renderCoreList();
+      itemsCache = Array.isArray(listData.items) ? listData.items : [];
       if(!itemsCache.length){
-        mdList.innerHTML = '<div class="empty">هنوز هیچ گزارش Markdown منتشر نشده است. از صفحه «ارسال گزارش جدید (.md)» می‌توانید اولین گزارش را اضافه کنید.</div>';
+        mdList.innerHTML = '<div class="empty">هنوز هیچ گزارش Markdown منتشر نشده است. از دکمه «ارسال گزارش جدید» می‌توانید اولین گزارش را اضافه کنید.</div>';
         return;
       }
       mdList.innerHTML = itemsCache.map(it => `
         <div class="item">
           <div class="item-info">
             <b>${esc(it.title)} <span class="badge">${esc(it.category || 'Report')}</span></b>
-            <small>نویسنده: ${esc(it.author)} · تاریخ: ${esc(it.dateFa || it.dateEn || '-')} · شناسه: <code>${esc(it.slug)}</code></small>
+            <small>نویسنده: ${esc(it.author)} · تاریخ: ${esc(it.dateFa || it.dateEn || '-')}</small>
           </div>
           <div class="item-acts">
             <a class="btn" href="report-viewer.html?slug=${encodeURIComponent(it.slug)}" target="_blank">مشاهده</a>
-            <button class="btn pri" type="button" data-edit="${esc(it.slug)}">ویرایش</button>
+            <button class="btn soft" type="button" data-edit="${esc(it.slug)}">ویرایش</button>
             <button class="btn del" type="button" data-del="${esc(it.slug)}">حذف</button>
           </div>
         </div>
@@ -229,12 +370,12 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
   async function deleteReport(slug){
     const meta = itemsCache.find(x => x.slug === slug) || {};
-    if(!confirm('آیا از حذف کامل گزارش «' + (meta.title || slug) + '» مطمئن هستید؟ این عمل غیرقابل بازگشت است.')) return;
+    if(!confirm('آیا از حذف کامل گزارش «' + (meta.title || slug) + '» مطمئن هستید؟')) return;
     try{
       await api('/admin/delete', {slug});
       edWrap.classList.remove('open');
-      showMsg(dashMsg, 'ok', 'گزارش با موفقیت از GitHub حذف شد (تا ~۳۰ ثانیه از سایت حذف می‌شود).');
-      loadList();
+      showMsg(dashMsg, 'ok', 'گزارش با موفقیت حذف شد (تا ~۳۰ ثانیه از سایت حذف می‌شود).');
+      loadAll();
     }catch(err){
       showMsg(dashMsg, 'err', err.message);
     }
@@ -254,8 +395,8 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
         summary: document.getElementById('ed-sum').value.trim(),
         markdown: document.getElementById('ed-md').value,
       });
-      showMsg(edMsg, 'ok', 'تغییرات با موفقیت روی GitHub ذخیره شد (تا ~۳۰ ثانیه روی سایت زنده می‌شود).');
-      loadList();
+      showMsg(edMsg, 'ok', 'تغییرات با موفقیت ذخیره شد (تا ~۳۰ ثانیه روی سایت زنده می‌شود).');
+      loadAll();
     }catch(err){
       showMsg(edMsg, 'err', err.message);
     }finally{
@@ -265,7 +406,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
   document.getElementById('ed-del').addEventListener('click', () => deleteReport(document.getElementById('ed-slug').value));
   document.getElementById('ed-cancel').addEventListener('click', () => edWrap.classList.remove('open'));
-  document.getElementById('refresh-btn').addEventListener('click', loadList);
+  document.getElementById('refresh-btn').addEventListener('click', loadAll);
 
   async function tryAuth(code){
     passcode = code;
@@ -273,15 +414,16 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     sessionStorage.setItem('tf_admin_pass', passcode);
     authView.style.display = 'none';
     dashView.style.display = 'block';
-    loadList();
+    loadAll();
   }
 
   document.getElementById('auth-form').addEventListener('submit', async e => {
     e.preventDefault();
     const btn = document.getElementById('auth-btn');
     btn.disabled = true;
+    authMsg.className = 'msg';
     try{
-      await tryAuth(document.getElementById('admin-pass').value.trim());
+      await tryAuth(passIn.value.trim());
     }catch(err){
       showMsg(authMsg, 'err', err.message);
       passcode = '';
