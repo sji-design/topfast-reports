@@ -1,5 +1,8 @@
 {
   "benchmark": {
     "hidden": false
+  },
+  "issues": {
+    "hidden": true
   }
 }
