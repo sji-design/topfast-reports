@@ -117,15 +117,48 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       <form id="ced-form">
         <input type="hidden" id="ced-id">
         <div class="row2">
-          <div class="field"><label for="ced-title">عنوان گزارش</label><input id="ced-title" required></div>
+          <div class="field"><label for="ced-title">عنوان گزارش (کارت صفحه اصلی)</label><input id="ced-title" required></div>
           <div class="field"><label for="ced-cat">برچسب دسته‌بندی</label><input id="ced-cat" required></div>
         </div>
         <div class="field"><label for="ced-date">تاریخ شمسی نمایشی</label><input id="ced-date"></div>
         <div class="field"><label for="ced-desc">توضیحات کارت صفحه اصلی</label><textarea id="ced-desc" style="min-height:84px"></textarea></div>
         <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn pri" id="ced-save" type="submit">ذخیره تغییرات روی سایت</button>
+          <button class="btn pri" id="ced-save" type="submit">ذخیره مشخصات کارت</button>
         </div>
       </form>
+    </section>
+
+    <section id="full-editor" class="panel editor-wrap" style="margin-bottom:20px">
+      <div class="sec-h">
+        <h2 id="fed-heading">ویرایش کامل محتوای گزارش</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn pri" id="fed-save" type="button">ذخیره کل محتوای گزارش روی سایت</button>
+          <button class="btn" id="fed-cancel" type="button">بستن</button>
+        </div>
+      </div>
+      <div id="fed-msg" class="msg" style="margin-bottom:14px"></div>
+      <div class="row2">
+        <div class="field"><label for="fed-h1">تیتر اصلی داخل صفحه (H1)</label><input id="fed-h1"></div>
+        <div class="field"><label for="fed-sub">زیرتیتر بالای صفحه</label><input id="fed-sub"></div>
+      </div>
+      <div style="padding:12px 14px;margin:10px 0 16px;border-radius:12px;background:rgba(22,94,246,.08);border:1px solid rgba(22,94,246,.32)">
+        <div style="font-size:12.5px;font-weight:700;color:#dbe8ff;margin-bottom:8px">جستجو و جایگزینی سریع در کل متن گزارش</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <input id="sr-find" placeholder="عبارت برای جستجو..." style="flex:1 1 180px;padding:8px 11px;border-radius:8px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:13px">
+          <input id="sr-rep" placeholder="جایگزین شود با (برای حذف خالی بگذارید)..." style="flex:1 1 180px;padding:8px 11px;border-radius:8px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:13px">
+          <button class="btn soft" id="sr-run" type="button">جایگزینی در کل گزارش</button>
+        </div>
+      </div>
+      <div class="row2" style="align-items:end;margin-bottom:14px">
+        <div class="field" style="margin-bottom:0">
+          <label for="fed-cat-sel">انتخاب بخش / فلو</label>
+          <select id="fed-cat-sel"></select>
+        </div>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn soft" id="fed-add-item" type="button">+ افزودن مورد جدید به این بخش</button>
+        </div>
+      </div>
+      <div id="fed-items" class="list" style="max-height:560px;overflow-y:auto;padding-inline-end:4px"></div>
     </section>
 
     <section class="panel" style="margin-bottom:20px">
@@ -249,15 +282,166 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
           </div>
           <div class="item-acts">
             <a class="btn" href="${c.href}" target="_blank">مشاهده</a>
-            <button class="btn soft" type="button" data-cedit="${c.id}">ویرایش مشخصات</button>
+            <button class="btn pri" type="button" data-fedit="${c.id}">ویرایش کامل محتوا</button>
+            <button class="btn soft" type="button" data-cedit="${c.id}">ویرایش کارت</button>
             <button class="btn ${hidden ? 'pri' : 'del'}" type="button" data-ctoggle="${c.id}">${hidden ? 'نمایش مجدد' : 'مخفی کردن'}</button>
           </div>
         </div>
       `;
     }).join('');
+    coreList.querySelectorAll('[data-fedit]').forEach(b => b.addEventListener('click', () => openFullEditor(b.dataset.fedit)));
     coreList.querySelectorAll('[data-cedit]').forEach(b => b.addEventListener('click', () => openCoreEditor(b.dataset.cedit)));
     coreList.querySelectorAll('[data-ctoggle]').forEach(b => b.addEventListener('click', () => toggleCoreHidden(b.dataset.ctoggle)));
   }
+
+  // Full Content Editor for flagship reports (data-benchmark.json / data-issues.json)
+  const fullEd = document.getElementById('full-editor');
+  const fedMsg = document.getElementById('fed-msg');
+  const fedCatSel = document.getElementById('fed-cat-sel');
+  const fedItems = document.getElementById('fed-items');
+  const fedH1 = document.getElementById('fed-h1');
+  const fedSub = document.getElementById('fed-sub');
+  let curFullId = '', curFullData = null;
+
+  async function openFullEditor(id){
+    curFullId = id;
+    fullEd.classList.add('open');
+    fedMsg.className = 'msg';
+    document.getElementById('fed-heading').textContent = 'ویرایش کامل محتوا: ' + (id === 'benchmark' ? 'بنچمارک UX فلوهای CRM' : 'ایرادات پیاده‌سازی CRM');
+    fedItems.innerHTML = '<div class="empty">در حال دریافت کل محتوای گزارش...</div>';
+    fullEd.scrollIntoView({behavior:'smooth'});
+    try{
+      const res = await api('/admin/data-get', {id});
+      curFullData = res.data;
+      fedH1.value = curFullData.h1 || '';
+      fedSub.value = curFullData.sub || '';
+      fedCatSel.innerHTML = (curFullData.categories || []).map((c, idx) =>
+        `<option value="${idx}">${esc(c.shortFa || c.title || ('بخش ' + (idx+1)))} (${(c.items||[]).length} مورد)</option>`
+      ).join('');
+      renderFullItems();
+    }catch(err){
+      fedItems.innerHTML = '';
+      showMsg(fedMsg, 'err', err.message);
+    }
+  }
+
+  function renderFullItems(){
+    if(!curFullData || !curFullData.categories) return;
+    const ci = Number(fedCatSel.value) || 0;
+    const cat = curFullData.categories[ci];
+    if(!cat) return;
+    const isB = curFullId === 'benchmark';
+    fedItems.innerHTML = (cat.items || []).map((it, ii) => `
+      <details style="border:1px solid var(--hair);border-radius:12px;background:rgba(255,255,255,.025);padding:12px 14px">
+        <summary style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink);font-size:13.5px;list-style:none">
+          <span>${ii+1}. ${esc(it.title || 'بدون عنوان')} <span class="badge">${esc(it.sev || 'med')}</span></span>
+          <span style="font-size:11.5px;color:#6ea0ff">کلیک برای ویرایش ▾</span>
+        </summary>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--hair)">
+          <div class="row2">
+            <div class="field"><label>عنوان مورد</label><input data-f="title" data-ii="${ii}" value="${esc(it.title || '')}"></div>
+            <div class="field"><label>شدت / اولویت</label>
+              <select data-f="sev" data-ii="${ii}">
+                <option value="crit" ${it.sev==='crit'?'selected':''}>بحرانی (crit)</option>
+                <option value="high" ${it.sev==='high'?'selected':''}>مهم (high)</option>
+                <option value="med" ${it.sev==='med'?'selected':''}>متوسط (med)</option>
+              </select>
+            </div>
+          </div>
+          ${isB ? `
+            <div class="field"><label>معیار UX</label><input data-f="ux" data-ii="${ii}" value="${esc(it.ux || '')}"></div>
+            <div class="field"><label>وضعیت فعلی TopFast</label><textarea data-f="tf" data-ii="${ii}" style="min-height:68px">${esc(it.tf || '')}</textarea></div>
+            <div class="field"><label>بهترین الگوی بازار</label><textarea data-f="best" data-ii="${ii}" style="min-height:68px">${esc(it.best || '')}</textarea></div>
+            <div class="field"><label>پیشنهاد بهبود برای TopFast</label><textarea data-f="rec" data-ii="${ii}" style="min-height:68px">${esc(it.rec || '')}</textarea></div>
+          ` : `
+            <div class="field"><label>وضعیت فعلی در نسخه Live</label><textarea data-f="live" data-ii="${ii}" style="min-height:76px">${esc(it.live || '')}</textarea></div>
+            <div class="field"><label>طراحی مرجع در Figma</label><textarea data-f="figma" data-ii="${ii}" style="min-height:76px">${esc(it.figma || '')}</textarea></div>
+          `}
+          <button type="button" class="btn del" data-fdel="${ii}" style="height:32px;font-size:12px">حذف این مورد</button>
+        </div>
+      </details>
+    `).join('');
+
+    fedItems.querySelectorAll('[data-f]').forEach(el => {
+      el.addEventListener('input', () => {
+        const idx = Number(el.dataset.ii);
+        cat.items[idx][el.dataset.f] = el.value;
+      });
+    });
+    fedItems.querySelectorAll('[data-fdel]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.dataset.fdel);
+        if(!confirm('این مورد از گزارش حذف شود؟')) return;
+        cat.items.splice(idx, 1);
+        renderFullItems();
+        showMsg(fedMsg, 'ok', 'مورد حذف شد — برای اعمال روی سایت دکمه «ذخیره کل محتوای گزارش» را بزنید.');
+      });
+    });
+  }
+
+  fedCatSel.addEventListener('change', renderFullItems);
+  fedH1.addEventListener('input', () => { if(curFullData) curFullData.h1 = fedH1.value; });
+  fedSub.addEventListener('input', () => { if(curFullData) curFullData.sub = fedSub.value; });
+
+  document.getElementById('fed-add-item').addEventListener('click', () => {
+    if(!curFullData) return;
+    const ci = Number(fedCatSel.value) || 0;
+    const cat = curFullData.categories[ci];
+    if(!cat) return;
+    if(curFullId === 'benchmark'){
+      cat.items.unshift({ id: 'custom_' + Date.now(), title: 'معیار جدید', sev: 'high', ux: 'تجربه کاربری', tf: '', best: '', rec: '', crms: {}, imgs: [] });
+    } else {
+      cat.items.unshift({ title: 'ایشو جدید', sev: 'high', figma: '', live: '', pages: [], imgs: [] });
+    }
+    renderFullItems();
+    const firstDet = fedItems.querySelector('details');
+    if(firstDet) firstDet.open = true;
+  });
+
+  document.getElementById('sr-run').addEventListener('click', () => {
+    if(!curFullData) return;
+    const findTxt = document.getElementById('sr-find').value;
+    const repTxt = document.getElementById('sr-rep').value;
+    if(!findTxt) return;
+    let count = 0;
+    const repStr = s => {
+      if(typeof s !== 'string' || !s.includes(findTxt)) return s;
+      const parts = s.split(findTxt);
+      count += parts.length - 1;
+      return parts.join(repTxt);
+    };
+    curFullData.h1 = repStr(curFullData.h1);
+    curFullData.sub = repStr(curFullData.sub);
+    for(const c of (curFullData.categories || [])){
+      for(const it of (c.items || [])){
+        for(const k of ['title','ux','tf','best','rec','live','figma']){
+          if(typeof it[k] === 'string') it[k] = repStr(it[k]);
+        }
+        if(it.crms && typeof it.crms === 'object'){
+          for(const ck of Object.keys(it.crms)) it.crms[ck] = repStr(it.crms[ck]);
+        }
+      }
+    }
+    fedH1.value = curFullData.h1 || '';
+    fedSub.value = curFullData.sub || '';
+    renderFullItems();
+    showMsg(fedMsg, count ? 'ok' : 'err', count ? (`${count} مورد جایگزین شد — برای انتشار روی سایت دکمه «ذخیره کل محتوای گزارش» را بزنید.`) : 'عبارت مورد نظر در متن گزارش پیدا نشد.');
+  });
+
+  document.getElementById('fed-save').addEventListener('click', async () => {
+    if(!curFullData) return;
+    const btn = document.getElementById('fed-save');
+    btn.disabled = true;
+    try{
+      await api('/admin/data-save', { id: curFullId, data: curFullData });
+      showMsg(fedMsg, 'ok', 'کل محتوای گزارش با موفقیت ذخیره و روی GitHub ثبت شد (تا ~۳۰ ثانیه روی صفحه گزارش زنده می‌شود).');
+    }catch(err){
+      showMsg(fedMsg, 'err', err.message);
+    }finally{
+      btn.disabled = false;
+    }
+  });
+  document.getElementById('fed-cancel').addEventListener('click', () => fullEd.classList.remove('open'));
 
   function openCoreEditor(id){
     const def = CORE_DEFAULTS.find(x => x.id === id);

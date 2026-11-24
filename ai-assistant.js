@@ -34,6 +34,23 @@
   const audioSrc = (mdData && mdData.audio) || (cfg.audio && cfg.audio[pageKey]) || '';
   const dataObj = typeof D !== 'undefined' ? D : null;
 
+  // Apply live admin content edits from data-benchmark.json / data-issues.json without touching 16MB HTML
+  if (!isMdViewer && dataObj && Array.isArray(dataObj.CATEGORIES) && (isBenchmark || isIssues)) {
+    const dataFile = isBenchmark ? './data-benchmark.json' : './data-issues.json';
+    fetch(dataFile + '?t=' + Date.now())
+      .then((r) => (r.ok ? r.json() : null))
+      .then((patch) => {
+        if (!patch || !Array.isArray(patch.categories)) return;
+        const h1El = document.querySelector('h1');
+        const subEl = document.querySelector('.sub');
+        if (patch.h1 && h1El) h1El.innerHTML = patch.h1;
+        if (patch.sub && subEl) subEl.innerHTML = patch.sub;
+        dataObj.CATEGORIES.splice(0, dataObj.CATEGORIES.length, ...patch.categories);
+        if (typeof apply === 'function') apply();
+      })
+      .catch(() => {});
+  }
+
   function buildReportContext() {
     if (window.__MD_REPORT_DATA__ && window.__MD_REPORT_DATA__.markdown) {
       return String(window.__MD_REPORT_DATA__.markdown).slice(0, 110000);
