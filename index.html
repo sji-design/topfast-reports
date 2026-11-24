@@ -346,6 +346,10 @@ html{overflow-x:clip}
         </span>
       </div>
       <div class="filter-pills" id="filters"></div>
+      <a href="./submit.html" style="display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 13px;border-radius:999px;background:rgba(87,193,255,.12);border:1px solid rgba(87,193,255,.4);color:#bfe6ff;text-decoration:none;font-size:12.5px;font-weight:600;white-space:nowrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>ارسال گزارش (.md)</span>
+      </a>
     </div>
   </header>
 
@@ -494,6 +498,41 @@ function renderGrid() {
 
 renderFilters();
 renderGrid();
+
+// Load approved Markdown reports published via Telegram approval workflow
+fetch('./reports-manifest.json?t=' + Date.now())
+  .then(r => r.ok ? r.json() : [])
+  .then(items => {
+    if (!Array.isArray(items) || !items.length) return;
+    for (const it of items) {
+      if (!it || !it.slug || REPORTS.some(x => x.id === it.slug)) continue;
+      REPORTS.push({
+        id: it.slug,
+        product: it.product || 'CRM TopFast',
+        dateIso: it.dateIso || '2026-11-24',
+        dateFa: it.dateFa || 'جدید',
+        dateEn: it.dateEn || '',
+        category: it.category || 'Report',
+        title: it.title || it.slug,
+        desc: it.summary || '',
+        kpis: (Array.isArray(it.kpis) && it.kpis.length) ? it.kpis.slice(0, 3) : [
+          { v: 'MD', l: 'قالب استاندارد' },
+          { v: 'AI', l: 'دستیار هوشمند' },
+          { v: 'تأییدشده', l: 'انتشار تیمی' }
+        ],
+        author: it.author || 'تیم محصول',
+        initials: (it.author || 'ت').trim().slice(0, 2),
+        color: it.color || '#59d499',
+        href: './report-viewer.html?slug=' + encodeURIComponent(it.slug)
+      });
+    }
+    REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
+    document.getElementById('rep-count').textContent = fa(REPORTS.length) + ' گزارش';
+    document.getElementById('latest-date').textContent = REPORTS[0].dateFa + (REPORTS[0].dateEn ? ' (' + REPORTS[0].dateEn + ')' : '');
+    renderFilters();
+    renderGrid();
+  })
+  .catch(() => {});
 </script>
 </body>
 </html>

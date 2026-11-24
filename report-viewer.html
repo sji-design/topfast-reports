@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>نمایشگر گزارش — TopFast Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--canvas:#07080a;--ink:#f4f4f6;--body:#cdcfd6;--mute:#93969e;--ash:#666970;--hair:rgba(255,255,255,.09);--hair2:rgba(255,255,255,.17);--glass:rgba(255,255,255,.035);--blue:#57c1ff;--green:#59d499;--amber:#ffc533;--red:#ff6161}
+*{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;min-height:100vh;background:var(--canvas);color:var(--body);font:400 15px/1.85 'Vazirmatn','Inter',system-ui,sans-serif;overflow-x:hidden}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(87,193,255,.14),transparent 70%)}
+.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:40px 24px 96px}
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:22px}
+.back-hub{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--hair2);color:var(--ink);text-decoration:none;font-size:13px;font-weight:500;transition:background .15s,border-color .15s}
+.back-hub:hover{background:rgba(87,193,255,.15);border-color:rgba(87,193,255,.45)}
+.preview-banner{display:none;align-items:center;gap:8px;padding:10px 14px;margin-bottom:18px;border-radius:12px;background:rgba(255,197,51,.12);border:1px solid rgba(255,197,51,.4);color:#ffe08a;font-size:13px;font-weight:600}
+.preview-banner.show{display:flex}
+.eyebrow{font:600 11px/1.4 'Inter','Vazirmatn',sans-serif;letter-spacing:.9px;text-transform:uppercase;color:var(--blue)}
+h1{margin:10px 0 8px;font-size:34px;line-height:1.28;font-weight:800;color:var(--ink)}
+.sub{margin:0;font-size:15.5px;color:var(--body);max-width:760px}
+.rep-author{display:inline-flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.045);border:1px solid var(--hair);font-size:12.5px;color:var(--mute)}
+.rep-author strong{color:var(--ink);font-weight:600}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:24px 0 0}
+.kpi{padding:14px 16px;border-radius:12px;background:var(--glass);border:1px solid var(--hair)}
+.kpi b{display:block;font-size:22px;font-weight:700;color:var(--ink);line-height:1.25}
+.kpi span{display:block;font-size:12px;color:var(--mute);margin-top:3px}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:24px;margin-top:32px;align-items:start}
+.toc{position:sticky;top:24px;padding:16px;border-radius:14px;background:var(--glass);border:1px solid var(--hair);font-size:13px}
+.toc h4{margin:0 0 10px;font-size:12px;font-weight:700;color:var(--mute);letter-spacing:.4px}
+.toc a{display:block;padding:5px 8px;border-radius:8px;color:var(--body);text-decoration:none;line-height:1.5;transition:background .14s,color .14s}
+.toc a:hover{background:rgba(255,255,255,.06);color:var(--ink)}
+.toc a.l3{padding-inline-start:18px;font-size:12px;color:var(--mute)}
+.article{padding:28px 30px;border-radius:16px;background:var(--glass);border:1px solid var(--hair);overflow-wrap:anywhere}
+.article h2{margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--hair);font-size:21px;line-height:1.35;color:var(--ink)}
+.article h2:first-child{margin-top:0}
+.article h3{margin:20px 0 8px;font-size:17px;line-height:1.4;color:var(--ink)}
+.article p{margin:0 0 14px}
+.article ul,.article ol{margin:0 0 16px;padding:0 22px 0 0}
+.article li{margin-bottom:6px}
+.article blockquote{margin:16px 0;padding:12px 16px;border-inline-start:3px solid var(--blue);background:rgba(87,193,255,.07);border-radius:0 10px 10px 0;color:var(--ink)}
+.article pre{margin:14px 0;padding:14px;border-radius:10px;background:#0d1016;border:1px solid var(--hair);overflow-x:auto;direction:ltr;text-align:left}
+.article code{font:12.5px ui-monospace,Consolas,monospace;background:rgba(255,255,255,.08);color:var(--ink);padding:2px 6px;border-radius:5px;direction:ltr;unicode-bidi:embed}
+.article pre code{background:none;padding:0}
+.article a{color:var(--blue)}
+.article hr{border:0;border-top:1px solid var(--hair);margin:24px 0}
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:16px 0;border-radius:12px;border:1px solid var(--hair)}
+.article table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px}
+.article th,.article td{padding:11px 14px;border-bottom:1px solid var(--hair);text-align:start;vertical-align:top}
+.article th{background:rgba(255,255,255,.04);color:var(--ink);font-weight:700}
+.article tr:last-child td{border-bottom:0}
+.badge{display:inline-block;padding:1px 7px;border-radius:6px;font-size:11.5px;font-weight:700;vertical-align:middle}
+.b-crit{background:rgba(255,97,97,.16);color:#ff7070}
+.b-high{background:rgba(255,197,51,.16);color:#ffd15c}
+.b-med{background:rgba(87,193,255,.15);color:#7fd0ff}
+.state-box{padding:42px 24px;text-align:center;border-radius:16px;background:var(--glass);border:1px solid var(--hair);color:var(--mute)}
+.rep-footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--mute)}
+.rep-footer .cr{font:500 12px/1.4 'Inter',sans-serif;direction:ltr}
+.rep-footer .cr b{color:var(--ink)}
+@media(max-width:860px){
+  .wrap{padding:24px 14px 72px}
+  h1{font-size:24px}
+  .sub{font-size:14px}
+  .kpis{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .kpi{padding:10px}
+  .kpi b{font-size:16px}
+  .layout{grid-template-columns:1fr;gap:16px;margin-top:20px}
+  .toc{position:static;padding:12px 14px}
+  .article{padding:18px 16px}
+  .article h2{font-size:18px}
+  .article h3{font-size:15.5px}
+}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<main class="wrap">
+  <div class="topbar">
+    <a class="back-hub" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      <span>بازگشت به مرکز گزارش‌ها</span>
+    </a>
+  </div>
+  <div id="preview-banner" class="preview-banner">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>حالت پیش‌نمایش قبل از انتشار — این گزارش هنوز در انتظار تأیید ادمین در تلگرام است.</span>
+  </div>
+  <div id="root"><div class="state-box">در حال بارگذاری گزارش...</div></div>
+  <footer class="rep-footer">
+    <span>مرکز گزارش‌های TopFast CRM · قالب استاندارد گزارش‌های Markdown</span>
+    <span class="cr"><b>TopFast Reports</b> · SJI Design</span>
+  </footer>
+</main>
+<script src="ai-config.js"></script>
+<script>
+(function(){
+  function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function parseFrontmatter(md){
+    const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+    if(!m) return {meta:{}, body:md};
+    const meta = {};
+    m[1].split(/\r?\n/).forEach(line=>{
+      const i = line.indexOf(':');
+      if(i>0){
+        const k = line.slice(0,i).trim();
+        const v = line.slice(i+1).trim().replace(/^["']|["']$/g,'');
+        meta[k] = v;
+      }
+    });
+    return {meta, body:md.slice(m[0].length)};
+  }
+  function inlineFmt(s){
+    let h = esc(s);
+    h = h.replace(/`([^`]+)`/g,'<code>$1</code>');
+    h = h.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    h = h.replace(/\*([^*]+)\*/g,'<em>$1</em>');
+    h = h.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,'<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+    h = h.replace(/\[(P0|بحرانی|Critical)\]/gi,'<span class="badge b-crit">$1</span>');
+    h = h.replace(/\[(P1|مهم|High)\]/gi,'<span class="badge b-high">$1</span>');
+    h = h.replace(/\[(P2|متوسط|Medium)\]/gi,'<span class="badge b-med">$1</span>');
+    return h;
+  }
+  function renderMarkdown(md){
+    const lines = md.replace(/\r\n/g,'\n').split('\n');
+    const out = [], toc = [];
+    let i = 0, hid = 0;
+    while(i < lines.length){
+      const l = lines[i];
+      if(!l.trim()){ i++; continue; }
+      if(/^```/.test(l)){
+        const code = []; i++;
+        while(i<lines.length && !/^```/.test(lines[i])){ code.push(lines[i]); i++; }
+        i++;
+        out.push('<pre><code>'+esc(code.join('\n'))+'</code></pre>');
+        continue;
+      }
+      if(/^---+$/.test(l.trim())){ out.push('<hr>'); i++; continue; }
+      const hm = l.match(/^(#{1,3})\s+(.+)$/);
+      if(hm){
+        const lvl = hm[1].length;
+        const txt = hm[2].trim();
+        if(lvl === 1){ i++; continue; }
+        hid++;
+        const id = 'sec-' + hid;
+        toc.push({id, lvl, txt});
+        out.push(`<h${lvl} id="${id}">${inlineFmt(txt)}</h${lvl}>`);
+        i++; continue;
+      }
+      if(/^>\s?/.test(l)){
+        const bq = [];
+        while(i<lines.length && /^>\s?/.test(lines[i])){ bq.push(lines[i].replace(/^>\s?/,'')); i++; }
+        out.push('<blockquote>'+bq.map(inlineFmt).join('<br>')+'</blockquote>');
+        continue;
+      }
+      if(l.includes('|') && i+1<lines.length && /^\s*\|?[\s:-]+\|[\s|:-]*$/.test(lines[i+1])){
+        const parseRow = r => r.trim().replace(/^\||\|$/g,'').split('|').map(c=>c.trim());
+        const head = parseRow(l); i += 2;
+        const rows = [];
+        while(i<lines.length && lines[i].includes('|') && lines[i].trim()){ rows.push(parseRow(lines[i])); i++; }
+        out.push('<div class="tscroll"><table><thead><tr>'+head.map(c=>'<th>'+inlineFmt(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+r.map(c=>'<td>'+inlineFmt(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>');
+        continue;
+      }
+      if(/^\s*[-*]\s+/.test(l)){
+        const items = [];
+        while(i<lines.length && /^\s*[-*]\s+/.test(lines[i])){ items.push(lines[i].replace(/^\s*[-*]\s+/,'')); i++; }
+        out.push('<ul>'+items.map(x=>'<li>'+inlineFmt(x)+'</li>').join('')+'</ul>');
+        continue;
+      }
+      if(/^\s*\d+\.\s+/.test(l)){
+        const items = [];
+        while(i<lines.length && /^\s*\d+\.\s+/.test(lines[i])){ items.push(lines[i].replace(/^\s*\d+\.\s+/,'')); i++; }
+        out.push('<ol>'+items.map(x=>'<li>'+inlineFmt(x)+'</li>').join('')+'</ol>');
+        continue;
+      }
+      const p = [];
+      while(i<lines.length && lines[i].trim() && !/^(#{1,3}\s|```|>\s?|\s*[-*]\s+|\s*\d+\.\s+|---+$)/.test(lines[i])){ p.push(lines[i]); i++; }
+      out.push('<p>'+p.map(inlineFmt).join('<br>')+'</p>');
+    }
+    return {html:out.join('\n'), toc};
+  }
+
+  async function init(){
+    const qs = new URLSearchParams(location.search);
+    const slug = qs.get('slug');
+    const previewId = qs.get('preview');
+    const root = document.getElementById('root');
+    const cfg = window.TOPFAST_AI_CONFIG || {};
+    try{
+      let mdText = '', extraMeta = {};
+      if(previewId){
+        document.getElementById('preview-banner').classList.add('show');
+        if(!cfg.endpoint) throw new Error('آدرس سرور پیش‌نمایش در ai-config.js تنظیم نشده است.');
+        const res = await fetch(cfg.endpoint.replace(/\/$/,'') + '/preview/' + encodeURIComponent(previewId));
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || 'گزارش در انتظار تأیید پیدا نشد یا منقضی شده است.');
+        mdText = data.markdown || '';
+        extraMeta = data;
+      } else if(slug){
+        const safe = slug.replace(/[^a-zA-Z0-9_-]/g,'');
+        const res = await fetch('reports/' + safe + '.md');
+        if(!res.ok) throw new Error('فایل گزارش پیدا نشد.');
+        mdText = await res.text();
+      } else {
+        throw new Error('شناسه گزارش مشخص نشده است.');
+      }
+
+      const {meta, body} = parseFrontmatter(mdText);
+      const title = extraMeta.title || meta.title || (body.match(/^#\s+(.+)$/m)?.[1]) || 'گزارش TopFast';
+      const summary = extraMeta.summary || meta.summary || meta.subtitle || '';
+      const author = extraMeta.author || meta.author || 'تیم محصول TopFast';
+      const category = extraMeta.category || meta.category || 'REPORT';
+      const dateFa = extraMeta.dateFa || meta.date_fa || '';
+      const kpis = Array.isArray(extraMeta.kpis) ? extraMeta.kpis : (meta.kpis ? meta.kpis.split('|').map(x=>{const p=x.split(':');return {v:(p[0]||'').trim(),l:(p[1]||'').trim()};}).filter(x=>x.v) : []);
+
+      document.title = title + ' — TopFast Reports';
+      const {html, toc} = renderMarkdown(body);
+      window.__MD_REPORT_DATA__ = {title, summary, author, category, markdown: mdText};
+
+      root.innerHTML = `
+        <div class="eyebrow">${esc(category)}</div>
+        <h1>${esc(title)}</h1>
+        ${summary ? `<p class="sub">${esc(summary)}</p>` : ''}
+        <div class="rep-author">
+          <span>نویسنده: <strong>${esc(author)}</strong></span>
+          ${dateFa ? `<span>· تاریخ: <strong>${esc(dateFa)}</strong></span>` : ''}
+        </div>
+        ${kpis.length ? `<div class="kpis">${kpis.slice(0,3).map(k=>`<div class="kpi"><b>${esc(k.v)}</b><span>${esc(k.l)}</span></div>`).join('')}</div>` : ''}
+        <div class="layout">
+          <aside class="toc">
+            <h4>فهرست بخش‌ها</h4>
+            ${toc.length ? toc.map(t=>`<a class="l${t.lvl}" href="#${t.id}">${esc(t.txt)}</a>`).join('') : '<span style="color:var(--mute);font-size:12px">بدون زیربخش</span>'}
+          </aside>
+          <article class="article">${html}</article>
+        </div>
+      `;
+
+      const s = document.createElement('script');
+      s.src = 'ai-assistant.js';
+      document.body.appendChild(s);
+    }catch(err){
+      root.innerHTML = `<div class="state-box">${esc(err.message || 'خطا در بارگذاری گزارش')}</div>`;
+    }
+  }
+  init();
+})();
+</script>
+</body>
+</html>

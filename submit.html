@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ارسال گزارش جدید (.md) — TopFast Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--canvas:#07080a;--ink:#f4f4f6;--body:#c9cbd0;--mute:#93969e;--hair:rgba(255,255,255,.09);--hair2:rgba(255,255,255,.17);--glass:rgba(255,255,255,.035);--blue:#57c1ff;--green:#59d499;--red:#ff6161;--amber:#ffc533}
+*{box-sizing:border-box}
+html{overflow-x:clip}
+body{margin:0;min-height:100vh;background:var(--canvas);color:var(--body);font:400 14.5px/1.75 'Vazirmatn','Inter',system-ui,sans-serif;overflow-x:hidden}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(87,193,255,.15),transparent 72%)}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:40px 20px 80px}
+.topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:24px}
+.back-hub{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--hair2);color:var(--ink);text-decoration:none;font-size:13px;font-weight:500}
+.back-hub:hover{background:rgba(87,193,255,.15);border-color:rgba(87,193,255,.45)}
+.skill-btn{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;background:rgba(89,212,153,.1);border:1px solid rgba(89,212,153,.38);color:#c2f5db;text-decoration:none;font-size:12.5px;font-weight:600}
+.skill-btn:hover{background:rgba(89,212,153,.2)}
+h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--ink)}
+.sub{margin:0 0 24px;font-size:14.5px;color:var(--mute)}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:start}
+.panel{padding:22px;border-radius:16px;background:var(--glass);border:1px solid var(--hair);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.drop{border:1.5px dashed var(--hair2);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;margin-bottom:16px}
+.drop:hover,.drop.drag{border-color:var(--blue);background:rgba(87,193,255,.07)}
+.drop b{display:block;color:var(--ink);font-size:14px;margin-top:8px}
+.drop small{display:block;color:var(--mute);font-size:12px;margin-top:3px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.04);color:var(--ink);font:inherit;font-size:13.5px}
+.field textarea{min-height:74px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--blue);outline-offset:1px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.checks{display:flex;flex-direction:column;gap:6px;margin:14px 0 18px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.025);border:1px solid var(--hair);font-size:12.5px}
+.chk{display:flex;align-items:center;gap:8px;color:var(--mute)}
+.chk.ok{color:#8be9b8}
+.chk.err{color:#ff8585}
+.submit-btn{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;border-radius:12px;border:0;background:var(--blue);color:#07080a;font:700 14px/1 'Vazirmatn',sans-serif;cursor:pointer;transition:opacity .15s}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.status{margin-top:12px;padding:11px 14px;border-radius:10px;font-size:13px;display:none}
+.status.ok{display:block;background:rgba(89,212,153,.14);border:1px solid rgba(89,212,153,.4);color:#c2f5db}
+.status.err{display:block;background:rgba(255,97,97,.14);border:1px solid rgba(255,97,97,.4);color:#ffb3b3}
+.prev-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--hair)}
+.prev-head b{font-size:14px;color:var(--ink)}
+.prev-box{max-height:560px;overflow-y:auto;font-size:13.5px;line-height:1.8;color:var(--body)}
+.prev-box h2{font-size:17px;color:var(--ink);margin:18px 0 8px}
+.prev-box h3{font-size:15px;color:var(--ink);margin:14px 0 6px}
+.prev-box p{margin:0 0 10px}
+.prev-box ul{padding:0 18px 0 0;margin:0 0 10px}
+@media(max-width:820px){
+  .wrap{padding:24px 14px 56px}
+  h1{font-size:24px}
+  .grid{grid-template-columns:1fr}
+  .row2{grid-template-columns:1fr}
+  .panel{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<main class="wrap">
+  <div class="topbar">
+    <a class="back-hub" href="index.html">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      <span>بازگشت به مرکز گزارش‌ها</span>
+    </a>
+    <a class="skill-btn" href="topfast-report-author-SKILL.md" download>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span>دانلود Skill استاندارد نگارش گزارش</span>
+    </a>
+  </div>
+
+  <h1>ارسال گزارش جدید (.md)</h1>
+  <p class="sub">فایل Markdown استاندارد خود را آپلود کنید. پس از ارسال، پیام تأیید همراه با لینک پیش‌نمایش برای ادمین در تلگرام ارسال می‌شود و بلافاصله پس از تأیید، روی پلتفرم منتشر خواهد شد.</p>
+
+  <div class="grid">
+    <form class="panel" id="sub-form">
+      <label class="drop" id="drop" for="md-file">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#57c1ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <b id="file-lbl">فایل .md را اینجا رها کنید یا کلیک کنید</b>
+        <small>حداکثر ۵۰۰ کیلوبایت · خواندن خودکار Frontmatter استاندارد</small>
+        <input id="md-file" type="file" accept=".md,.markdown,text/markdown" hidden>
+      </label>
+
+      <div class="field">
+        <label for="f-title">عنوان گزارش *</label>
+        <input id="f-title" required placeholder="مثال: تحلیل UX فلوی ثبت‌نام موبایل">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="f-author">نام نویسنده *</label>
+          <input id="f-author" required placeholder="نام و نام خانوادگی">
+        </div>
+        <div class="field">
+          <label for="f-cat">دسته‌بندی *</label>
+          <select id="f-cat">
+            <option value="UX Benchmark">UX Benchmark</option>
+            <option value="UI/UX Audit">UI/UX Audit</option>
+            <option value="Product Research">Product Research</option>
+            <option value="Technical Report">Technical Report</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="f-sum">خلاصه کوتاه (برای کارت صفحه اصلی و تلگرام) *</label>
+        <textarea id="f-sum" required placeholder="یک یا دو جمله درباره هدف و مهم‌ترین یافته این گزارش..."></textarea>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="f-date">تاریخ شمسی</label>
+          <input id="f-date" placeholder="مثال: ۴ آذر ۱۴۰۵">
+        </div>
+        <div class="field">
+          <label for="f-pass">کد تیمی (Passcode) *</label>
+          <input id="f-pass" type="password" required placeholder="کد تایید تیمی">
+        </div>
+      </div>
+
+      <div class="checks" id="checks">
+        <div class="chk" id="c-file"><span>•</span><span>فایل Markdown انتخاب شده باشد</span></div>
+        <div class="chk" id="c-h2"><span>•</span><span>دارای حداقل ۲ زیربخش (##) استاندارد باشد</span></div>
+        <div class="chk" id="c-len"><span>•</span><span>حجم و طول متن در محدوده استاندارد (حداکثر ۵۰۰KB)</span></div>
+      </div>
+
+      <button class="submit-btn" id="sub-btn" type="submit" disabled>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <span>ارسال برای تأیید در تلگرام</span>
+      </button>
+      <div class="status" id="status"></div>
+    </form>
+
+    <section class="panel">
+      <div class="prev-head">
+        <b>پیش‌نمایش زنده محتوا</b>
+        <span style="font-size:11.5px;color:var(--mute)" id="prev-meta">فایلی انتخاب نشده</span>
+      </div>
+      <div class="prev-box" id="prev-box">
+        <p style="color:var(--mute)">پس از انتخاب فایل <code>.md</code>، ساختار تیترها و متن گزارش اینجا نمایش داده می‌شود تا قبل از ارسال از استاندارد بودن آن مطمئن شوید.</p>
+      </div>
+    </section>
+  </div>
+</main>
+<script src="ai-config.js"></script>
+<script>
+(function(){
+  const fileIn = document.getElementById('md-file');
+  const drop = document.getElementById('drop');
+  const fTitle = document.getElementById('f-title');
+  const fAuthor = document.getElementById('f-author');
+  const fCat = document.getElementById('f-cat');
+  const fSum = document.getElementById('f-sum');
+  const fDate = document.getElementById('f-date');
+  const fPass = document.getElementById('f-pass');
+  const subBtn = document.getElementById('sub-btn');
+  const statusEl = document.getElementById('status');
+  const prevBox = document.getElementById('prev-box');
+  const prevMeta = document.getElementById('prev-meta');
+  let rawMd = '', parsedKpis = [];
+
+  function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function parseFM(md){
+    const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+    if(!m) return {meta:{}, body:md};
+    const meta = {};
+    m[1].split(/\r?\n/).forEach(l=>{const i=l.indexOf(':');if(i>0)meta[l.slice(0,i).trim()]=l.slice(i+1).trim().replace(/^["']|["']$/g,'');});
+    return {meta, body:md.slice(m[0].length)};
+  }
+
+  function validate(){
+    const hasFile = rawMd.trim().length > 40;
+    const h2Count = (rawMd.match(/^##\s+/gm) || []).length;
+    const okSize = rawMd.length > 0 && rawMd.length <= 512000;
+    document.getElementById('c-file').className = 'chk ' + (hasFile ? 'ok' : 'err');
+    document.getElementById('c-h2').className = 'chk ' + (h2Count >= 2 ? 'ok' : 'err');
+    document.getElementById('c-len').className = 'chk ' + (okSize ? 'ok' : 'err');
+    subBtn.disabled = !(hasFile && h2Count >= 2 && okSize);
+  }
+
+  function handleFile(file){
+    if(!file) return;
+    if(file.size > 512000){
+      statusEl.className = 'status err';
+      statusEl.textContent = 'حجم فایل بیشتر از ۵۰۰ کیلوبایت است.';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      rawMd = String(reader.result || '');
+      document.getElementById('file-lbl').textContent = file.name + ' (' + Math.round(file.size/1024) + ' KB)';
+      const {meta, body} = parseFM(rawMd);
+      if(meta.title && !fTitle.value) fTitle.value = meta.title;
+      else if(!fTitle.value){ const h1 = body.match(/^#\s+(.+)$/m); if(h1) fTitle.value = h1[1].trim(); }
+      if(meta.author && !fAuthor.value) fAuthor.value = meta.author;
+      if(meta.summary && !fSum.value) fSum.value = meta.summary;
+      if(meta.date_fa && !fDate.value) fDate.value = meta.date_fa;
+      if(meta.category){
+        for(const opt of fCat.options) if(opt.value.toLowerCase() === meta.category.toLowerCase()) fCat.value = opt.value;
+      }
+      parsedKpis = meta.kpis ? meta.kpis.split('|').map(x=>{const p=x.split(':');return {v:(p[0]||'').trim(),l:(p[1]||'').trim()};}).filter(x=>x.v) : [];
+      prevMeta.textContent = (body.match(/^##\s+/gm)||[]).length + ' بخش اصلی';
+      prevBox.innerHTML = body.split(/\n\n+/).slice(0,18).map(b=>{
+        if(/^##\s+/.test(b)) return '<h2>'+esc(b.replace(/^##\s+/,''))+'</h2>';
+        if(/^###\s+/.test(b)) return '<h3>'+esc(b.replace(/^###\s+/,''))+'</h3>';
+        return '<p>'+esc(b).replace(/\n/g,'<br>')+'</p>';
+      }).join('');
+      validate();
+    };
+    reader.readAsText(file, 'utf-8');
+  }
+
+  fileIn.addEventListener('change', e => handleFile(e.target.files[0]));
+  drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+  drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag'); handleFile(e.dataTransfer.files[0]); });
+
+  document.getElementById('sub-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const cfg = window.TOPFAST_AI_CONFIG || {};
+    if(!cfg.endpoint){
+      statusEl.className = 'status err';
+      statusEl.textContent = 'آدرس Cloudflare Worker در ai-config.js تنظیم نشده است.';
+      return;
+    }
+    subBtn.disabled = true;
+    statusEl.className = 'status';
+    statusEl.style.display = 'none';
+    try{
+      const res = await fetch(cfg.endpoint.replace(/\/$/,'') + '/submit', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          title: fTitle.value.trim(),
+          author: fAuthor.value.trim(),
+          category: fCat.value,
+          summary: fSum.value.trim(),
+          dateFa: fDate.value.trim(),
+          kpis: parsedKpis,
+          passcode: fPass.value.trim(),
+          markdown: rawMd,
+        }),
+      });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error || 'خطا در ارسال گزارش');
+      statusEl.className = 'status ok';
+      statusEl.textContent = 'گزارش با موفقیت ثبت شد و پیام تأیید به تلگرام ادمین ارسال گردید. پس از تأیید، خودکار روی صفحه اصلی منتشر می‌شود.';
+      rawMd = '';
+      document.getElementById('sub-form').reset();
+    }catch(err){
+      statusEl.className = 'status err';
+      statusEl.textContent = err.message || 'خطا در ارتباط با سرور';
+      subBtn.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>
