@@ -225,16 +225,14 @@
     .tfai-ic-fill{width:15px;height:15px;flex:0 0 auto;display:inline-block;vertical-align:middle}
 
     .tfai-qbar{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0 28px;padding-bottom:22px;border-bottom:1px solid rgba(255,255,255,.08)}
-    .tfai-qbtn{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:999px;border:1px solid rgba(87,193,255,.32);background:rgba(87,193,255,.09);color:#e6f4ff;font:600 12.5px/1 'Vazirmatn','Inter',sans-serif;cursor:pointer;transition:background .16s,border-color .16s,transform .14s}
-    .tfai-qbtn:hover{background:rgba(87,193,255,.2);border-color:rgba(87,193,255,.6);transform:translateY(-1px)}
-    .tfai-qbtn.audio-btn{border-color:rgba(168,85,247,.38);background:rgba(168,85,247,.12);color:#ebd9ff}
-    .tfai-qbtn.audio-btn:hover{background:rgba(168,85,247,.24);border-color:rgba(168,85,247,.68)}
-    .tfai-qbtn.chat-btn{border-color:rgba(89,212,153,.35);background:rgba(89,212,153,.1);color:#c9f7e0}
-    .tfai-qbtn.chat-btn:hover{background:rgba(89,212,153,.22);border-color:rgba(89,212,153,.62)}
+    .tfai-qbtn{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:999px;border:1px solid rgba(87,193,255,.38);background:rgba(87,193,255,.11);color:#d7f1ff;font:600 12.5px/1 'Vazirmatn','Inter',sans-serif;cursor:pointer;transition:background .16s,border-color .16s,color .16s,transform .14s}
+    .tfai-qbtn:hover{background:#57c1ff;border-color:#57c1ff;color:#07080a;transform:translateY(-1px)}
+    .tfai-qbtn.audio-btn,.tfai-qbtn.chat-btn{border-color:rgba(87,193,255,.38);background:rgba(87,193,255,.11);color:#d7f1ff}
+    .tfai-qbtn.audio-btn:hover,.tfai-qbtn.chat-btn:hover{background:#57c1ff;border-color:#57c1ff;color:#07080a}
 
-    .tfai-fab{position:fixed;left:22px;bottom:22px;z-index:50;display:inline-flex;align-items:center;gap:8px;height:50px;padding:0 18px 0 15px;border-radius:999px;border:1px solid rgba(87,193,255,.5);background:linear-gradient(135deg,#0f1c2e 0%,#121524 100%);color:#fff;font:700 13px/1 'Vazirmatn','Inter',sans-serif;cursor:pointer;box-shadow:0 12px 36px rgba(0,0,0,.6),0 0 0 4px rgba(87,193,255,.14);transition:transform .18s,box-shadow .18s,bottom .2s}
-    .tfai-fab:hover{transform:translateY(-2px);box-shadow:0 16px 42px rgba(0,0,0,.7),0 0 0 5px rgba(87,193,255,.25)}
-    .tfai-fab .dot-live{width:7px;height:7px;border-radius:50%;background:#59d499;box-shadow:0 0 10px #59d499}
+    .tfai-fab{position:fixed;left:22px;bottom:22px;z-index:50;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px 0 15px;border-radius:999px;border:1px solid #57c1ff;background:#57c1ff;color:#07080a;font:700 13px/1 'Vazirmatn','Inter',sans-serif;cursor:pointer;box-shadow:0 12px 32px rgba(87,193,255,.32),0 4px 16px rgba(0,0,0,.5);transition:transform .18s,box-shadow .18s,background .15s,bottom .2s}
+    .tfai-fab:hover{background:#73ccff;border-color:#73ccff;transform:translateY(-2px);box-shadow:0 16px 38px rgba(87,193,255,.42),0 6px 20px rgba(0,0,0,.6)}
+    .tfai-fab .dot-live{width:7px;height:7px;border-radius:50%;background:#07080a;opacity:.75}
 
     .tfai-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);z-index:54;display:none}
     .tfai-backdrop.open{display:none}
@@ -279,8 +277,8 @@
     .tfai-sum-card p{margin:0}
     .tfai-sum-card ul{margin:0;padding:0 16px 0 0}
     .tfai-sum-card li{margin-bottom:5px}
-    .tfai-cta-inline{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:10px 12px;border-radius:10px;border:1px solid rgba(87,193,255,.35);background:rgba(87,193,255,.1);color:#bfe6ff;font:600 12.5px/1.4 'Vazirmatn',sans-serif;cursor:pointer;text-align:center}
-    .tfai-cta-inline:hover{background:rgba(87,193,255,.2);color:#fff}
+    .tfai-cta-inline{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 14px;border-radius:10px;border:0;background:#57c1ff;color:#07080a;font:700 12.5px/1.4 'Vazirmatn',sans-serif;cursor:pointer;text-align:center;transition:background .15s}
+    .tfai-cta-inline:hover{background:#73ccff;color:#07080a}
 
     /* Spotify-Style Full-Height Audio Pane */
     .tfai-pane[data-pane="audio"]{padding:0;background:linear-gradient(180deg,rgba(29,185,84,.22) 0%,rgba(16,28,22,.62) 40%,rgba(11,13,18,.98) 100%)}
