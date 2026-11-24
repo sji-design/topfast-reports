@@ -21,6 +21,8 @@
     fwd15: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg>',
     vol: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/></svg>',
     mute: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+    arrowUp: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>',
+    chevLeft: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
   };
 
   const isMdViewer = /report-viewer/i.test(location.pathname) || !!window.__MD_REPORT_DATA__;
@@ -374,7 +376,21 @@
     body.tfai-has-mini{padding-bottom:76px}
     body.tfai-has-mini .tfai-fab{bottom:78px}
 
+    /* Easy-close edge handle on Side Panel */
+    .tfai-edge-close{position:fixed;left:410px;top:50%;transform:translateY(-50%) translateX(-16px);z-index:56;width:28px;height:68px;border-radius:0 12px 12px 0;border:1px solid rgba(255,255,255,.16);border-left:0;background:rgba(15,18,26,.94);color:#c8ccd4;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;box-shadow:6px 0 20px rgba(0,0,0,.45);transition:opacity .2s,transform .24s cubic-bezier(.2,.8,.2,1),background .15s,color .15s}
+    .tfai-edge-close:hover{background:#165EF6;border-color:#165EF6;color:#fff}
+    body.tfai-side-open .tfai-edge-close{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
+
+    /* Quick Scroll-to-Top Button */
+    .tfai-top{position:fixed;right:22px;bottom:22px;z-index:49;width:44px;height:44px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(15,18,26,.9);color:#e5e7ef;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 8px 26px rgba(0,0,0,.5);transition:opacity .2s,transform .2s,background .15s,border-color .15s,bottom .2s}
+    .tfai-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+    .tfai-top:hover{background:#165EF6;border-color:#165EF6;color:#fff;transform:translateY(-2px)}
+    body.tfai-has-mini .tfai-top{bottom:78px}
+
     @media(max-width:640px){
+      .tfai-edge-close{display:none!important}
+      .tfai-top{right:14px;bottom:14px;width:40px;height:40px}
+      body.tfai-has-mini .tfai-top{bottom:106px}
       .tfai-backdrop.open{display:block}
       .tfai-fab{left:14px;bottom:14px;height:46px;padding:0 14px;font-size:12.5px}
       body.tfai-has-mini{padding-bottom:108px}
@@ -515,10 +531,45 @@
     <button type="button" class="tfai-mini-close" id="tfai-mclose" aria-label="بستن پخش‌کننده">${ICO.close}</button>
   `;
 
+  const edgeClose = document.createElement('button');
+  edgeClose.type = 'button';
+  edgeClose.className = 'tfai-edge-close';
+  edgeClose.setAttribute('aria-label', 'بستن پنل کناری');
+  edgeClose.title = 'بستن پنل (Esc)';
+  edgeClose.innerHTML = ICO.chevLeft;
+
+  const topBtn = document.createElement('button');
+  topBtn.type = 'button';
+  topBtn.className = 'tfai-top';
+  topBtn.setAttribute('aria-label', 'بازگشت به بالای صفحه');
+  topBtn.title = 'بازگشت به بالا';
+  topBtn.innerHTML = ICO.arrowUp;
+
   document.body.appendChild(backdrop);
   if (hasAudio) document.body.appendChild(mini);
   document.body.appendChild(fab);
+  document.body.appendChild(topBtn);
+  document.body.appendChild(edgeClose);
   document.body.appendChild(panel);
+
+  // Quick Scroll-to-Top behavior
+  function syncTopBtn() {
+    topBtn.classList.toggle('show', window.scrollY > 300);
+  }
+  window.addEventListener('scroll', syncTopBtn, { passive: true });
+  syncTopBtn();
+  topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  // Swipe-to-close on Side Panel (left on desktop, down on mobile)
+  let sx = 0, sy = 0;
+  panel.addEventListener('touchstart', (e) => { if (e.touches[0]) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, { passive: true });
+  panel.addEventListener('touchend', (e) => {
+    if (!e.changedTouches[0]) return;
+    const dx = e.changedTouches[0].clientX - sx;
+    const dy = e.changedTouches[0].clientY - sy;
+    if (window.innerWidth <= 640 ? (dy > 75 && Math.abs(dy) > Math.abs(dx)) : (dx < -75 && Math.abs(dx) > Math.abs(dy))) closePanel();
+  }, { passive: true });
+  edgeClose.addEventListener('click', closePanel);
 
   let miniActive = false;
   function syncMiniVisibility() {

@@ -48,8 +48,16 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .item-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.08);color:var(--body);margin-inline-start:6px}
 .badge.hid{background:rgba(255,97,97,.18);color:#ff9494}
-.editor-wrap{margin-top:20px;display:none}
-.editor-wrap.open{display:block}
+.editor-bg{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .22s}
+.editor-bg.open{opacity:1;pointer-events:auto}
+.editor-wrap{position:fixed;left:0;top:0;bottom:0;z-index:65;width:min(680px,100vw);margin:0!important;border-radius:0!important;border:0!important;border-inline-end:1px solid var(--hair2)!important;background:rgba(11,14,20,.98)!important;box-shadow:16px 0 56px rgba(0,0,0,.72);overflow-y:auto;transform:translateX(-105%);transition:transform .24s cubic-bezier(.2,.8,.2,1);pointer-events:none;display:block!important}
+.editor-wrap.open{transform:translateX(0);pointer-events:auto}
+.ed-edge-close{position:fixed;left:min(680px,calc(100vw - 28px));top:50%;transform:translateY(-50%) translateX(-14px);z-index:66;width:28px;height:68px;border-radius:0 12px 12px 0;border:1px solid var(--hair2);border-left:0;background:rgba(15,18,26,.95);color:#c8ccd4;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;box-shadow:6px 0 20px rgba(0,0,0,.45);transition:opacity .2s,transform .24s,background .15s,color .15s}
+.ed-edge-close.open{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
+.ed-edge-close:hover{background:#165EF6;border-color:#165EF6;color:#fff}
+.scroll-top{position:fixed;right:22px;bottom:22px;z-index:49;width:44px;height:44px;border-radius:999px;border:1px solid var(--hair2);background:rgba(15,18,26,.92);color:#e5e7ef;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);box-shadow:0 8px 26px rgba(0,0,0,.5);transition:opacity .2s,transform .2s,background .15s,border-color .15s}
+.scroll-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.scroll-top:hover{background:#165EF6;border-color:#165EF6;color:#fff;transform:translateY(-2px)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px}
@@ -215,6 +223,13 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     </section>
   </div>
 </main>
+<div class="editor-bg" id="ed-bg"></div>
+<button type="button" class="ed-edge-close" id="ed-edge" aria-label="بستن پنل ویرایش" title="بستن پنل (Esc یا کلیک بیرون)">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+</button>
+<button type="button" class="scroll-top" id="scroll-top" aria-label="بازگشت به بالای صفحه" title="بازگشت به بالا">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+</button>
 <div class="cfm-bg" id="cfm-modal" role="dialog" aria-modal="true">
   <div class="cfm-box">
     <h3 id="cfm-title">تأیید عملیات</h3>
@@ -356,13 +371,44 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   const fedSub = document.getElementById('fed-sub');
   let curFullId = '', curFullData = null;
 
+  const edBg = document.getElementById('ed-bg');
+  const edEdge = document.getElementById('ed-edge');
+  const drawers = [coreEditor, fullEd, edWrap];
+  function closeAllDrawers(){
+    drawers.forEach(d => d && d.classList.remove('open'));
+    edBg.classList.remove('open');
+    edEdge.classList.remove('open');
+  }
+  function openDrawer(el){
+    closeAllDrawers();
+    el.classList.add('open');
+    edBg.classList.add('open');
+    edEdge.classList.add('open');
+    el.scrollTop = 0;
+  }
+  edBg.addEventListener('click', closeAllDrawers);
+  edEdge.addEventListener('click', closeAllDrawers);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape'){ if(cfmModal.classList.contains('open')) closeCfm(false); else closeAllDrawers(); } });
+  drawers.forEach(el => {
+    let sx = 0, sy = 0;
+    el.addEventListener('touchstart', e => { if(e.touches[0]){ sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, {passive:true});
+    el.addEventListener('touchend', e => {
+      if(!e.changedTouches[0]) return;
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if(dx < -80 && Math.abs(dx) > Math.abs(dy)) closeAllDrawers();
+    }, {passive:true});
+  });
+
+  const scrollTopBtn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => scrollTopBtn.classList.toggle('show', window.scrollY > 280), {passive:true});
+  scrollTopBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
   async function openFullEditor(id){
     curFullId = id;
-    fullEd.classList.add('open');
+    openDrawer(fullEd);
     fedMsg.className = 'msg';
     document.getElementById('fed-heading').textContent = 'ویرایش کامل محتوا: ' + (id === 'benchmark' ? 'بنچمارک UX فلوهای CRM' : 'ایرادات پیاده‌سازی CRM');
     fedItems.innerHTML = '<div class="empty">در حال دریافت کل محتوای گزارش...</div>';
-    fullEd.scrollIntoView({behavior:'smooth'});
     try{
       const res = await api('/admin/data-get', {id});
       curFullData = res.data;
@@ -494,19 +540,18 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       btn.disabled = false;
     }
   });
-  document.getElementById('fed-cancel').addEventListener('click', () => fullEd.classList.remove('open'));
+  document.getElementById('fed-cancel').addEventListener('click', closeAllDrawers);
 
   function openCoreEditor(id){
     const def = CORE_DEFAULTS.find(x => x.id === id);
     const ov = overridesCache[id] || {};
-    coreEditor.classList.add('open');
+    openDrawer(coreEditor);
     document.getElementById('ced-heading').textContent = 'ویرایش: ' + (ov.title || def.title);
     document.getElementById('ced-id').value = id;
     document.getElementById('ced-title').value = ov.title || def.title;
     document.getElementById('ced-cat').value = ov.category || def.category;
     document.getElementById('ced-date').value = ov.dateFa || def.dateFa;
     document.getElementById('ced-desc').value = ov.desc || def.desc;
-    coreEditor.scrollIntoView({behavior:'smooth'});
   }
 
   async function saveOverrides(next){
@@ -563,7 +608,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       btn.disabled = false;
     }
   });
-  document.getElementById('ced-cancel').addEventListener('click', () => coreEditor.classList.remove('open'));
+  document.getElementById('ced-cancel').addEventListener('click', closeAllDrawers);
 
   async function loadAll(){
     mdList.innerHTML = '<div class="empty">در حال بارگذاری لیست گزارش‌ها...</div>';
@@ -601,7 +646,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
   async function openEditor(slug){
     const meta = itemsCache.find(x => x.slug === slug) || {};
-    edWrap.classList.add('open');
+    openDrawer(edWrap);
     edMsg.className = 'msg';
     document.getElementById('ed-heading').textContent = 'ویرایش: ' + (meta.title || slug);
     document.getElementById('ed-slug').value = slug;
@@ -611,7 +656,6 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     document.getElementById('ed-date').value = meta.dateFa || '';
     document.getElementById('ed-sum').value = meta.summary || '';
     document.getElementById('ed-md').value = 'در حال دریافت متن فایل...';
-    edWrap.scrollIntoView({behavior:'smooth'});
     try{
       const data = await api('/admin/get', {slug});
       document.getElementById('ed-md').value = data.markdown || '';
@@ -658,7 +702,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   });
 
   document.getElementById('ed-del').addEventListener('click', () => deleteReport(document.getElementById('ed-slug').value));
-  document.getElementById('ed-cancel').addEventListener('click', () => edWrap.classList.remove('open'));
+  document.getElementById('ed-cancel').addEventListener('click', closeAllDrawers);
   document.getElementById('refresh-btn').addEventListener('click', loadAll);
 
   async function tryAuth(code){
