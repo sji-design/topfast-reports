@@ -13,7 +13,7 @@
 html{overflow-x:clip}
 body{margin:0;min-height:100vh;background:var(--canvas);color:var(--body);font:400 14.5px/1.75 'Vazirmatn','Inter',system-ui,sans-serif;overflow-x:hidden}
 .bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 65% 45% at 50% 0%,rgba(22,94,246,.16),transparent 72%)}
-.wrap{position:relative;z-index:1;max-width:1040px;margin:0 auto;padding:34px 22px 84px}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:34px 22px 84px}
 .topbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--hair)}
 .back-hub{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 15px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid var(--hair2);color:var(--ink);text-decoration:none;font-size:13px;font-weight:500}
 .back-hub:hover{background:rgba(22,94,246,.16);border-color:rgba(22,94,246,.5)}
@@ -26,7 +26,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .pass-wrap input:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 3px rgba(22,94,246,.22)}
 .eye-btn{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;border-radius:8px;background:transparent;color:var(--mute);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .eye-btn:hover{background:rgba(255,255,255,.08);color:var(--ink)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 16px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.06);color:var(--ink);font:600 13px/1 'Vazirmatn',sans-serif;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,transform .14s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 14px;border-radius:10px;border:1px solid var(--hair2);background:rgba(255,255,255,.06);color:var(--ink);font:600 12.5px/1 'Vazirmatn',sans-serif;cursor:pointer;text-decoration:none;transition:background .15s,border-color .15s,transform .14s;white-space:nowrap}
 .btn:hover{background:rgba(255,255,255,.12)}
 .btn.pri{background:var(--pri);border-color:var(--pri);color:#ffffff;font-weight:700;box-shadow:0 6px 20px rgba(22,94,246,.28)}
 .btn.pri:hover{background:var(--pri-h);border-color:var(--pri-h);transform:translateY(-1px)}
@@ -34,30 +34,24 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .btn.soft:hover{background:rgba(22,94,246,.26);color:#fff}
 .btn.del{background:rgba(255,97,97,.14);border-color:rgba(255,97,97,.4);color:#ff9494}
 .btn.del:hover{background:rgba(255,97,97,.26);color:#fff}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.ico{width:32px;height:32px;padding:0;border-radius:8px}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .msg{margin-top:12px;padding:11px 14px;border-radius:10px;font-size:13px;line-height:1.7;display:none;text-align:start}
 .msg.ok{display:block;background:rgba(89,212,153,.14);border:1px solid rgba(89,212,153,.4);color:#c2f5db}
 .msg.err{display:block;background:rgba(255,97,97,.14);border:1px solid rgba(255,97,97,.4);color:#ffb3b3}
 .sec-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 14px}
-.sec-h h2{margin:0;font-size:18px;color:var(--ink)}
+.sec-h h2{margin:0;font-size:17.5px;color:var(--ink)}
 .list{display:flex;flex-direction:column;gap:10px}
-.item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 18px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair)}
-.item-info{min-width:0;flex:1 1 260px}
-.item-info b{display:block;font-size:15px;color:var(--ink);margin-bottom:3px}
-.item-info small{display:block;font-size:12.5px;color:var(--mute)}
-.item-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.08);color:var(--body);margin-inline-start:6px}
+.item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:15px 16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair)}
+.item-ord{display:flex;flex-direction:column;gap:4px;flex:0 0 auto}
+.item-info{min-width:0;flex:1 1 240px}
+.item-info b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:3px}
+.item-info small{display:block;font-size:12px;color:var(--mute)}
+.item-acts{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;background:rgba(255,255,255,.08);color:var(--body);margin-inline-start:5px}
+.badge.prod{background:rgba(22,94,246,.18);color:#93bbff}
 .badge.hid{background:rgba(255,97,97,.18);color:#ff9494}
-.editor-bg{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.55);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .22s}
-.editor-bg.open{opacity:1;pointer-events:auto}
-.editor-wrap{position:fixed;left:0;top:0;bottom:0;z-index:65;width:min(680px,100vw);margin:0!important;border-radius:0!important;border:0!important;border-inline-end:1px solid var(--hair2)!important;background:rgba(11,14,20,.98)!important;box-shadow:16px 0 56px rgba(0,0,0,.72);overflow-y:auto;transform:translateX(-105%);transition:transform .24s cubic-bezier(.2,.8,.2,1);pointer-events:none;display:block!important}
-.editor-wrap.open{transform:translateX(0);pointer-events:auto}
-.ed-edge-close{position:fixed;left:min(680px,calc(100vw - 28px));top:50%;transform:translateY(-50%) translateX(-14px);z-index:66;width:28px;height:68px;border-radius:0 12px 12px 0;border:1px solid var(--hair2);border-left:0;background:rgba(15,18,26,.95);color:#c8ccd4;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;box-shadow:6px 0 20px rgba(0,0,0,.45);transition:opacity .2s,transform .24s,background .15s,color .15s}
-.ed-edge-close.open{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
-.ed-edge-close:hover{background:#165EF6;border-color:#165EF6;color:#fff}
-.scroll-top{position:fixed;right:22px;bottom:22px;z-index:49;width:44px;height:44px;border-radius:999px;border:1px solid var(--hair2);background:rgba(15,18,26,.92);color:#e5e7ef;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);box-shadow:0 8px 26px rgba(0,0,0,.5);transition:opacity .2s,transform .2s,background .15s,border-color .15s}
-.scroll-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
-.scroll-top:hover{background:#165EF6;border-color:#165EF6;color:#fff;transform:translateY(-2px)}
+.badge.pend{background:rgba(255,197,51,.18);color:#ffd466}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field{margin-bottom:12px}
 .field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:5px}
@@ -67,17 +61,40 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#165EF6;background-color:#131824;box-shadow:0 0 0 3px rgba(22,94,246,.22)}
 .field textarea.md-area{min-height:320px;font-family:ui-monospace,Consolas,'Vazirmatn',monospace;line-height:1.75;resize:vertical}
 .empty{padding:26px;text-align:center;color:var(--mute);border:1px dashed var(--hair2);border-radius:12px;font-size:13.5px}
+
+/* Crisp Side Drawers (placed outside .wrap so ZERO blur covers them!) */
+.editor-bg{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .22s}
+.editor-bg.open{opacity:1;pointer-events:auto}
+.editor-drawer{position:fixed;left:0;top:0;bottom:0;z-index:65;width:min(680px,100vw);background:#0c0f16;border-inline-end:1px solid var(--hair2);box-shadow:16px 0 56px rgba(0,0,0,.78);display:flex;flex-direction:column;transform:translateX(-105%);transition:transform .24s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.editor-drawer.open{transform:translateX(0);pointer-events:auto}
+.sheet-grab{display:none;width:100%;padding:10px 0 6px;border:0;background:transparent;cursor:pointer;align-items:center;justify-content:center;flex:0 0 auto}
+.sheet-grab i{display:block;width:44px;height:4.5px;border-radius:999px;background:rgba(255,255,255,.32)}
+.drawer-body{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:24px}
+.ed-edge-close{position:fixed;left:min(680px,calc(100vw - 28px));top:50%;transform:translateY(-50%) translateX(-14px);z-index:66;width:28px;height:68px;border-radius:0 12px 12px 0;border:1px solid var(--hair2);border-left:0;background:rgba(15,18,26,.96);color:#c8ccd4;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;box-shadow:6px 0 20px rgba(0,0,0,.45);transition:opacity .2s,transform .24s,background .15s,color .15s}
+.ed-edge-close.open{opacity:1;pointer-events:auto;transform:translateY(-50%) translateX(0)}
+.ed-edge-close:hover{background:#165EF6;border-color:#165EF6;color:#fff}
+
+.scroll-top{position:fixed;right:22px;bottom:22px;z-index:49;width:44px;height:44px;border-radius:999px;border:1px solid var(--hair2);background:rgba(15,18,26,.92);color:#e5e7ef;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;pointer-events:none;transform:translateY(12px);box-shadow:0 8px 26px rgba(0,0,0,.5);transition:opacity .2s,transform .2s,background .15s,border-color .15s}
+.scroll-top.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.scroll-top:hover{background:#165EF6;border-color:#165EF6;color:#fff;transform:translateY(-2px)}
+
 .cfm-bg{position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.68);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:18px}
 .cfm-bg.open{display:flex}
 .cfm-box{width:100%;max-width:410px;padding:24px;border-radius:16px;background:rgba(15,18,26,.97);border:1px solid var(--hair2);box-shadow:0 24px 64px rgba(0,0,0,.72)}
 .cfm-box h3{margin:0 0 8px;font-size:17px;color:var(--ink)}
 .cfm-box p{margin:0 0 20px;font-size:13.5px;color:var(--mute);line-height:1.75}
 .cfm-acts{display:flex;gap:10px;justify-content:flex-end}
-@media(max-width:720px){
+
+@media(max-width:640px){
   .wrap{padding:22px 14px 64px}
   h1{font-size:24px}
   .panel{padding:16px}
   .row2{grid-template-columns:1fr}
+  .ed-edge-close{display:none!important}
+  .sheet-grab{display:flex}
+  .editor-drawer{left:0;right:0;top:auto;bottom:0;width:100%;max-height:80dvh;border-radius:20px 20px 0 0;border-inline-end:0;border-top:1px solid var(--hair2);box-shadow:0 -18px 56px rgba(0,0,0,.78);transform:translateY(105%)}
+  .editor-drawer.open{transform:translateY(0)}
+  .drawer-body{padding:14px 16px 24px}
 }
 </style>
 </head>
@@ -90,11 +107,11 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       <span>بازگشت به مرکز گزارش‌ها</span>
     </a>
     <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-      <a class="btn pri" href="submit.html" style="border-radius:999px;height:36px">
+      <a class="btn pri" href="submit.html" style="border-radius:999px">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         <span>ارسال گزارش جدید</span>
       </a>
-      <button class="btn del" id="logout-btn" type="button" style="display:none;border-radius:999px;height:36px">
+      <button class="btn del" id="logout-btn" type="button" style="display:none;border-radius:999px">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         <span>خروج از پنل</span>
       </button>
@@ -104,12 +121,12 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   <div id="auth-view" class="panel auth-box">
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#165EF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     <h1 style="font-size:22px;margin-top:10px">ورود به پنل مدیریت گزارش‌ها</h1>
-    <p class="sub" style="margin-bottom:6px">برای ویرایش، مخفی‌سازی یا حذف گزارش‌ها داخل پلتفرم، رمز ادمین را وارد کنید.</p>
+    <p class="sub" style="margin-bottom:6px">برای مدیریت، مرتب‌سازی، ویرایش و تأیید گزارش‌ها رمز ادمین را وارد کنید.</p>
     <form id="auth-form">
       <div class="pass-wrap">
         <input id="admin-pass" type="password" placeholder="رمز ورود ادمین" required autocomplete="current-password">
         <button type="button" class="eye-btn" id="eye-btn" aria-label="نمایش یا مخفی کردن رمز" title="نمایش رمز">
-          <svg id="eye-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
       <button class="btn pri" style="width:100%;height:42px" id="auth-btn" type="submit">ورود به مدیریت</button>
@@ -119,117 +136,128 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
   <div id="dash-view" style="display:none">
     <h1>پنل مدیریت گزارش‌ها</h1>
-    <p class="sub">تمام گزارش‌های پلتفرم را مستقیم همین‌جا ویرایش، مخفی یا حذف کنید — تغییرات بدون نیاز به مراجعه به GitHub روی سایت اعمال می‌شوند.</p>
+    <p class="sub">گزارش‌های تأییدشده را مرتب، ویرایش یا مخفی کنید و درخواست‌های در انتظار تأیید را مستقیم اینجا یا در تلگرام بررسی کنید.</p>
 
-    <section class="panel" style="margin-bottom:20px">
+    <section class="panel" style="margin-bottom:22px">
       <div class="sec-h">
-        <h2>گزارش‌های اصلی پلتفرم (ویرایش عنوان، توضیحات، تاریخ و نمایش/مخفی‌سازی)</h2>
+        <h2>گزارش‌های منتشرشده و تأییدشده (با امکان تغییر ترتیب نمایش)</h2>
+        <button class="btn" id="refresh-btn" type="button">بروزرسانی</button>
       </div>
-      <div id="core-list" class="list"></div>
-      <div id="core-msg" class="msg"></div>
+      <div id="pub-list" class="list"><div class="empty">در حال بارگذاری...</div></div>
+      <div id="pub-msg" class="msg"></div>
     </section>
 
-    <section id="core-editor" class="panel editor-wrap" style="margin-bottom:20px">
+    <section class="panel">
       <div class="sec-h">
-        <h2 id="ced-heading">ویرایش گزارش اصلی</h2>
-        <button class="btn" id="ced-cancel" type="button">بستن ویرایشگر</button>
+        <h2>گزارش‌های در انتظار تأیید / رد</h2>
       </div>
-      <form id="ced-form">
-        <input type="hidden" id="ced-id">
-        <div class="row2">
-          <div class="field"><label for="ced-title">عنوان گزارش (کارت صفحه اصلی)</label><input id="ced-title" required></div>
-          <div class="field"><label for="ced-cat">برچسب دسته‌بندی</label><input id="ced-cat" required></div>
-        </div>
-        <div class="field"><label for="ced-date">تاریخ شمسی نمایشی</label><input id="ced-date"></div>
-        <div class="field"><label for="ced-desc">توضیحات کارت صفحه اصلی</label><textarea id="ced-desc" style="min-height:84px"></textarea></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn pri" id="ced-save" type="submit">ذخیره مشخصات کارت</button>
-        </div>
-      </form>
-    </section>
-
-    <section id="full-editor" class="panel editor-wrap" style="margin-bottom:20px">
-      <div class="sec-h">
-        <h2 id="fed-heading">ویرایش کامل محتوای گزارش</h2>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn pri" id="fed-save" type="button">ذخیره کل محتوای گزارش روی سایت</button>
-          <button class="btn" id="fed-cancel" type="button">بستن</button>
-        </div>
-      </div>
-      <div id="fed-msg" class="msg" style="margin-bottom:14px"></div>
-      <div class="row2">
-        <div class="field"><label for="fed-h1">تیتر اصلی داخل صفحه (H1)</label><input id="fed-h1"></div>
-        <div class="field"><label for="fed-sub">زیرتیتر بالای صفحه</label><input id="fed-sub"></div>
-      </div>
-      <div style="padding:12px 14px;margin:10px 0 16px;border-radius:12px;background:rgba(22,94,246,.08);border:1px solid rgba(22,94,246,.32)">
-        <div style="font-size:12.5px;font-weight:700;color:#dbe8ff;margin-bottom:8px">جستجو و جایگزینی سریع در کل متن گزارش</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <input id="sr-find" placeholder="عبارت برای جستجو..." style="flex:1 1 180px;padding:8px 11px;border-radius:8px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:13px">
-          <input id="sr-rep" placeholder="جایگزین شود با (برای حذف خالی بگذارید)..." style="flex:1 1 180px;padding:8px 11px;border-radius:8px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:13px">
-          <button class="btn soft" id="sr-run" type="button">جایگزینی در کل گزارش</button>
-        </div>
-      </div>
-      <div class="row2" style="align-items:end;margin-bottom:14px">
-        <div class="field" style="margin-bottom:0">
-          <label for="fed-cat-sel">انتخاب بخش / فلو</label>
-          <select id="fed-cat-sel"></select>
-        </div>
-        <div style="display:flex;gap:8px;justify-content:flex-end">
-          <button class="btn soft" id="fed-add-item" type="button">+ افزودن مورد جدید به این بخش</button>
-        </div>
-      </div>
-      <div id="fed-items" class="list" style="max-height:560px;overflow-y:auto;padding-inline-end:4px"></div>
-    </section>
-
-    <section class="panel" style="margin-bottom:20px">
-      <div class="sec-h">
-        <h2>گزارش‌های Markdown ارسال‌شده (ویرایش کامل متن و حذف)</h2>
-        <button class="btn" id="refresh-btn" type="button">بروزرسانی لیست</button>
-      </div>
-      <div id="md-list" class="list"><div class="empty">در حال بارگذاری...</div></div>
-      <div id="dash-msg" class="msg"></div>
-    </section>
-
-    <section id="editor-wrap" class="panel editor-wrap">
-      <div class="sec-h">
-        <h2 id="ed-heading">ویرایش گزارش Markdown</h2>
-        <button class="btn" id="ed-cancel" type="button">بستن ویرایشگر</button>
-      </div>
-      <form id="ed-form">
-        <input type="hidden" id="ed-slug">
-        <div class="row2">
-          <div class="field"><label for="ed-title">عنوان گزارش</label><input id="ed-title" required></div>
-          <div class="field"><label for="ed-author">نویسنده</label><input id="ed-author" required></div>
-        </div>
-        <div class="row2">
-          <div class="field"><label for="ed-cat">دسته‌بندی</label>
-            <select id="ed-cat">
-              <option value="UX Benchmark">UX Benchmark</option>
-              <option value="UI/UX Audit">UI/UX Audit</option>
-              <option value="Product Research">Product Research</option>
-              <option value="Technical Report">Technical Report</option>
-            </select>
-          </div>
-          <div class="field"><label for="ed-date">تاریخ شمسی</label><input id="ed-date"></div>
-        </div>
-        <div class="field"><label for="ed-sum">خلاصه کوتاه</label><input id="ed-sum"></div>
-        <div class="field"><label for="ed-md">محتوای کامل Markdown (.md)</label><textarea id="ed-md" class="md-area" required></textarea></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn pri" id="ed-save" type="submit">ذخیره تغییرات و انتشار روی سایت</button>
-          <button class="btn del" id="ed-del" type="button">حذف کامل این گزارش</button>
-        </div>
-        <div id="ed-msg" class="msg"></div>
-      </form>
+      <div id="pend-list" class="list"><div class="empty">در حال بررسی صف انتظار...</div></div>
+      <div id="pend-msg" class="msg"></div>
     </section>
   </div>
 </main>
+
+<!-- Backdrop + Side Drawers (placed at root of body so ZERO blur covers them!) -->
 <div class="editor-bg" id="ed-bg"></div>
 <button type="button" class="ed-edge-close" id="ed-edge" aria-label="بستن پنل ویرایش" title="بستن پنل (Esc یا کلیک بیرون)">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
 </button>
+
+<aside id="core-editor" class="editor-drawer" aria-label="ویرایش مشخصات کارت">
+  <button type="button" class="sheet-grab" data-close-drawer aria-label="بستن"><i></i></button>
+  <div class="drawer-body">
+    <div class="sec-h">
+      <h2 id="ced-heading">ویرایش مشخصات کارت</h2>
+      <button class="btn" data-close-drawer type="button">بستن</button>
+    </div>
+    <form id="ced-form">
+      <input type="hidden" id="ced-id">
+      <div class="row2">
+        <div class="field"><label for="ced-title">عنوان گزارش (کارت صفحه اصلی)</label><input id="ced-title" required></div>
+        <div class="field"><label for="ced-cat">برچسب دسته‌بندی</label><input id="ced-cat" required></div>
+      </div>
+      <div class="field"><label for="ced-date">تاریخ شمسی نمایشی</label><input id="ced-date"></div>
+      <div class="field"><label for="ced-desc">توضیحات کارت صفحه اصلی</label><textarea id="ced-desc" style="min-height:92px"></textarea></div>
+      <button class="btn pri" id="ced-save" type="submit">ذخیره مشخصات کارت</button>
+    </form>
+  </div>
+</aside>
+
+<aside id="full-editor" class="editor-drawer" aria-label="ویرایش کامل محتوای گزارش">
+  <button type="button" class="sheet-grab" data-close-drawer aria-label="بستن"><i></i></button>
+  <div class="drawer-body">
+    <div class="sec-h">
+      <h2 id="fed-heading">ویرایش کامل محتوای گزارش</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn pri" id="fed-save" type="button">ذخیره کل محتوا</button>
+        <button class="btn" data-close-drawer type="button">بستن</button>
+      </div>
+    </div>
+    <div id="fed-msg" class="msg" style="margin-bottom:14px"></div>
+    <div class="row2">
+      <div class="field"><label for="fed-h1">تیتر اصلی داخل صفحه (H1)</label><input id="fed-h1"></div>
+      <div class="field"><label for="fed-sub">زیرتیتر بالای صفحه</label><input id="fed-sub"></div>
+    </div>
+    <div style="padding:12px 14px;margin:10px 0 16px;border-radius:12px;background:rgba(22,94,246,.08);border:1px solid rgba(22,94,246,.32)">
+      <div style="font-size:12.5px;font-weight:700;color:#dbe8ff;margin-bottom:8px">جستجو و جایگزینی سریع در کل متن گزارش</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <input id="sr-find" placeholder="عبارت برای جستجو..." style="flex:1 1 160px;padding:8px 11px;border-radius:8px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:13px">
+        <input id="sr-rep" placeholder="جایگزین شود با..." style="flex:1 1 160px;padding:8px 11px;border-radius:8px;border:1px solid var(--hair2);background:rgba(255,255,255,.05);color:var(--ink);font:inherit;font-size:13px">
+        <button class="btn soft" id="sr-run" type="button">جایگزینی</button>
+      </div>
+    </div>
+    <div class="row2" style="align-items:end;margin-bottom:14px">
+      <div class="field" style="margin-bottom:0">
+        <label for="fed-cat-sel">انتخاب بخش / فلو</label>
+        <select id="fed-cat-sel"></select>
+      </div>
+      <div style="display:flex;justify-content:flex-end">
+        <button class="btn soft" id="fed-add-item" type="button">+ افزودن مورد جدید</button>
+      </div>
+    </div>
+    <div id="fed-items" class="list"></div>
+  </div>
+</aside>
+
+<aside id="editor-wrap" class="editor-drawer" aria-label="ویرایش گزارش Markdown">
+  <button type="button" class="sheet-grab" data-close-drawer aria-label="بستن"><i></i></button>
+  <div class="drawer-body">
+    <div class="sec-h">
+      <h2 id="ed-heading">ویرایش گزارش Markdown</h2>
+      <button class="btn" data-close-drawer type="button">بستن</button>
+    </div>
+    <form id="ed-form">
+      <input type="hidden" id="ed-slug">
+      <div class="row2">
+        <div class="field"><label for="ed-title">عنوان گزارش</label><input id="ed-title" required></div>
+        <div class="field"><label for="ed-author">نویسنده</label><input id="ed-author" required></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="ed-cat">دسته‌بندی</label>
+          <select id="ed-cat">
+            <option value="UX Benchmark">UX Benchmark</option>
+            <option value="UI/UX Audit">UI/UX Audit</option>
+            <option value="Product Research">Product Research</option>
+            <option value="Technical Report">Technical Report</option>
+          </select>
+        </div>
+        <div class="field"><label for="ed-date">تاریخ شمسی</label><input id="ed-date"></div>
+      </div>
+      <div class="field"><label for="ed-sum">خلاصه کوتاه</label><input id="ed-sum"></div>
+      <div class="field"><label for="ed-md">محتوای کامل Markdown (.md)</label><textarea id="ed-md" class="md-area" required></textarea></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn pri" id="ed-save" type="submit">ذخیره تغییرات</button>
+        <button class="btn del" id="ed-del" type="button">حذف کامل گزارش</button>
+      </div>
+      <div id="ed-msg" class="msg"></div>
+    </form>
+  </div>
+</aside>
+
 <button type="button" class="scroll-top" id="scroll-top" aria-label="بازگشت به بالای صفحه" title="بازگشت به بالا">
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
+
 <div class="cfm-bg" id="cfm-modal" role="dialog" aria-modal="true">
   <div class="cfm-box">
     <h3 id="cfm-title">تأیید عملیات</h3>
@@ -240,33 +268,34 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     </div>
   </div>
 </div>
+
 <script src="ai-config.js"></script>
 <script>
 (function(){
   const ep = ((window.TOPFAST_AI_CONFIG && window.TOPFAST_AI_CONFIG.endpoint) || '').replace(/\/$/,'');
   let passcode = sessionStorage.getItem('tf_admin_pass') || '';
-  let itemsCache = [];
-  let overridesCache = {};
+  let mdItems = [], pendingItems = [], overridesCache = {}, unifiedList = [];
 
   const CORE_DEFAULTS = [
-    { id: 'benchmark', href: 'crm-benchmark.html', title: 'بنچمارک UX فلوهای CRM', category: 'UX Benchmark', dateFa: '۳ آذر ۱۴۰۵', desc: 'مقایسه جامع ۶ فلوی کلیدی (Register، KYC، Profile، Deposit، Withdraw و Trade) در TopFast با ۱۰ رقیب ایرانی، بین‌المللی و CRM جهانی همراه با امتیازدهی و نقشه راه بهبود.' },
-    { id: 'issues', href: 'crm-issues.html', title: 'ایرادات پیاده‌سازی CRM', category: 'Design QA', dateFa: '۱ آذر ۱۴۰۵', desc: 'ممیزی دقیق مغایرت‌های پیاده‌سازی فرانت‌اند با طراحی Figma در ۹ صفحه اصلی و در هر دو تم Light و Dark، دسته‌بندی‌شده بر اساس اولویت بحرانی تا متوسط.' }
+    { id: 'benchmark', kind: 'core', product: 'CRM TopFast', href: 'crm-benchmark.html', title: 'بنچمارک UX فلوهای CRM', category: 'UX Benchmark', dateFa: '۳ آذر ۱۴۰۵', desc: 'مقایسه جامع ۶ فلوی کلیدی (Register، KYC، Profile، Deposit، Withdraw و Trade) در TopFast با ۱۰ رقیب ایرانی، بین‌المللی و CRM جهانی همراه با امتیازدهی و نقشه راه بهبود.' },
+    { id: 'issues', kind: 'core', product: 'CRM TopFast', href: 'crm-issues.html', title: 'ایرادات پیاده‌سازی CRM', category: 'Design QA', dateFa: '۱ آذر ۱۴۰۵', desc: 'ممیزی دقیق مغایرت‌های پیاده‌سازی فرانت‌اند با طراحی Figma در ۹ صفحه اصلی و در هر دو تم Light و Dark، دسته‌بندی‌شده بر اساس اولویت بحرانی تا متوسط.' }
   ];
 
   const authView = document.getElementById('auth-view');
   const dashView = document.getElementById('dash-view');
   const authMsg = document.getElementById('auth-msg');
-  const dashMsg = document.getElementById('dash-msg');
-  const coreMsg = document.getElementById('core-msg');
+  const pubMsg = document.getElementById('pub-msg');
+  const pendMsg = document.getElementById('pend-msg');
   const edMsg = document.getElementById('ed-msg');
-  const mdList = document.getElementById('md-list');
-  const coreList = document.getElementById('core-list');
-  const edWrap = document.getElementById('editor-wrap');
+  const pubList = document.getElementById('pub-list');
+  const pendList = document.getElementById('pend-list');
   const coreEditor = document.getElementById('core-editor');
+  const fullEd = document.getElementById('full-editor');
+  const edWrap = document.getElementById('editor-wrap');
   const passIn = document.getElementById('admin-pass');
   const eyeBtn = document.getElementById('eye-btn');
+  const logoutBtn = document.getElementById('logout-btn');
 
-  // Password eye toggle
   eyeBtn.addEventListener('click', () => {
     const show = passIn.type === 'password';
     passIn.type = show ? 'text' : 'password';
@@ -280,26 +309,54 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 
   // Custom Dark Glass Confirmation Modal
   const cfmModal = document.getElementById('cfm-modal');
-  const cfmTitle = document.getElementById('cfm-title');
-  const cfmText = document.getElementById('cfm-text');
-  const cfmYes = document.getElementById('cfm-yes');
-  const cfmNo = document.getElementById('cfm-no');
   let cfmResolve = null;
   function askConfirm(title, text, yesLabel, isDanger){
-    cfmTitle.textContent = title;
-    cfmText.textContent = text;
-    cfmYes.textContent = yesLabel || 'تأیید';
-    cfmYes.className = 'btn ' + (isDanger ? 'del' : 'pri');
+    document.getElementById('cfm-title').textContent = title;
+    document.getElementById('cfm-text').textContent = text;
+    const yesBtn = document.getElementById('cfm-yes');
+    yesBtn.textContent = yesLabel || 'تأیید';
+    yesBtn.className = 'btn ' + (isDanger ? 'del' : 'pri');
     cfmModal.classList.add('open');
     return new Promise(res => { cfmResolve = res; });
   }
   function closeCfm(val){ cfmModal.classList.remove('open'); if(cfmResolve){ cfmResolve(val); cfmResolve = null; } }
-  cfmYes.addEventListener('click', () => closeCfm(true));
-  cfmNo.addEventListener('click', () => closeCfm(false));
+  document.getElementById('cfm-yes').addEventListener('click', () => closeCfm(true));
+  document.getElementById('cfm-no').addEventListener('click', () => closeCfm(false));
   cfmModal.addEventListener('click', e => { if(e.target === cfmModal) closeCfm(false); });
 
-  const logoutBtn = document.getElementById('logout-btn');
+  // Drawers & Easy Close (Edge Handle, Backdrop Click, Escape, Mobile Grab + Swipe)
+  const edBg = document.getElementById('ed-bg');
+  const edEdge = document.getElementById('ed-edge');
+  const drawers = [coreEditor, fullEd, edWrap];
+  function closeAllDrawers(){
+    drawers.forEach(d => d.classList.remove('open'));
+    edBg.classList.remove('open');
+    edEdge.classList.remove('open');
+  }
+  function openDrawer(el){
+    closeAllDrawers();
+    el.classList.add('open');
+    edBg.classList.add('open');
+    edEdge.classList.add('open');
+    const body = el.querySelector('.drawer-body');
+    if (body) body.scrollTop = 0;
+  }
+  edBg.addEventListener('click', closeAllDrawers);
+  edEdge.addEventListener('click', closeAllDrawers);
+  document.querySelectorAll('[data-close-drawer]').forEach(b => b.addEventListener('click', closeAllDrawers));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape'){ if(cfmModal.classList.contains('open')) closeCfm(false); else closeAllDrawers(); } });
+  drawers.forEach(el => {
+    let sx = 0, sy = 0;
+    el.addEventListener('touchstart', e => { if(e.touches[0]){ sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, {passive:true});
+    el.addEventListener('touchend', e => {
+      if(!e.changedTouches[0]) return;
+      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if(window.innerWidth <= 640 ? (dy > 80 && Math.abs(dy) > Math.abs(dx)) : (dx < -80 && Math.abs(dx) > Math.abs(dy))) closeAllDrawers();
+    }, {passive:true});
+  });
+
   logoutBtn.addEventListener('click', () => {
+    closeAllDrawers();
     sessionStorage.removeItem('tf_admin_pass');
     passcode = '';
     passIn.value = '';
@@ -308,6 +365,10 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     authView.style.display = 'block';
     authMsg.className = 'msg';
   });
+
+  const scrollTopBtn = document.getElementById('scroll-top');
+  window.addEventListener('scroll', () => scrollTopBtn.classList.toggle('show', window.scrollY > 280), {passive:true});
+  scrollTopBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
 
   async function api(path, payload){
     if(!ep) throw new Error('آدرس Cloudflare Worker در فایل ai-config.js تنظیم نشده است.');
@@ -320,50 +381,215 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       });
       data = await res.json().catch(() => ({}));
     }catch(_){
-      throw new Error('ارتباط با سرور Cloudflare برقرار نشد. اتصال اینترنت یا آدرس Worker را بررسی کنید.');
+      throw new Error('ارتباط با سرور Cloudflare برقرار نشد.');
     }
     if(!res.ok){
       const rawErr = String(data.error || '');
       if(rawErr.includes('متن پیام خالی است') || res.status === 404){
-        throw new Error('کد جدید Worker (شامل مسیرهای پنل ادمین) هنوز روی Cloudflare Deploy نشده است. لطفاً فایل worker/index.js را در Cloudflare Worker دیپلوی کنید و دوباره تلاش کنید.');
+        throw new Error('کد جدید Worker هنوز روی Cloudflare Deploy نشده است. لطفاً فایل worker/index.js را در Cloudflare دیپلوی کنید.');
       }
-      if(res.status === 403){
-        throw new Error('رمز ورود ادمین اشتباه است. لطفاً رمز را با آیکون چشم چک کنید و دوباره بزنید.');
-      }
+      if(res.status === 403) throw new Error('رمز ورود ادمین اشتباه است.');
       throw new Error(rawErr || ('خطای سرور (' + res.status + ')'));
     }
     return data;
   }
 
-  function renderCoreList(){
-    coreList.innerHTML = CORE_DEFAULTS.map(c => {
-      const ov = overridesCache[c.id] || {};
-      const title = ov.title || c.title;
-      const cat = ov.category || c.category;
-      const dateFa = ov.dateFa || c.dateFa;
-      const hidden = !!ov.hidden;
-      return `
-        <div class="item">
-          <div class="item-info">
-            <b>${esc(title)} <span class="badge">${esc(cat)}</span>${hidden ? '<span class="badge hid">مخفی از صفحه اصلی</span>' : ''}</b>
-            <small>تاریخ: ${esc(dateFa)} · فایل: ${esc(c.href)}</small>
-          </div>
-          <div class="item-acts">
-            <a class="btn" href="${c.href}" target="_blank">مشاهده</a>
-            <button class="btn pri" type="button" data-fedit="${c.id}">ویرایش کامل محتوا</button>
-            <button class="btn soft" type="button" data-cedit="${c.id}">ویرایش کارت</button>
-            <button class="btn ${hidden ? 'pri' : 'del'}" type="button" data-ctoggle="${c.id}">${hidden ? 'نمایش مجدد' : 'مخفی کردن'}</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-    coreList.querySelectorAll('[data-fedit]').forEach(b => b.addEventListener('click', () => openFullEditor(b.dataset.fedit)));
-    coreList.querySelectorAll('[data-cedit]').forEach(b => b.addEventListener('click', () => openCoreEditor(b.dataset.cedit)));
-    coreList.querySelectorAll('[data-ctoggle]').forEach(b => b.addEventListener('click', () => toggleCoreHidden(b.dataset.ctoggle)));
+  async function saveOverrides(next){
+    await api('/admin/overrides-save', {overrides: next});
+    overridesCache = next;
   }
 
-  // Full Content Editor for flagship reports (data-benchmark.json / data-issues.json)
-  const fullEd = document.getElementById('full-editor');
+  function buildUnified(){
+    const list = [];
+    for(const c of CORE_DEFAULTS){
+      const ov = overridesCache[c.id] || {};
+      list.push({
+        ...c,
+        title: ov.title || c.title,
+        category: ov.category || c.category,
+        dateFa: ov.dateFa || c.dateFa,
+        desc: ov.desc || c.desc,
+        hidden: !!ov.hidden,
+      });
+    }
+    for(const it of mdItems){
+      list.push({
+        id: it.slug,
+        kind: 'md',
+        product: it.product || 'CRM TopFast',
+        href: 'report-viewer.html?slug=' + encodeURIComponent(it.slug),
+        title: it.title || it.slug,
+        category: it.category || 'Report',
+        dateFa: it.dateFa || it.dateEn || '-',
+        author: it.author || '',
+        raw: it,
+      });
+    }
+    const ord = Array.isArray(overridesCache._order) ? overridesCache._order : [];
+    if(ord.length){
+      list.sort((a, b) => {
+        const ia = ord.indexOf(a.id), ib = ord.indexOf(b.id);
+        if(ia !== -1 && ib !== -1) return ia - ib;
+        if(ia !== -1) return -1;
+        if(ib !== -1) return 1;
+        return 0;
+      });
+    }
+    unifiedList = list;
+  }
+
+  function renderPublished(){
+    buildUnified();
+    if(!unifiedList.length){
+      pubList.innerHTML = '<div class="empty">گزارشی ثبت نشده است.</div>';
+      return;
+    }
+    pubList.innerHTML = unifiedList.map((r, idx) => `
+      <div class="item">
+        <div class="item-ord">
+          <button class="btn ico" type="button" data-move="${idx}" data-dir="-1" title="انتقال به بالا" ${idx===0?'disabled':''}>↑</button>
+          <button class="btn ico" type="button" data-move="${idx}" data-dir="1" title="انتقال به پایین" ${idx===unifiedList.length-1?'disabled':''}>↓</button>
+        </div>
+        <div class="item-info">
+          <b>${esc(r.title)} <span class="badge prod">${esc(r.product)}</span><span class="badge">${esc(r.category)}</span>${r.hidden ? '<span class="badge hid">مخفی</span>' : ''}</b>
+          <small>تاریخ: ${esc(r.dateFa)}${r.author ? (' · نویسنده: ' + esc(r.author)) : ''}</small>
+        </div>
+        <div class="item-acts">
+          <a class="btn" href="${r.href}" target="_blank">مشاهده</a>
+          ${r.kind === 'core' ? `
+            <button class="btn pri" type="button" data-fedit="${r.id}">ویرایش محتوا</button>
+            <button class="btn soft" type="button" data-cedit="${r.id}">ویرایش کارت</button>
+            <button class="btn ${r.hidden ? 'pri' : 'del'}" type="button" data-ctoggle="${r.id}">${r.hidden ? 'نمایش مجدد' : 'مخفی کردن'}</button>
+          ` : `
+            <button class="btn pri" type="button" data-medit="${esc(r.id)}">ویرایش</button>
+            <button class="btn del" type="button" data-mdel="${esc(r.id)}">حذف</button>
+          `}
+        </div>
+      </div>
+    `).join('');
+
+    pubList.querySelectorAll('[data-move]').forEach(b => b.addEventListener('click', () => moveReport(Number(b.dataset.move), Number(b.dataset.dir))));
+    pubList.querySelectorAll('[data-fedit]').forEach(b => b.addEventListener('click', () => openFullEditor(b.dataset.fedit)));
+    pubList.querySelectorAll('[data-cedit]').forEach(b => b.addEventListener('click', () => openCoreEditor(b.dataset.cedit)));
+    pubList.querySelectorAll('[data-ctoggle]').forEach(b => b.addEventListener('click', () => toggleCoreHidden(b.dataset.ctoggle)));
+    pubList.querySelectorAll('[data-medit]').forEach(b => b.addEventListener('click', () => openMdEditor(b.dataset.medit)));
+    pubList.querySelectorAll('[data-mdel]').forEach(b => b.addEventListener('click', () => deleteMdReport(b.dataset.mdel)));
+  }
+
+  async function moveReport(idx, dir){
+    const target = idx + dir;
+    if(target < 0 || target >= unifiedList.length) return;
+    const ids = unifiedList.map(x => x.id);
+    [ids[idx], ids[target]] = [ids[target], ids[idx]];
+    const next = {...overridesCache, _order: ids};
+    try{
+      await saveOverrides(next);
+      renderPublished();
+      showMsg(pubMsg, 'ok', 'ترتیب نمایش گزارش‌ها ذخیره شد و بلافاصله روی صفحه اصلی اعمال گردید.');
+    }catch(err){
+      showMsg(pubMsg, 'err', err.message);
+    }
+  }
+
+  function renderPending(){
+    if(!pendingItems.length){
+      pendList.innerHTML = '<div class="empty">در حال حاضر هیچ گزارشی در صف انتظار تأیید نیست.</div>';
+      return;
+    }
+    pendList.innerHTML = pendingItems.map(p => `
+      <div class="item">
+        <div class="item-info">
+          <b>${esc(p.title)} <span class="badge pend">در انتظار تأیید</span><span class="badge prod">${esc(p.product || 'CRM TopFast')}</span><span class="badge">${esc(p.category || 'Report')}</span></b>
+          <small>نویسنده: ${esc(p.author)} · ${esc(p.summary || '')}</small>
+        </div>
+        <div class="item-acts">
+          <a class="btn" href="report-viewer.html?preview=${encodeURIComponent(p.id)}" target="_blank">پیش‌نمایش</a>
+          <button class="btn pri" type="button" data-papp="${esc(p.id)}">تأیید و انتشار</button>
+          <button class="btn del" type="button" data-prej="${esc(p.id)}">رد کردن</button>
+        </div>
+      </div>
+    `).join('');
+    pendList.querySelectorAll('[data-papp]').forEach(b => b.addEventListener('click', () => approvePending(b.dataset.papp)));
+    pendList.querySelectorAll('[data-prej]').forEach(b => b.addEventListener('click', () => rejectPending(b.dataset.prej)));
+  }
+
+  async function approvePending(id){
+    const p = pendingItems.find(x => x.id === id) || {};
+    const ok = await askConfirm('تأیید و انتشار گزارش', `گزارش «${p.title || id}» تأیید و روی سایت منتشر شود؟`, 'بله، منتشر شود', false);
+    if(!ok) return;
+    try{
+      await api('/admin/pending-approve', {id});
+      showMsg(pendMsg, 'ok', 'گزارش تأیید و منتشر شد و به لیست گزارش‌های اصلی بالا منتقل گردید.');
+      loadAll();
+    }catch(err){ showMsg(pendMsg, 'err', err.message); }
+  }
+
+  async function rejectPending(id){
+    const p = pendingItems.find(x => x.id === id) || {};
+    const ok = await askConfirm('رد کردن گزارش', `گزارش «${p.title || id}» رد و از صف انتظار حذف شود؟`, 'بله، رد شود', true);
+    if(!ok) return;
+    try{
+      await api('/admin/pending-reject', {id});
+      showMsg(pendMsg, 'ok', 'گزارش رد و از صف انتظار حذف شد.');
+      loadAll();
+    }catch(err){ showMsg(pendMsg, 'err', err.message); }
+  }
+
+  async function toggleCoreHidden(id){
+    const def = CORE_DEFAULTS.find(x => x.id === id) || {};
+    const cur = overridesCache[id] || {};
+    const willHide = !cur.hidden;
+    const title = cur.title || def.title || id;
+    const ok = await askConfirm(
+      willHide ? 'تأیید مخفی کردن گزارش' : 'تأیید نمایش مجدد گزارش',
+      willHide ? `گزارش «${title}» از صفحه اصلی مخفی شود؟` : `گزارش «${title}» دوباره در صفحه اصلی نمایش داده شود؟`,
+      willHide ? 'بله، مخفی کن' : 'بله، نمایش بده',
+      willHide
+    );
+    if(!ok) return;
+    try{
+      await saveOverrides({...overridesCache, [id]: {...cur, hidden: willHide}});
+      renderPublished();
+      showMsg(pubMsg, 'ok', willHide ? 'گزارش با موفقیت مخفی شد.' : 'گزارش مجدداً فعال شد.');
+    }catch(err){ showMsg(pubMsg, 'err', err.message); }
+  }
+
+  function openCoreEditor(id){
+    const def = CORE_DEFAULTS.find(x => x.id === id);
+    const ov = overridesCache[id] || {};
+    openDrawer(coreEditor);
+    document.getElementById('ced-heading').textContent = 'ویرایش کارت: ' + (ov.title || def.title);
+    document.getElementById('ced-id').value = id;
+    document.getElementById('ced-title').value = ov.title || def.title;
+    document.getElementById('ced-cat').value = ov.category || def.category;
+    document.getElementById('ced-date').value = ov.dateFa || def.dateFa;
+    document.getElementById('ced-desc').value = ov.desc || def.desc;
+  }
+
+  document.getElementById('ced-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const id = document.getElementById('ced-id').value;
+    const btn = document.getElementById('ced-save');
+    btn.disabled = true;
+    try{
+      await saveOverrides({
+        ...overridesCache,
+        [id]: {
+          ...(overridesCache[id] || {}),
+          title: document.getElementById('ced-title').value.trim(),
+          category: document.getElementById('ced-cat').value.trim(),
+          dateFa: document.getElementById('ced-date').value.trim(),
+          desc: document.getElementById('ced-desc').value.trim(),
+        }
+      });
+      closeAllDrawers();
+      renderPublished();
+      showMsg(pubMsg, 'ok', 'مشخصات کارت ذخیره و بلافاصله روی سایت اعمال شد.');
+    }catch(err){ showMsg(pubMsg, 'err', err.message); }
+    finally{ btn.disabled = false; }
+  });
+
+  // Full Content Editor for flagship reports
   const fedMsg = document.getElementById('fed-msg');
   const fedCatSel = document.getElementById('fed-cat-sel');
   const fedItems = document.getElementById('fed-items');
@@ -371,43 +597,11 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   const fedSub = document.getElementById('fed-sub');
   let curFullId = '', curFullData = null;
 
-  const edBg = document.getElementById('ed-bg');
-  const edEdge = document.getElementById('ed-edge');
-  const drawers = [coreEditor, fullEd, edWrap];
-  function closeAllDrawers(){
-    drawers.forEach(d => d && d.classList.remove('open'));
-    edBg.classList.remove('open');
-    edEdge.classList.remove('open');
-  }
-  function openDrawer(el){
-    closeAllDrawers();
-    el.classList.add('open');
-    edBg.classList.add('open');
-    edEdge.classList.add('open');
-    el.scrollTop = 0;
-  }
-  edBg.addEventListener('click', closeAllDrawers);
-  edEdge.addEventListener('click', closeAllDrawers);
-  document.addEventListener('keydown', e => { if(e.key === 'Escape'){ if(cfmModal.classList.contains('open')) closeCfm(false); else closeAllDrawers(); } });
-  drawers.forEach(el => {
-    let sx = 0, sy = 0;
-    el.addEventListener('touchstart', e => { if(e.touches[0]){ sx = e.touches[0].clientX; sy = e.touches[0].clientY; } }, {passive:true});
-    el.addEventListener('touchend', e => {
-      if(!e.changedTouches[0]) return;
-      const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-      if(dx < -80 && Math.abs(dx) > Math.abs(dy)) closeAllDrawers();
-    }, {passive:true});
-  });
-
-  const scrollTopBtn = document.getElementById('scroll-top');
-  window.addEventListener('scroll', () => scrollTopBtn.classList.toggle('show', window.scrollY > 280), {passive:true});
-  scrollTopBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
-
   async function openFullEditor(id){
     curFullId = id;
     openDrawer(fullEd);
     fedMsg.className = 'msg';
-    document.getElementById('fed-heading').textContent = 'ویرایش کامل محتوا: ' + (id === 'benchmark' ? 'بنچمارک UX فلوهای CRM' : 'ایرادات پیاده‌سازی CRM');
+    document.getElementById('fed-heading').textContent = 'ویرایش کامل محتوا: ' + (id === 'benchmark' ? 'بنچمارک UX' : 'ایرادات پیاده‌سازی');
     fedItems.innerHTML = '<div class="empty">در حال دریافت کل محتوای گزارش...</div>';
     try{
       const res = await api('/admin/data-get', {id});
@@ -418,10 +612,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
         `<option value="${idx}">${esc(c.shortFa || c.title || ('بخش ' + (idx+1)))} (${(c.items||[]).length} مورد)</option>`
       ).join('');
       renderFullItems();
-    }catch(err){
-      fedItems.innerHTML = '';
-      showMsg(fedMsg, 'err', err.message);
-    }
+    }catch(err){ fedItems.innerHTML = ''; showMsg(fedMsg, 'err', err.message); }
   }
 
   function renderFullItems(){
@@ -434,7 +625,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       <details style="border:1px solid var(--hair);border-radius:12px;background:rgba(255,255,255,.025);padding:12px 14px">
         <summary style="cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:700;color:var(--ink);font-size:13.5px;list-style:none">
           <span>${ii+1}. ${esc(it.title || 'بدون عنوان')} <span class="badge">${esc(it.sev || 'med')}</span></span>
-          <span style="font-size:11.5px;color:#6ea0ff">کلیک برای ویرایش ▾</span>
+          <span style="font-size:11.5px;color:#6ea0ff">ویرایش ▾</span>
         </summary>
         <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--hair)">
           <div class="row2">
@@ -451,201 +642,65 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
             <div class="field"><label>معیار UX</label><input data-f="ux" data-ii="${ii}" value="${esc(it.ux || '')}"></div>
             <div class="field"><label>وضعیت فعلی TopFast</label><textarea data-f="tf" data-ii="${ii}" style="min-height:68px">${esc(it.tf || '')}</textarea></div>
             <div class="field"><label>بهترین الگوی بازار</label><textarea data-f="best" data-ii="${ii}" style="min-height:68px">${esc(it.best || '')}</textarea></div>
-            <div class="field"><label>پیشنهاد بهبود برای TopFast</label><textarea data-f="rec" data-ii="${ii}" style="min-height:68px">${esc(it.rec || '')}</textarea></div>
+            <div class="field"><label>پیشنهاد بهبود</label><textarea data-f="rec" data-ii="${ii}" style="min-height:68px">${esc(it.rec || '')}</textarea></div>
           ` : `
-            <div class="field"><label>وضعیت فعلی در نسخه Live</label><textarea data-f="live" data-ii="${ii}" style="min-height:76px">${esc(it.live || '')}</textarea></div>
-            <div class="field"><label>طراحی مرجع در Figma</label><textarea data-f="figma" data-ii="${ii}" style="min-height:76px">${esc(it.figma || '')}</textarea></div>
+            <div class="field"><label>وضعیت فعلی Live</label><textarea data-f="live" data-ii="${ii}" style="min-height:76px">${esc(it.live || '')}</textarea></div>
+            <div class="field"><label>طراحی مرجع Figma</label><textarea data-f="figma" data-ii="${ii}" style="min-height:76px">${esc(it.figma || '')}</textarea></div>
           `}
           <button type="button" class="btn del" data-fdel="${ii}" style="height:32px;font-size:12px">حذف این مورد</button>
         </div>
       </details>
     `).join('');
-
-    fedItems.querySelectorAll('[data-f]').forEach(el => {
-      el.addEventListener('input', () => {
-        const idx = Number(el.dataset.ii);
-        cat.items[idx][el.dataset.f] = el.value;
-      });
-    });
-    fedItems.querySelectorAll('[data-fdel]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const idx = Number(btn.dataset.fdel);
-        if(!confirm('این مورد از گزارش حذف شود؟')) return;
-        cat.items.splice(idx, 1);
-        renderFullItems();
-        showMsg(fedMsg, 'ok', 'مورد حذف شد — برای اعمال روی سایت دکمه «ذخیره کل محتوای گزارش» را بزنید.');
-      });
-    });
+    fedItems.querySelectorAll('[data-f]').forEach(el => el.addEventListener('input', () => { cat.items[Number(el.dataset.ii)][el.dataset.f] = el.value; }));
+    fedItems.querySelectorAll('[data-fdel]').forEach(btn => btn.addEventListener('click', async () => {
+      const ok = await askConfirm('حذف مورد', 'این مورد از گزارش حذف شود؟', 'بله، حذف کن', true);
+      if(!ok) return;
+      cat.items.splice(Number(btn.dataset.fdel), 1);
+      renderFullItems();
+      showMsg(fedMsg, 'ok', 'مورد حذف شد — برای اعمال روی سایت دکمه «ذخیره کل محتوا» را بزنید.');
+    }));
   }
-
   fedCatSel.addEventListener('change', renderFullItems);
   fedH1.addEventListener('input', () => { if(curFullData) curFullData.h1 = fedH1.value; });
   fedSub.addEventListener('input', () => { if(curFullData) curFullData.sub = fedSub.value; });
-
   document.getElementById('fed-add-item').addEventListener('click', () => {
     if(!curFullData) return;
-    const ci = Number(fedCatSel.value) || 0;
-    const cat = curFullData.categories[ci];
+    const cat = curFullData.categories[Number(fedCatSel.value) || 0];
     if(!cat) return;
-    if(curFullId === 'benchmark'){
-      cat.items.unshift({ id: 'custom_' + Date.now(), title: 'معیار جدید', sev: 'high', ux: 'تجربه کاربری', tf: '', best: '', rec: '', crms: {}, imgs: [] });
-    } else {
-      cat.items.unshift({ title: 'ایشو جدید', sev: 'high', figma: '', live: '', pages: [], imgs: [] });
-    }
+    cat.items.unshift(curFullId === 'benchmark'
+      ? { id: 'custom_' + Date.now(), title: 'معیار جدید', sev: 'high', ux: 'تجربه کاربری', tf: '', best: '', rec: '', crms: {}, imgs: [] }
+      : { title: 'ایشو جدید', sev: 'high', figma: '', live: '', pages: [], imgs: [] });
     renderFullItems();
-    const firstDet = fedItems.querySelector('details');
-    if(firstDet) firstDet.open = true;
+    const d = fedItems.querySelector('details'); if(d) d.open = true;
   });
-
   document.getElementById('sr-run').addEventListener('click', () => {
     if(!curFullData) return;
-    const findTxt = document.getElementById('sr-find').value;
-    const repTxt = document.getElementById('sr-rep').value;
+    const findTxt = document.getElementById('sr-find').value, repTxt = document.getElementById('sr-rep').value;
     if(!findTxt) return;
     let count = 0;
-    const repStr = s => {
-      if(typeof s !== 'string' || !s.includes(findTxt)) return s;
-      const parts = s.split(findTxt);
-      count += parts.length - 1;
-      return parts.join(repTxt);
-    };
-    curFullData.h1 = repStr(curFullData.h1);
-    curFullData.sub = repStr(curFullData.sub);
-    for(const c of (curFullData.categories || [])){
-      for(const it of (c.items || [])){
-        for(const k of ['title','ux','tf','best','rec','live','figma']){
-          if(typeof it[k] === 'string') it[k] = repStr(it[k]);
-        }
-        if(it.crms && typeof it.crms === 'object'){
-          for(const ck of Object.keys(it.crms)) it.crms[ck] = repStr(it.crms[ck]);
-        }
-      }
+    const repStr = s => { if(typeof s !== 'string' || !s.includes(findTxt)) return s; const p = s.split(findTxt); count += p.length - 1; return p.join(repTxt); };
+    curFullData.h1 = repStr(curFullData.h1); curFullData.sub = repStr(curFullData.sub);
+    for(const c of (curFullData.categories || [])) for(const it of (c.items || [])){
+      for(const k of ['title','ux','tf','best','rec','live','figma']) if(typeof it[k] === 'string') it[k] = repStr(it[k]);
+      if(it.crms) for(const ck of Object.keys(it.crms)) it.crms[ck] = repStr(it.crms[ck]);
     }
-    fedH1.value = curFullData.h1 || '';
-    fedSub.value = curFullData.sub || '';
+    fedH1.value = curFullData.h1 || ''; fedSub.value = curFullData.sub || '';
     renderFullItems();
-    showMsg(fedMsg, count ? 'ok' : 'err', count ? (`${count} مورد جایگزین شد — برای انتشار روی سایت دکمه «ذخیره کل محتوای گزارش» را بزنید.`) : 'عبارت مورد نظر در متن گزارش پیدا نشد.');
+    showMsg(fedMsg, count ? 'ok' : 'err', count ? `${count} مورد جایگزین شد — دکمه «ذخیره کل محتوا» را بزنید.` : 'عبارت پیدا نشد.');
   });
-
   document.getElementById('fed-save').addEventListener('click', async () => {
     if(!curFullData) return;
-    const btn = document.getElementById('fed-save');
-    btn.disabled = true;
+    const btn = document.getElementById('fed-save'); btn.disabled = true;
     try{
       await api('/admin/data-save', { id: curFullId, data: curFullData });
-      showMsg(fedMsg, 'ok', 'کل محتوای گزارش با موفقیت ذخیره و روی GitHub ثبت شد (تا ~۳۰ ثانیه روی صفحه گزارش زنده می‌شود).');
-    }catch(err){
-      showMsg(fedMsg, 'err', err.message);
-    }finally{
-      btn.disabled = false;
-    }
+      showMsg(fedMsg, 'ok', 'کل محتوای گزارش ذخیره شد و بلافاصله روی سایت اعمال گردید.');
+    }catch(err){ showMsg(fedMsg, 'err', err.message); }
+    finally{ btn.disabled = false; }
   });
-  document.getElementById('fed-cancel').addEventListener('click', closeAllDrawers);
 
-  function openCoreEditor(id){
-    const def = CORE_DEFAULTS.find(x => x.id === id);
-    const ov = overridesCache[id] || {};
-    openDrawer(coreEditor);
-    document.getElementById('ced-heading').textContent = 'ویرایش: ' + (ov.title || def.title);
-    document.getElementById('ced-id').value = id;
-    document.getElementById('ced-title').value = ov.title || def.title;
-    document.getElementById('ced-cat').value = ov.category || def.category;
-    document.getElementById('ced-date').value = ov.dateFa || def.dateFa;
-    document.getElementById('ced-desc').value = ov.desc || def.desc;
-  }
-
-  async function saveOverrides(next){
-    await api('/admin/overrides-save', {overrides: next});
-    overridesCache = next;
-    renderCoreList();
-  }
-
-  async function toggleCoreHidden(id){
-    const def = CORE_DEFAULTS.find(x => x.id === id) || {};
-    const cur = overridesCache[id] || {};
-    const willHide = !cur.hidden;
-    const title = cur.title || def.title || id;
-    const ok = await askConfirm(
-      willHide ? 'تأیید مخفی کردن گزارش' : 'تأیید نمایش مجدد گزارش',
-      willHide
-        ? `آیا مطمئن هستید که گزارش «${title}» از صفحه اصلی مخفی شود؟ هر زمان بخواهید می‌توانید دوباره نمایشش دهید.`
-        : `گزارش «${title}» دوباره در صفحه اصلی نمایش داده شود؟`,
-      willHide ? 'بله، مخفی کن' : 'بله، نمایش بده',
-      willHide
-    );
-    if(!ok) return;
-    const next = {...overridesCache, [id]: {...cur, hidden: willHide}};
-    try{
-      await saveOverrides(next);
-      showMsg(coreMsg, 'ok', willHide ? 'گزارش با موفقیت مخفی شد و بلافاصله روی سایت اعمال گردید.' : 'گزارش مجدداً در صفحه اصلی فعال شد.');
-    }catch(err){
-      showMsg(coreMsg, 'err', err.message);
-    }
-  }
-
-  document.getElementById('ced-form').addEventListener('submit', async e => {
-    e.preventDefault();
-    const id = document.getElementById('ced-id').value;
-    const btn = document.getElementById('ced-save');
-    btn.disabled = true;
-    try{
-      const next = {
-        ...overridesCache,
-        [id]: {
-          ...(overridesCache[id] || {}),
-          title: document.getElementById('ced-title').value.trim(),
-          category: document.getElementById('ced-cat').value.trim(),
-          dateFa: document.getElementById('ced-date').value.trim(),
-          desc: document.getElementById('ced-desc').value.trim(),
-        }
-      };
-      await saveOverrides(next);
-      coreEditor.classList.remove('open');
-      showMsg(coreMsg, 'ok', 'تغییرات گزارش با موفقیت ذخیره شد (تا ~۳۰ ثانیه روی صفحه اصلی اعمال می‌شود).');
-    }catch(err){
-      showMsg(coreMsg, 'err', err.message);
-    }finally{
-      btn.disabled = false;
-    }
-  });
-  document.getElementById('ced-cancel').addEventListener('click', closeAllDrawers);
-
-  async function loadAll(){
-    mdList.innerHTML = '<div class="empty">در حال بارگذاری لیست گزارش‌ها...</div>';
-    try{
-      const [ovData, listData] = await Promise.all([
-        api('/admin/overrides-get', {}).catch(() => ({overrides:{}})),
-        api('/admin/list', {})
-      ]);
-      overridesCache = (ovData && ovData.overrides) || {};
-      renderCoreList();
-      itemsCache = Array.isArray(listData.items) ? listData.items : [];
-      if(!itemsCache.length){
-        mdList.innerHTML = '<div class="empty">هنوز هیچ گزارش Markdown منتشر نشده است. از دکمه «ارسال گزارش جدید» می‌توانید اولین گزارش را اضافه کنید.</div>';
-        return;
-      }
-      mdList.innerHTML = itemsCache.map(it => `
-        <div class="item">
-          <div class="item-info">
-            <b>${esc(it.title)} <span class="badge">${esc(it.category || 'Report')}</span></b>
-            <small>نویسنده: ${esc(it.author)} · تاریخ: ${esc(it.dateFa || it.dateEn || '-')}</small>
-          </div>
-          <div class="item-acts">
-            <a class="btn" href="report-viewer.html?slug=${encodeURIComponent(it.slug)}" target="_blank">مشاهده</a>
-            <button class="btn soft" type="button" data-edit="${esc(it.slug)}">ویرایش</button>
-            <button class="btn del" type="button" data-del="${esc(it.slug)}">حذف</button>
-          </div>
-        </div>
-      `).join('');
-      mdList.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => openEditor(b.dataset.edit)));
-      mdList.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => deleteReport(b.dataset.del)));
-    }catch(err){
-      mdList.innerHTML = `<div class="empty">${esc(err.message)}</div>`;
-    }
-  }
-
-  async function openEditor(slug){
-    const meta = itemsCache.find(x => x.slug === slug) || {};
+  // Markdown report editor
+  async function openMdEditor(slug){
+    const meta = mdItems.find(x => x.slug === slug) || {};
     openDrawer(edWrap);
     edMsg.className = 'msg';
     document.getElementById('ed-heading').textContent = 'ویرایش: ' + (meta.title || slug);
@@ -659,29 +714,22 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     try{
       const data = await api('/admin/get', {slug});
       document.getElementById('ed-md').value = data.markdown || '';
-    }catch(err){
-      showMsg(edMsg, 'err', err.message);
-    }
+    }catch(err){ showMsg(edMsg, 'err', err.message); }
   }
-
-  async function deleteReport(slug){
-    const meta = itemsCache.find(x => x.slug === slug) || {};
-    const ok = await askConfirm('تأیید حذف کامل گزارش', 'آیا از حذف کامل گزارش «' + (meta.title || slug) + '» مطمئن هستید؟ این عمل قابل بازگشت نیست.', 'بله، حذف شود', true);
+  async function deleteMdReport(slug){
+    const meta = mdItems.find(x => x.slug === slug) || {};
+    const ok = await askConfirm('تأیید حذف گزارش', `آیا از حذف کامل گزارش «${meta.title || slug}» مطمئن هستید؟`, 'بله، حذف شود', true);
     if(!ok) return;
     try{
       await api('/admin/delete', {slug});
-      edWrap.classList.remove('open');
-      showMsg(dashMsg, 'ok', 'گزارش با موفقیت حذف شد.');
+      closeAllDrawers();
+      showMsg(pubMsg, 'ok', 'گزارش با موفقیت حذف شد.');
       loadAll();
-    }catch(err){
-      showMsg(dashMsg, 'err', err.message);
-    }
+    }catch(err){ showMsg(pubMsg, 'err', err.message); }
   }
-
   document.getElementById('ed-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const btn = document.getElementById('ed-save');
-    btn.disabled = true;
+    const btn = document.getElementById('ed-save'); btn.disabled = true;
     try{
       await api('/admin/update', {
         slug: document.getElementById('ed-slug').value,
@@ -692,17 +740,29 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
         summary: document.getElementById('ed-sum').value.trim(),
         markdown: document.getElementById('ed-md').value,
       });
-      showMsg(edMsg, 'ok', 'تغییرات با موفقیت ذخیره شد (تا ~۳۰ ثانیه روی سایت زنده می‌شود).');
+      showMsg(edMsg, 'ok', 'تغییرات با موفقیت ذخیره شد.');
       loadAll();
-    }catch(err){
-      showMsg(edMsg, 'err', err.message);
-    }finally{
-      btn.disabled = false;
-    }
+    }catch(err){ showMsg(edMsg, 'err', err.message); }
+    finally{ btn.disabled = false; }
   });
+  document.getElementById('ed-del').addEventListener('click', () => deleteMdReport(document.getElementById('ed-slug').value));
 
-  document.getElementById('ed-del').addEventListener('click', () => deleteReport(document.getElementById('ed-slug').value));
-  document.getElementById('ed-cancel').addEventListener('click', closeAllDrawers);
+  async function loadAll(){
+    pubList.innerHTML = '<div class="empty">در حال بارگذاری...</div>';
+    pendList.innerHTML = '<div class="empty">در حال بررسی صف انتظار...</div>';
+    try{
+      const [ovData, listData, pendData] = await Promise.all([
+        api('/admin/overrides-get', {}).catch(() => ({overrides:{}})),
+        api('/admin/list', {}).catch(() => ({items:[]})),
+        api('/admin/pending-list', {}).catch(() => ({items:[]}))
+      ]);
+      overridesCache = (ovData && ovData.overrides) || {};
+      mdItems = Array.isArray(listData.items) ? listData.items : [];
+      pendingItems = Array.isArray(pendData.items) ? pendData.items : [];
+      renderPublished();
+      renderPending();
+    }catch(err){ showMsg(pubMsg, 'err', err.message); }
+  }
   document.getElementById('refresh-btn').addEventListener('click', loadAll);
 
   async function tryAuth(code){
@@ -714,22 +774,13 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     logoutBtn.style.display = 'inline-flex';
     loadAll();
   }
-
   document.getElementById('auth-form').addEventListener('submit', async e => {
     e.preventDefault();
-    const btn = document.getElementById('auth-btn');
-    btn.disabled = true;
-    authMsg.className = 'msg';
-    try{
-      await tryAuth(passIn.value.trim());
-    }catch(err){
-      showMsg(authMsg, 'err', err.message);
-      passcode = '';
-    }finally{
-      btn.disabled = false;
-    }
+    const btn = document.getElementById('auth-btn'); btn.disabled = true; authMsg.className = 'msg';
+    try{ await tryAuth(passIn.value.trim()); }
+    catch(err){ showMsg(authMsg, 'err', err.message); passcode = ''; }
+    finally{ btn.disabled = false; }
   });
-
   if(passcode){ tryAuth(passcode).catch(()=>{ sessionStorage.removeItem('tf_admin_pass'); passcode = ''; }); }
 })();
 </script>

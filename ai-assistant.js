@@ -389,16 +389,22 @@
     .tfai-top:hover{background:#165EF6;border-color:#165EF6;color:#fff;transform:translateY(-2px)}
     body.tfai-has-mini .tfai-top{bottom:78px}
 
+    .tfai-grab{display:none;width:100%;padding:10px 0 6px;border:0;background:transparent;cursor:pointer;align-items:center;justify-content:center;flex:0 0 auto}
+    .tfai-grab i{display:block;width:44px;height:4.5px;border-radius:999px;background:rgba(255,255,255,.32);transition:background .15s,width .15s}
+    .tfai-grab:hover i{background:rgba(255,255,255,.55);width:54px}
+
     @media(max-width:640px){
       .tfai-edge-close{display:none!important}
+      .tfai-grab{display:flex}
       .tfai-top{right:14px;bottom:14px;width:40px;height:40px}
       body.tfai-has-mini .tfai-top{bottom:106px}
       .tfai-backdrop.open{display:block}
       .tfai-fab{left:14px;bottom:14px;height:46px;padding:0 14px;font-size:12.5px}
       body.tfai-has-mini{padding-bottom:108px}
       body.tfai-has-mini .tfai-fab{bottom:106px}
-      .tfai-panel{left:0;right:0;top:auto;bottom:0;width:100%;height:82dvh;border-radius:18px 18px 0 0;border-inline-end:0;border-top:1px solid rgba(255,255,255,.16);transform:translateY(105%)}
+      .tfai-panel{left:0;right:0;top:auto;bottom:0;width:100%;max-height:78dvh;height:78dvh;border-radius:20px 20px 0 0;border-inline-end:0;border-top:1px solid rgba(255,255,255,.18);box-shadow:0 -18px 56px rgba(0,0,0,.78);transform:translateY(105%)}
       .tfai-panel.open{transform:translateY(0)}
+      .tfai-pane{-webkit-overflow-scrolling:touch}
       .tfai-qbar{gap:6px}
       .tfai-qbtn{font-size:12px;padding:6px 11px}
       .tfai-mini{flex-wrap:wrap;padding:8px 12px 10px;gap:8px;justify-content:space-between}
@@ -442,6 +448,7 @@
   panel.className = 'tfai-panel';
   panel.setAttribute('aria-label', 'دستیار هوشمند گزارش');
   panel.innerHTML = `
+    <button type="button" class="tfai-grab" id="tfai-grab" aria-label="بستن پنل"><i></i></button>
     <div class="tfai-head">
       <div class="tfai-head-t">
         <span class="tfai-head-ic">${ICO.bot}</span>
@@ -611,6 +618,8 @@
   fab.addEventListener('click', () => (panel.classList.contains('open') ? closePanel() : openPanel('chat')));
   backdrop.addEventListener('click', closePanel);
   panel.querySelector('.tfai-close').addEventListener('click', closePanel);
+  const grabBtn = panel.querySelector('#tfai-grab');
+  if (grabBtn) grabBtn.addEventListener('click', closePanel);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && panel.classList.contains('open')) closePanel(); });
 
   document.querySelectorAll('[data-open-ai]').forEach((btn) => {

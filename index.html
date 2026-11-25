@@ -571,9 +571,13 @@ Promise.all([
   if (Array.isArray(items) && items.length) {
     for (const it of items) {
       if (!it || !it.slug || REPORTS.some(x => x.id === it.slug)) continue;
+      const prod = it.product || 'CRM TopFast';
+      if (!PRODUCTS.some(p => p.id === prod)) {
+        PRODUCTS.push({ id: prod, label: prod });
+      }
       REPORTS.push({
         id: it.slug,
-        product: it.product || 'CRM TopFast',
+        product: prod,
         dateIso: it.dateIso || '2026-11-24',
         dateFa: it.dateFa || 'جدید',
         dateEn: it.dateEn || '',
@@ -592,7 +596,19 @@ Promise.all([
       });
     }
   }
-  REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
+  const customOrder = (overrides && Array.isArray(overrides._order)) ? overrides._order : null;
+  if (customOrder && customOrder.length) {
+    REPORTS.sort((a, b) => {
+      const ia = customOrder.indexOf(a.id);
+      const ib = customOrder.indexOf(b.id);
+      if (ia !== -1 && ib !== -1) return ia - ib;
+      if (ia !== -1) return -1;
+      if (ib !== -1) return 1;
+      return b.dateIso.localeCompare(a.dateIso);
+    });
+  } else {
+    REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
+  }
   document.getElementById('rep-count').textContent = fa(REPORTS.length) + ' گزارش';
   if (REPORTS[0]) {
     document.getElementById('latest-date').textContent = REPORTS[0].dateFa + (REPORTS[0].dateEn ? ' (' + REPORTS[0].dateEn + ')' : '');

@@ -109,7 +109,22 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
           <input id="f-author" required placeholder="نام و نام خانوادگی">
         </div>
         <div class="field">
-          <label for="f-cat">دسته‌بندی *</label>
+          <label for="f-prod">محصول *</label>
+          <select id="f-prod">
+            <option value="CRM TopFast">CRM TopFast</option>
+            <option value="Club">Club</option>
+            <option value="DeltaFX">DeltaFX</option>
+            <option value="__new__">+ افزودن محصول جدید...</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" id="prod-new-wrap" style="display:none">
+        <label for="f-prod-new">نام محصول جدید *</label>
+        <input id="f-prod-new" placeholder="مثال: Mobile App یا Web Terminal">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="f-cat">نوع گزارش / دسته‌بندی *</label>
           <select id="f-cat">
             <option value="UX Benchmark">UX Benchmark</option>
             <option value="UI/UX Audit">UI/UX Audit</option>
@@ -117,10 +132,10 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
             <option value="Technical Report">Technical Report</option>
           </select>
         </div>
-      </div>
-      <div class="field">
-        <label for="f-date">تاریخ شمسی</label>
-        <input id="f-date" placeholder="مثال: ۴ آذر ۱۴۰۵">
+        <div class="field">
+          <label for="f-date">تاریخ شمسی</label>
+          <input id="f-date" placeholder="مثال: ۴ آذر ۱۴۰۵">
+        </div>
       </div>
       <div class="field">
         <label for="f-sum">خلاصه کوتاه (برای کارت صفحه اصلی و تلگرام) *</label>
@@ -174,6 +189,9 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
   const drop = document.getElementById('drop');
   const fTitle = document.getElementById('f-title');
   const fAuthor = document.getElementById('f-author');
+  const fProd = document.getElementById('f-prod');
+  const fProdNewWrap = document.getElementById('prod-new-wrap');
+  const fProdNew = document.getElementById('f-prod-new');
   const fCat = document.getElementById('f-cat');
   const fSum = document.getElementById('f-sum');
   const fDate = document.getElementById('f-date');
@@ -182,6 +200,31 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
   const prevBox = document.getElementById('prev-box');
   const prevMeta = document.getElementById('prev-meta');
   let rawMd = '', parsedKpis = [];
+
+  fProd.addEventListener('change', () => {
+    const isNew = fProd.value === '__new__';
+    fProdNewWrap.style.display = isNew ? 'block' : 'none';
+    fProdNew.required = isNew;
+    if (isNew) fProdNew.focus();
+  });
+
+  // Load any previously created custom products from reports-manifest.json
+  fetch('./reports-manifest.json?t=' + Date.now())
+    .then(r => r.ok ? r.json() : [])
+    .then(items => {
+      if (!Array.isArray(items)) return;
+      const existing = new Set(Array.from(fProd.options).map(o => o.value));
+      const newOpt = fProd.querySelector('option[value="__new__"]');
+      for (const it of items) {
+        if (it && it.product && !existing.has(it.product)) {
+          const opt = document.createElement('option');
+          opt.value = it.product;
+          opt.textContent = it.product;
+          fProd.insertBefore(opt, newOpt);
+          existing.add(it.product);
+        }
+      }
+    }).catch(() => {});
 
   function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
   function parseFM(md){
@@ -259,12 +302,15 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
     statusEl.className = 'status';
     statusEl.style.display = 'none';
     try{
+      const chosenProduct = fProd.value === '__new__' ? fProdNew.value.trim() : fProd.value;
+      if (!chosenProduct) throw new Error('لطفاً نام محصول را وارد کنید.');
       const res = await fetch(cfg.endpoint.replace(/\/$/,'') + '/submit', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
         body: JSON.stringify({
           title: fTitle.value.trim(),
           author: fAuthor.value.trim(),
+          product: chosenProduct,
           category: fCat.value,
           summary: fSum.value.trim(),
           dateFa: fDate.value.trim(),
