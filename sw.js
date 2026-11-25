@@ -1,4 +1,4 @@
-const CACHE_NAME = 'topfast-reports-v1';
+const CACHE_NAME = 'topfast-reports-v2';
 const APP_SHELL = [
   './',
   './index.html',
