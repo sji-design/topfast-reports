@@ -395,17 +395,8 @@ h1{letter-spacing:-.5px}
     <p class="sub">آرشیو یکپارچه گزارش‌های تحلیلی، بنچمارک رقبا و ممیزی پیاده‌سازی محصولات — مرتب‌شده بر اساس جدیدترین تاریخ گزارش.</p>
 
     <div class="meta-strip">
-      <div class="meta-items">
-        <span class="meta-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          آخرین بروزرسانی: <strong id="latest-date"></strong>
-        </span>
-        <span class="meta-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
-          تعداد گزارش‌ها: <strong id="rep-count"></strong>
-        </span>
-      </div>
       <div class="filter-pills" id="filters"></div>
+      <span id="rep-count" style="font-size:12px;color:var(--ash);font-weight:500;white-space:nowrap"></span>
     </div>
   </header>
 
@@ -478,7 +469,6 @@ REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
 
 const fa = n => String(n).replace(/\d/g, x => '۰۱۲۳۴۵۶۷۸۹'[x]);
 document.getElementById('rep-count').textContent = fa(REPORTS.length) + ' گزارش';
-document.getElementById('latest-date').textContent = REPORTS[0].dateFa + ' (' + REPORTS[0].dateEn + ')';
 
 const CAL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
 const ARW_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
@@ -568,17 +558,6 @@ Promise.all([
   _ovReq,
   fetch('./reports-manifest.json?t=' + Date.now()).then(r => r.ok ? r.json() : []).catch(() => [])
 ]).then(([overrides, items]) => {
-  if (overrides && typeof overrides === 'object') {
-    for (let i = REPORTS.length - 1; i >= 0; i--) {
-      const ov = overrides[REPORTS[i].id];
-      if (!ov) continue;
-      if (ov.hidden) { REPORTS.splice(i, 1); continue; }
-      if (ov.title) REPORTS[i].title = ov.title;
-      if (ov.desc) REPORTS[i].desc = ov.desc;
-      if (ov.dateFa) REPORTS[i].dateFa = ov.dateFa;
-      if (ov.category) REPORTS[i].category = ov.category;
-    }
-  }
   if (Array.isArray(items) && items.length) {
     for (const it of items) {
       if (!it || !it.slug || REPORTS.some(x => x.id === it.slug)) continue;
@@ -607,6 +586,19 @@ Promise.all([
       });
     }
   }
+  if (overrides && typeof overrides === 'object') {
+    for (let i = REPORTS.length - 1; i >= 0; i--) {
+      const ov = overrides[REPORTS[i].id];
+      if (!ov) continue;
+      if (ov.hidden) { REPORTS.splice(i, 1); continue; }
+      if (ov.title) REPORTS[i].title = ov.title;
+      if (ov.desc) REPORTS[i].desc = ov.desc;
+      if (ov.dateFa) REPORTS[i].dateFa = ov.dateFa;
+      if (ov.dateEn) REPORTS[i].dateEn = ov.dateEn;
+      if (ov.dateIso) REPORTS[i].dateIso = ov.dateIso;
+      if (ov.category) REPORTS[i].category = ov.category;
+    }
+  }
   const customOrder = (overrides && Array.isArray(overrides._order)) ? overrides._order : null;
   if (customOrder && customOrder.length) {
     REPORTS.sort((a, b) => {
@@ -621,9 +613,6 @@ Promise.all([
     REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
   }
   document.getElementById('rep-count').textContent = fa(REPORTS.length) + ' گزارش';
-  if (REPORTS[0]) {
-    document.getElementById('latest-date').textContent = REPORTS[0].dateFa + (REPORTS[0].dateEn ? ' (' + REPORTS[0].dateEn + ')' : '');
-  }
   renderFilters();
   renderGrid();
 }).catch(() => {});

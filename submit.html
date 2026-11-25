@@ -140,8 +140,8 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
           </select>
         </div>
         <div class="field">
-          <label for="f-date">تاریخ شمسی</label>
-          <input id="f-date" placeholder="مثال: ۴ آذر ۱۴۰۵">
+          <label for="f-date">تاریخ گزارش <small id="f-date-fa" style="color:#6ea0ff;font-weight:500;margin-inline-start:6px"></small></label>
+          <input id="f-date" type="date" style="color-scheme:dark;cursor:pointer">
         </div>
       </div>
       <div class="field">
@@ -202,11 +202,25 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
   const fCat = document.getElementById('f-cat');
   const fSum = document.getElementById('f-sum');
   const fDate = document.getElementById('f-date');
+  const fDateFaEl = document.getElementById('f-date-fa');
   const subBtn = document.getElementById('sub-btn');
   const statusEl = document.getElementById('status');
   const prevBox = document.getElementById('prev-box');
   const prevMeta = document.getElementById('prev-meta');
   let rawMd = '', parsedKpis = [];
+
+  function isoToDates(iso){
+    const d = iso ? new Date(iso + 'T12:00:00') : new Date();
+    if (isNaN(d.getTime())) return { dateIso: '', dateFa: '', dateEn: '' };
+    const dateIso = d.toISOString().slice(0, 10);
+    const dateFa = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+    const dateEn = new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(d);
+    return { dateIso, dateFa, dateEn };
+  }
+  fDate.value = new Date().toISOString().slice(0, 10);
+  function syncDatePreview(){ const x = isoToDates(fDate.value); fDateFaEl.textContent = x.dateFa ? ('(' + x.dateFa + ')') : ''; }
+  fDate.addEventListener('change', syncDatePreview);
+  syncDatePreview();
 
   fProd.addEventListener('change', () => {
     const isNew = fProd.value === '__new__';
@@ -311,6 +325,7 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
     try{
       const chosenProduct = fProd.value === '__new__' ? fProdNew.value.trim() : fProd.value;
       if (!chosenProduct) throw new Error('لطفاً نام محصول را وارد کنید.');
+      const dt = isoToDates(fDate.value);
       const res = await fetch(cfg.endpoint.replace(/\/$/,'') + '/submit', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
@@ -320,7 +335,9 @@ h1{margin:0 0 8px;font-size:30px;line-height:1.28;font-weight:800;color:var(--in
           product: chosenProduct,
           category: fCat.value,
           summary: fSum.value.trim(),
-          dateFa: fDate.value.trim(),
+          dateFa: dt.dateFa,
+          dateEn: dt.dateEn,
+          dateIso: dt.dateIso,
           kpis: parsedKpis,
           markdown: rawMd,
         }),

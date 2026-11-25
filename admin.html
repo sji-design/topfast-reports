@@ -42,8 +42,12 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
 .sec-h{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin:0 0 14px}
 .sec-h h2{margin:0;font-size:17.5px;color:var(--ink)}
 .list{display:flex;flex-direction:column;gap:10px}
-.item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:15px 16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair)}
-.item-ord{display:flex;flex-direction:column;gap:4px;flex:0 0 auto}
+.item{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:15px 16px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--hair);transition:transform .15s,border-color .15s,background .15s,opacity .15s}
+.item.dragging{opacity:.45;border-color:#165EF6;background:rgba(22,94,246,.1)}
+.item.drag-over{border-color:#165EF6;box-shadow:0 0 0 2px rgba(22,94,246,.35)}
+.drag-handle{width:34px;height:38px;border-radius:10px;border:0;background:transparent;color:var(--mute);display:flex;align-items:center;justify-content:center;cursor:grab;flex:0 0 auto;touch-action:none;transition:background .15s,color .15s}
+.drag-handle:hover{background:rgba(255,255,255,.07);color:#fff}
+.drag-handle:active{cursor:grabbing;color:#165EF6}
 .item-info{min-width:0;flex:1 1 240px}
 .item-info b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:3px}
 .item-info small{display:block;font-size:12px;color:var(--mute)}
@@ -183,7 +187,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
         <div class="field"><label for="ced-title">عنوان گزارش (کارت صفحه اصلی)</label><input id="ced-title" required></div>
         <div class="field"><label for="ced-cat">برچسب دسته‌بندی</label><input id="ced-cat" required></div>
       </div>
-      <div class="field"><label for="ced-date">تاریخ شمسی نمایشی</label><input id="ced-date"></div>
+      <div class="field"><label for="ced-date">تاریخ گزارش <small id="ced-date-fa" style="color:#6ea0ff;font-weight:500;margin-inline-start:6px"></small></label><input id="ced-date" type="date" style="color-scheme:dark;cursor:pointer"></div>
       <div class="field"><label for="ced-desc">توضیحات کارت صفحه اصلی</label><textarea id="ced-desc" style="min-height:92px"></textarea></div>
       <button class="btn pri" id="ced-save" type="submit">ذخیره مشخصات کارت</button>
     </form>
@@ -248,7 +252,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
             <option value="Technical Report">Technical Report</option>
           </select>
         </div>
-        <div class="field"><label for="ed-date">تاریخ شمسی</label><input id="ed-date"></div>
+        <div class="field"><label for="ed-date">تاریخ گزارش <small id="ed-date-fa" style="color:#6ea0ff;font-weight:500;margin-inline-start:6px"></small></label><input id="ed-date" type="date" style="color-scheme:dark;cursor:pointer"></div>
       </div>
       <div class="field"><label for="ed-sum">خلاصه کوتاه</label><input id="ed-sum"></div>
       <div class="field"><label for="ed-md">محتوای کامل Markdown (.md)</label><textarea id="ed-md" class="md-area" required></textarea></div>
@@ -284,9 +288,25 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   let mdItems = [], pendingItems = [], overridesCache = {}, unifiedList = [];
 
   const CORE_DEFAULTS = [
-    { id: 'benchmark', kind: 'core', product: 'CRM TopFast', href: 'crm-benchmark.html', title: 'بنچمارک UX فلوهای CRM', category: 'UX Benchmark', dateFa: '۳ آذر ۱۴۰۵', desc: 'مقایسه جامع ۶ فلوی کلیدی (Register، KYC، Profile، Deposit، Withdraw و Trade) در TopFast با ۱۰ رقیب ایرانی، بین‌المللی و CRM جهانی همراه با امتیازدهی و نقشه راه بهبود.' },
-    { id: 'issues', kind: 'core', product: 'CRM TopFast', href: 'crm-issues.html', title: 'ایرادات پیاده‌سازی CRM', category: 'Design QA', dateFa: '۱ آذر ۱۴۰۵', desc: 'ممیزی دقیق مغایرت‌های پیاده‌سازی فرانت‌اند با طراحی Figma در ۹ صفحه اصلی و در هر دو تم Light و Dark، دسته‌بندی‌شده بر اساس اولویت بحرانی تا متوسط.' }
+    { id: 'benchmark', kind: 'core', product: 'CRM TopFast', href: 'crm-benchmark.html', title: 'بنچمارک UX فلوهای CRM', category: 'UX Benchmark', dateIso: '2026-11-24', dateFa: '۳ آذر ۱۴۰۵', dateEn: '24 Nov 2026', desc: 'مقایسه جامع ۶ فلوی کلیدی (Register، KYC، Profile، Deposit، Withdraw و Trade) در TopFast با ۱۰ رقیب ایرانی، بین‌المللی و CRM جهانی همراه با امتیازدهی و نقشه راه بهبود.' },
+    { id: 'issues', kind: 'core', product: 'CRM TopFast', href: 'crm-issues.html', title: 'ایرادات پیاده‌سازی CRM', category: 'Design QA', dateIso: '2026-11-22', dateFa: '۱ آذر ۱۴۰۵', dateEn: '22 Nov 2026', desc: 'ممیزی دقیق مغایرت‌های پیاده‌سازی فرانت‌اند با طراحی Figma در ۹ صفحه اصلی و در هر دو تم Light و Dark، دسته‌بندی‌شده بر اساس اولویت بحرانی تا متوسط.' }
   ];
+
+  function isoToDates(iso){
+    const d = iso ? new Date(iso + 'T12:00:00') : new Date();
+    if (isNaN(d.getTime())) return { dateIso: '', dateFa: '', dateEn: '' };
+    return {
+      dateIso: d.toISOString().slice(0, 10),
+      dateFa: new Intl.DateTimeFormat('fa-IR-u-ca-persian', { day: 'numeric', month: 'long', year: 'numeric' }).format(d),
+      dateEn: new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(d),
+    };
+  }
+  const cedDateIn = document.getElementById('ced-date');
+  const cedDateFa = document.getElementById('ced-date-fa');
+  const edDateIn = document.getElementById('ed-date');
+  const edDateFa = document.getElementById('ed-date-fa');
+  cedDateIn.addEventListener('change', () => { const x = isoToDates(cedDateIn.value); cedDateFa.textContent = x.dateFa ? '(' + x.dateFa + ')' : ''; });
+  edDateIn.addEventListener('change', () => { const x = isoToDates(edDateIn.value); edDateFa.textContent = x.dateFa ? '(' + x.dateFa + ')' : ''; });
 
   const authView = document.getElementById('auth-view');
   const dashView = document.getElementById('dash-view');
@@ -414,20 +434,25 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
         ...c,
         title: ov.title || c.title,
         category: ov.category || c.category,
+        dateIso: ov.dateIso || c.dateIso,
         dateFa: ov.dateFa || c.dateFa,
+        dateEn: ov.dateEn || c.dateEn,
         desc: ov.desc || c.desc,
         hidden: !!ov.hidden,
       });
     }
     for(const it of mdItems){
+      const ov = overridesCache[it.slug] || {};
       list.push({
         id: it.slug,
         kind: 'md',
         product: it.product || 'CRM TopFast',
         href: 'report-viewer.html?slug=' + encodeURIComponent(it.slug),
-        title: it.title || it.slug,
-        category: it.category || 'Report',
-        dateFa: it.dateFa || it.dateEn || '-',
+        title: ov.title || it.title || it.slug,
+        category: ov.category || it.category || 'Report',
+        dateIso: ov.dateIso || it.dateIso || '2026-11-24',
+        dateFa: ov.dateFa || it.dateFa || it.dateEn || '-',
+        dateEn: ov.dateEn || it.dateEn || '',
         author: it.author || '',
         raw: it,
       });
@@ -445,6 +470,9 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     unifiedList = list;
   }
 
+  const GRIP_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>';
+  let dragIdx = null;
+
   function renderPublished(){
     buildUnified();
     if(!unifiedList.length){
@@ -452,11 +480,8 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       return;
     }
     pubList.innerHTML = unifiedList.map((r, idx) => `
-      <div class="item">
-        <div class="item-ord">
-          <button class="btn ico" type="button" data-move="${idx}" data-dir="-1" title="انتقال به بالا" ${idx===0?'disabled':''}>↑</button>
-          <button class="btn ico" type="button" data-move="${idx}" data-dir="1" title="انتقال به پایین" ${idx===unifiedList.length-1?'disabled':''}>↓</button>
-        </div>
+      <div class="item" draggable="true" data-idx="${idx}">
+        <button class="drag-handle" type="button" title="بکشید و رها کنید برای تغییر ترتیب" aria-label="تغییر ترتیب">${GRIP_SVG}</button>
         <div class="item-info">
           <b>${esc(r.title)} <span class="badge prod">${esc(r.product)}</span><span class="badge">${esc(r.category)}</span>${r.hidden ? '<span class="badge hid">مخفی</span>' : ''}</b>
           <small>تاریخ: ${esc(r.dateFa)}${r.author ? (' · نویسنده: ' + esc(r.author)) : ''}</small>
@@ -475,7 +500,30 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       </div>
     `).join('');
 
-    pubList.querySelectorAll('[data-move]').forEach(b => b.addEventListener('click', () => moveReport(Number(b.dataset.move), Number(b.dataset.dir))));
+    pubList.querySelectorAll('.item').forEach(el => {
+      el.addEventListener('dragstart', e => {
+        dragIdx = Number(el.dataset.idx);
+        el.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+      el.addEventListener('dragend', () => {
+        el.classList.remove('dragging');
+        pubList.querySelectorAll('.drag-over').forEach(x => x.classList.remove('drag-over'));
+      });
+      el.addEventListener('dragover', e => {
+        e.preventDefault();
+        el.classList.add('drag-over');
+      });
+      el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        el.classList.remove('drag-over');
+        const toIdx = Number(el.dataset.idx);
+        if (dragIdx !== null && dragIdx !== toIdx) reorderReports(dragIdx, toIdx);
+        dragIdx = null;
+      });
+    });
+
     pubList.querySelectorAll('[data-fedit]').forEach(b => b.addEventListener('click', () => openFullEditor(b.dataset.fedit)));
     pubList.querySelectorAll('[data-cedit]').forEach(b => b.addEventListener('click', () => openCoreEditor(b.dataset.cedit)));
     pubList.querySelectorAll('[data-ctoggle]').forEach(b => b.addEventListener('click', () => toggleCoreHidden(b.dataset.ctoggle)));
@@ -483,16 +531,15 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     pubList.querySelectorAll('[data-mdel]').forEach(b => b.addEventListener('click', () => deleteMdReport(b.dataset.mdel)));
   }
 
-  async function moveReport(idx, dir){
-    const target = idx + dir;
-    if(target < 0 || target >= unifiedList.length) return;
+  async function reorderReports(fromIdx, toIdx){
     const ids = unifiedList.map(x => x.id);
-    [ids[idx], ids[target]] = [ids[target], ids[idx]];
+    const [moved] = ids.splice(fromIdx, 1);
+    ids.splice(toIdx, 0, moved);
     const next = {...overridesCache, _order: ids};
     try{
       await saveOverrides(next);
       renderPublished();
-      showMsg(pubMsg, 'ok', 'ترتیب نمایش گزارش‌ها ذخیره شد و بلافاصله روی صفحه اصلی اعمال گردید.');
+      showMsg(pubMsg, 'ok', 'ترتیب جدید ذخیره شد و بلافاصله روی صفحه اصلی اعمال گردید.');
     }catch(err){
       showMsg(pubMsg, 'err', err.message);
     }
@@ -569,7 +616,9 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     document.getElementById('ced-id').value = id;
     document.getElementById('ced-title').value = ov.title || def.title;
     document.getElementById('ced-cat').value = ov.category || def.category;
-    document.getElementById('ced-date').value = ov.dateFa || def.dateFa;
+    cedDateIn.value = ov.dateIso || def.dateIso || new Date().toISOString().slice(0, 10);
+    const dt = isoToDates(cedDateIn.value);
+    cedDateFa.textContent = dt.dateFa ? '(' + dt.dateFa + ')' : '';
     document.getElementById('ced-desc').value = ov.desc || def.desc;
   }
 
@@ -579,19 +628,22 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     const btn = document.getElementById('ced-save');
     btn.disabled = true;
     try{
+      const dt = isoToDates(cedDateIn.value);
       await saveOverrides({
         ...overridesCache,
         [id]: {
           ...(overridesCache[id] || {}),
           title: document.getElementById('ced-title').value.trim(),
           category: document.getElementById('ced-cat').value.trim(),
-          dateFa: document.getElementById('ced-date').value.trim(),
+          dateIso: dt.dateIso,
+          dateFa: dt.dateFa,
+          dateEn: dt.dateEn,
           desc: document.getElementById('ced-desc').value.trim(),
         }
       });
       closeAllDrawers();
       renderPublished();
-      showMsg(pubMsg, 'ok', 'مشخصات کارت ذخیره و بلافاصله روی سایت اعمال شد.');
+      showMsg(pubMsg, 'ok', 'مشخصات و تاریخ کارت ذخیره و بلافاصله روی سایت اعمال شد.');
     }catch(err){ showMsg(pubMsg, 'err', err.message); }
     finally{ btn.disabled = false; }
   });
@@ -708,15 +760,18 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   // Markdown report editor
   async function openMdEditor(slug){
     const meta = mdItems.find(x => x.slug === slug) || {};
+    const ov = overridesCache[slug] || {};
     openDrawer(edWrap);
     edMsg.className = 'msg';
-    document.getElementById('ed-heading').textContent = 'ویرایش: ' + (meta.title || slug);
+    document.getElementById('ed-heading').textContent = 'ویرایش: ' + (ov.title || meta.title || slug);
     document.getElementById('ed-slug').value = slug;
-    document.getElementById('ed-title').value = meta.title || '';
+    document.getElementById('ed-title').value = ov.title || meta.title || '';
     document.getElementById('ed-author').value = meta.author || '';
-    document.getElementById('ed-cat').value = meta.category || 'UX Benchmark';
-    document.getElementById('ed-date').value = meta.dateFa || '';
-    document.getElementById('ed-sum').value = meta.summary || '';
+    document.getElementById('ed-cat').value = ov.category || meta.category || 'UX Benchmark';
+    edDateIn.value = ov.dateIso || meta.dateIso || new Date().toISOString().slice(0, 10);
+    const dt = isoToDates(edDateIn.value);
+    edDateFa.textContent = dt.dateFa ? '(' + dt.dateFa + ')' : '';
+    document.getElementById('ed-sum').value = ov.desc || meta.summary || '';
     document.getElementById('ed-md').value = 'در حال دریافت متن فایل...';
     try{
       const data = await api('/admin/get', {slug});
@@ -738,16 +793,22 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     e.preventDefault();
     const btn = document.getElementById('ed-save'); btn.disabled = true;
     try{
+      const slug = document.getElementById('ed-slug').value;
+      const dt = isoToDates(edDateIn.value);
+      const title = document.getElementById('ed-title').value.trim();
+      const author = document.getElementById('ed-author').value.trim();
+      const category = document.getElementById('ed-cat').value;
+      const summary = document.getElementById('ed-sum').value.trim();
       await api('/admin/update', {
-        slug: document.getElementById('ed-slug').value,
-        title: document.getElementById('ed-title').value.trim(),
-        author: document.getElementById('ed-author').value.trim(),
-        category: document.getElementById('ed-cat').value,
-        dateFa: document.getElementById('ed-date').value.trim(),
-        summary: document.getElementById('ed-sum').value.trim(),
-        markdown: document.getElementById('ed-md').value,
+        slug, title, author, category,
+        dateIso: dt.dateIso, dateFa: dt.dateFa, dateEn: dt.dateEn,
+        summary, markdown: document.getElementById('ed-md').value,
       });
-      showMsg(edMsg, 'ok', 'تغییرات با موفقیت ذخیره شد.');
+      await saveOverrides({
+        ...overridesCache,
+        [slug]: { ...(overridesCache[slug] || {}), title, category, desc: summary, dateIso: dt.dateIso, dateFa: dt.dateFa, dateEn: dt.dateEn }
+      });
+      showMsg(edMsg, 'ok', 'تغییرات و تاریخ گزارش با موفقیت ذخیره و بلافاصله روی سایت اعمال شد.');
       loadAll();
     }catch(err){ showMsg(edMsg, 'err', err.message); }
     finally{ btn.disabled = false; }
