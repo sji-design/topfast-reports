@@ -42,7 +42,8 @@
   // Apply live admin content edits + lazy-load compressed external screenshots after first paint
   if (!isMdViewer && dataObj && Array.isArray(dataObj.CATEGORIES) && (isBenchmark || isIssues)) {
     const repKey = isBenchmark ? 'benchmark' : 'issues';
-    const liveUrl = endpoint ? (endpoint.replace(/\/$/, '') + '/live/data/' + repKey + '?t=' + Date.now()) : '';
+    const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    const liveUrl = (!isLocal && endpoint) ? (endpoint.replace(/\/$/, '') + '/live/data/' + repKey + '?t=' + Date.now()) : '';
     const staticUrl = './data-' + repKey + '.json?t=' + Date.now();
     const fetchPatch = liveUrl
       ? fetch(liveUrl).then((r) => (r.ok ? r.json() : Promise.reject())).catch(() => fetch(staticUrl).then((r) => (r.ok ? r.json() : null)))
