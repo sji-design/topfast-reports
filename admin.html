@@ -97,6 +97,13 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   .drawer-body{padding:14px 16px 24px}
 }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#165EF6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TopFast Reports">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 <div class="bg-glow"></div>
@@ -784,5 +791,6 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   if(passcode){ tryAuth(passcode).catch(()=>{ sessionStorage.removeItem('tf_admin_pass'); passcode = ''; }); }
 })();
 </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}</script>
 </body>
 </html>

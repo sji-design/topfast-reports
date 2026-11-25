@@ -23,6 +23,9 @@
     mute: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
     arrowUp: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>',
     chevLeft: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>',
+    pdf: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+    md: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+    share: '<svg class="tfai-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>',
   };
 
   const isMdViewer = /report-viewer/i.test(location.pathname) || !!window.__MD_REPORT_DATA__;
@@ -36,7 +39,7 @@
   const audioSrc = (mdData && mdData.audio) || (cfg.audio && cfg.audio[pageKey]) || '';
   const dataObj = typeof D !== 'undefined' ? D : null;
 
-  // Apply live admin content edits (instant from Cloudflare KV if available, fallback to data-*.json)
+  // Apply live admin content edits + lazy-load compressed external screenshots after first paint
   if (!isMdViewer && dataObj && Array.isArray(dataObj.CATEGORIES) && (isBenchmark || isIssues)) {
     const repKey = isBenchmark ? 'benchmark' : 'issues';
     const liveUrl = endpoint ? (endpoint.replace(/\/$/, '') + '/live/data/' + repKey + '?t=' + Date.now()) : '';
@@ -55,6 +58,25 @@
         if (typeof apply === 'function') apply();
       })
       .catch(() => {});
+
+    // Lazy-load externalized compressed images so initial HTML is <250KB and renders instantly!
+    if (dataObj.IMAGES && Object.keys(dataObj.IMAGES).length === 0) {
+      setTimeout(() => {
+        fetch('./img-' + repKey + '.json')
+          .then((r) => (r.ok ? r.json() : null))
+          .then((imgs) => {
+            if (!imgs || typeof imgs !== 'object') return;
+            Object.assign(dataObj.IMAGES, imgs);
+            const totEl = document.getElementById('img-total');
+            if (totEl) {
+              const cnt = Object.keys(dataObj.IMAGES).length;
+              totEl.textContent = String(cnt).replace(/\d/g, (d) => '۰۱۲۳۴۵۶۷۸۹'[d]);
+            }
+            if (typeof apply === 'function') apply();
+          })
+          .catch(() => {});
+      }, 120);
+    }
   }
 
   function buildReportContext() {
@@ -252,6 +274,11 @@
     .tfai-qbtn:hover{background:#165EF6;border-color:#165EF6;color:#ffffff;transform:translateY(-1px)}
     .tfai-qbtn.audio-btn,.tfai-qbtn.chat-btn{border-color:rgba(22,94,246,.42);background:rgba(22,94,246,.12);color:#dbe8ff}
     .tfai-qbtn.audio-btn:hover,.tfai-qbtn.chat-btn:hover{background:#165EF6;border-color:#165EF6;color:#ffffff}
+    .tfai-qbtn.util-btn{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.045);color:#d0d4dc}
+    .tfai-qbtn.util-btn:hover{background:rgba(22,94,246,.18);border-color:rgba(22,94,246,.55);color:#ffffff}
+    .tfai-qsep{width:1px;height:22px;background:rgba(255,255,255,.12);align-self:center;margin:0 2px}
+    .tfai-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(16px);z-index:90;padding:10px 18px;border-radius:999px;background:#165EF6;color:#fff;font:600 13px/1 'Vazirmatn',sans-serif;box-shadow:0 12px 32px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+    .tfai-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
     .tfai-fab{position:fixed;left:22px;bottom:22px;z-index:50;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px 0 15px;border-radius:999px;border:1px solid #165EF6;background:#165EF6;color:#ffffff;font:700 13px/1 'Vazirmatn','Inter',sans-serif;cursor:pointer;box-shadow:0 12px 32px rgba(22,94,246,.38),0 4px 16px rgba(0,0,0,.5);transition:transform .18s,box-shadow .18s,background .15s,bottom .2s}
     .tfai-fab:hover{background:#2b6ff8;border-color:#2b6ff8;transform:translateY(-2px);box-shadow:0 16px 38px rgba(22,94,246,.48),0 6px 20px rgba(0,0,0,.6)}
@@ -425,8 +452,50 @@
       <button type="button" class="tfai-qbtn" data-open-ai="summary">${ICO.spark}<span>خلاصه ۱ دقیقه‌ای AI</span></button>
       ${hasAudio ? `<button type="button" class="tfai-qbtn audio-btn" data-open-ai="audio">${ICO.audio}<span>شنیدن خلاصه صوتی</span></button>` : ''}
       <button type="button" class="tfai-qbtn chat-btn" data-open-ai="chat">${ICO.chat}<span>گفتگو و پرسش از AI</span></button>
+      <span class="tfai-qsep" aria-hidden="true"></span>
+      <button type="button" class="tfai-qbtn util-btn" id="tfai-exp-pdf">${ICO.pdf}<span>خروجی PDF</span></button>
+      <button type="button" class="tfai-qbtn util-btn" id="tfai-exp-md">${ICO.md}<span>دانلود MD</span></button>
+      <button type="button" class="tfai-qbtn util-btn" id="tfai-share">${ICO.share}<span>اشتراک‌گذاری</span></button>
     `;
     anchor.insertAdjacentElement('afterend', qbar);
+
+    const toastEl = document.createElement('div');
+    toastEl.className = 'tfai-toast';
+    document.body.appendChild(toastEl);
+    let toastTimer = null;
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+
+    qbar.querySelector('#tfai-exp-pdf').addEventListener('click', () => window.print());
+    qbar.querySelector('#tfai-exp-md').addEventListener('click', () => {
+      const mdContent = buildReportContext();
+      const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (pageKey === 'benchmark' ? 'topfast-crm-benchmark.md' : (pageKey === 'issues' ? 'topfast-crm-issues.md' : 'topfast-report.md'));
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      showToast('فایل Markdown دانلود شد');
+    });
+    qbar.querySelector('#tfai-share').addEventListener('click', async () => {
+      const shareUrl = location.href.split('?')[0] + (location.search.includes('slug=') ? location.search : '');
+      if (navigator.share) {
+        try {
+          await navigator.share({ title: document.title, url: shareUrl });
+          return;
+        } catch (_) {}
+      }
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        showToast('لینک گزارش در کلیپ‌بورد کپی شد');
+      } catch (_) {
+        prompt('لینک گزارش:', shareUrl);
+      }
+    });
   }
 
   const starterQs = isBenchmark
@@ -476,7 +545,7 @@
           <div class="tfai-sp-disc">${ICO.audio}</div>
           <div class="tfai-sp-eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
         </div>
-        <audio id="tfai-audio" preload="metadata" src="${esc(audioSrc)}"></audio>
+        <audio id="tfai-audio" preload="none" src="${esc(audioSrc)}"></audio>
         <div id="tfai-aud-player" style="display:flex;flex-direction:column;gap:14px">
           <div class="tfai-sp-meta">
             <div>
@@ -595,6 +664,10 @@
   function setTab(name) {
     panel.querySelectorAll('.tfai-tab').forEach((b) => b.classList.toggle('on', b.dataset.tab === name));
     panel.querySelectorAll('.tfai-pane').forEach((p) => p.classList.toggle('on', p.dataset.pane === name));
+    if (name === 'audio' && hasAudio) {
+      const a = panel.querySelector('#tfai-audio');
+      if (a && a.readyState === 0) { a.preload = 'metadata'; a.load(); }
+    }
   }
 
   function openPanel(tab) {

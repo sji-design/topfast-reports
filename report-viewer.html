@@ -74,6 +74,13 @@ h1{margin:10px 0 8px;font-size:34px;line-height:1.28;font-weight:800;color:var(-
   .article h3{font-size:15.5px}
 }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#165EF6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TopFast Reports">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
 <div class="bg-glow"></div>
@@ -247,5 +254,6 @@ h1{margin:10px 0 8px;font-size:34px;line-height:1.28;font-weight:800;color:var(-
   init();
 })();
 </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}</script>
 </body>
 </html>
