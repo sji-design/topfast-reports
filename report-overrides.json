@@ -4,5 +4,14 @@
   },
   "issues": {
     "hidden": false
+  },
+  "club-950ce9": {
+    "title": "تست اولین ورود کاربر به Club",
+    "product": "Club",
+    "category": "UI/UX Audit",
+    "desc": "در این گزارش از دید کاربر جدید که مستقیم وارد Club شده است تحلیل خواهیم داشت.",
+    "dateIso": "2026-11-24",
+    "dateFa": "۳ آذر ۱۴۰۵",
+    "dateEn": "24 Nov 2026"
   }
 }
