@@ -597,7 +597,24 @@ Promise.all([
       if (ov.dateEn) REPORTS[i].dateEn = ov.dateEn;
       if (ov.dateIso) REPORTS[i].dateIso = ov.dateIso;
       if (ov.category) REPORTS[i].category = ov.category;
+      if (ov.product) {
+        REPORTS[i].product = ov.product;
+        if (!PRODUCTS.some(p => p.id === ov.product)) PRODUCTS.push({ id: ov.product, label: ov.product });
+      }
     }
+  }
+  const FA_MONTHS = ['فروردین','اردیبهشت','خرداد','تیر','مرداد','شهریور','مهر','آبان','آذر','دی','بهمن','اسفند'];
+  function toEnDigits(s){ return String(s||'').replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d)); }
+  function reportSortKey(r){
+    const s = toEnDigits(r.dateFa || '');
+    const mIdx = FA_MONTHS.findIndex(m => s.includes(m));
+    const nums = s.match(/\d+/g) || [];
+    if (mIdx >= 0 && nums.length >= 2) {
+      const yr = nums.find(n => n.length === 4) || '1405';
+      const dy = nums.find(n => n.length <= 2) || '01';
+      return yr + '-' + String(mIdx + 1).padStart(2, '0') + '-' + String(dy).padStart(2, '0');
+    }
+    return r.dateIso || '0000-00-00';
   }
   const customOrder = (overrides && Array.isArray(overrides._order)) ? overrides._order : null;
   if (customOrder && customOrder.length) {
@@ -607,10 +624,10 @@ Promise.all([
       if (ia !== -1 && ib !== -1) return ia - ib;
       if (ia !== -1) return -1;
       if (ib !== -1) return 1;
-      return b.dateIso.localeCompare(a.dateIso);
+      return reportSortKey(b).localeCompare(reportSortKey(a));
     });
   } else {
-    REPORTS.sort((a, b) => b.dateIso.localeCompare(a.dateIso));
+    REPORTS.sort((a, b) => reportSortKey(b).localeCompare(reportSortKey(a)));
   }
   document.getElementById('rep-count').textContent = fa(REPORTS.length) + ' گزارش';
   renderFilters();

@@ -185,9 +185,20 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       <input type="hidden" id="ced-id">
       <div class="row2">
         <div class="field"><label for="ced-title">عنوان گزارش (کارت صفحه اصلی)</label><input id="ced-title" required></div>
-        <div class="field"><label for="ced-cat">برچسب دسته‌بندی</label><input id="ced-cat" required></div>
+        <div class="field"><label for="ced-prod">محصول</label>
+          <select id="ced-prod">
+            <option value="CRM TopFast">CRM TopFast</option>
+            <option value="Club">Club</option>
+            <option value="DeltaFX">DeltaFX</option>
+            <option value="__new__">+ افزودن محصول جدید...</option>
+          </select>
+        </div>
       </div>
-      <div class="field"><label for="ced-date">تاریخ گزارش <small id="ced-date-fa" style="color:#6ea0ff;font-weight:500;margin-inline-start:6px"></small></label><input id="ced-date" type="date" style="color-scheme:dark;cursor:pointer"></div>
+      <div class="field" id="ced-prod-new-wrap" style="display:none"><label for="ced-prod-new">نام محصول جدید</label><input id="ced-prod-new" placeholder="نام محصول جدید"></div>
+      <div class="row2">
+        <div class="field"><label for="ced-cat">برچسب دسته‌بندی</label><input id="ced-cat" required></div>
+        <div class="field"><label for="ced-date">تاریخ گزارش <small id="ced-date-fa" style="color:#6ea0ff;font-weight:500;margin-inline-start:6px"></small></label><input id="ced-date" type="date" style="color-scheme:dark;cursor:pointer"></div>
+      </div>
       <div class="field"><label for="ced-desc">توضیحات کارت صفحه اصلی</label><textarea id="ced-desc" style="min-height:92px"></textarea></div>
       <button class="btn pri" id="ced-save" type="submit">ذخیره مشخصات کارت</button>
     </form>
@@ -244,6 +255,14 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
         <div class="field"><label for="ed-author">نویسنده</label><input id="ed-author" required></div>
       </div>
       <div class="row2">
+        <div class="field"><label for="ed-prod">محصول</label>
+          <select id="ed-prod">
+            <option value="CRM TopFast">CRM TopFast</option>
+            <option value="Club">Club</option>
+            <option value="DeltaFX">DeltaFX</option>
+            <option value="__new__">+ افزودن محصول جدید...</option>
+          </select>
+        </div>
         <div class="field"><label for="ed-cat">دسته‌بندی</label>
           <select id="ed-cat">
             <option value="UX Benchmark">UX Benchmark</option>
@@ -252,8 +271,9 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
             <option value="Technical Report">Technical Report</option>
           </select>
         </div>
-        <div class="field"><label for="ed-date">تاریخ گزارش <small id="ed-date-fa" style="color:#6ea0ff;font-weight:500;margin-inline-start:6px"></small></label><input id="ed-date" type="date" style="color-scheme:dark;cursor:pointer"></div>
       </div>
+      <div class="field" id="ed-prod-new-wrap" style="display:none"><label for="ed-prod-new">نام محصول جدید</label><input id="ed-prod-new" placeholder="نام محصول جدید"></div>
+      <div class="field"><label for="ed-date">تاریخ گزارش <small id="ed-date-fa" style="color:#6ea0ff;font-weight:500;margin-inline-start:6px"></small></label><input id="ed-date" type="date" style="color-scheme:dark;cursor:pointer"></div>
       <div class="field"><label for="ed-sum">خلاصه کوتاه</label><input id="ed-sum"></div>
       <div class="field"><label for="ed-md">محتوای کامل Markdown (.md)</label><textarea id="ed-md" class="md-area" required></textarea></div>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -305,6 +325,25 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
   const cedDateFa = document.getElementById('ced-date-fa');
   const edDateIn = document.getElementById('ed-date');
   const edDateFa = document.getElementById('ed-date-fa');
+  const cedProd = document.getElementById('ced-prod');
+  const cedProdNewWrap = document.getElementById('ced-prod-new-wrap');
+  const cedProdNew = document.getElementById('ced-prod-new');
+  const edProd = document.getElementById('ed-prod');
+  const edProdNewWrap = document.getElementById('ed-prod-new-wrap');
+  const edProdNew = document.getElementById('ed-prod-new');
+  cedProd.addEventListener('change', () => { cedProdNewWrap.style.display = cedProd.value === '__new__' ? 'block' : 'none'; });
+  edProd.addEventListener('change', () => { edProdNewWrap.style.display = edProd.value === '__new__' ? 'block' : 'none'; });
+  function setProdSelect(sel, newWrap, newIn, val){
+    const v = val || 'CRM TopFast';
+    if (!Array.from(sel.options).some(o => o.value === v)) {
+      const opt = document.createElement('option');
+      opt.value = v; opt.textContent = v;
+      sel.insertBefore(opt, sel.querySelector('option[value="__new__"]'));
+    }
+    sel.value = v;
+    newWrap.style.display = 'none';
+    newIn.value = '';
+  }
   cedDateIn.addEventListener('change', () => { const x = isoToDates(cedDateIn.value); cedDateFa.textContent = x.dateFa ? '(' + x.dateFa + ')' : ''; });
   edDateIn.addEventListener('change', () => { const x = isoToDates(edDateIn.value); edDateFa.textContent = x.dateFa ? '(' + x.dateFa + ')' : ''; });
 
@@ -432,6 +471,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       const ov = overridesCache[c.id] || {};
       list.push({
         ...c,
+        product: ov.product || c.product,
         title: ov.title || c.title,
         category: ov.category || c.category,
         dateIso: ov.dateIso || c.dateIso,
@@ -446,7 +486,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       list.push({
         id: it.slug,
         kind: 'md',
-        product: it.product || 'CRM TopFast',
+        product: ov.product || it.product || 'CRM TopFast',
         href: 'report-viewer.html?slug=' + encodeURIComponent(it.slug),
         title: ov.title || it.title || it.slug,
         category: ov.category || it.category || 'Report',
@@ -615,6 +655,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     document.getElementById('ced-heading').textContent = 'ویرایش کارت: ' + (ov.title || def.title);
     document.getElementById('ced-id').value = id;
     document.getElementById('ced-title').value = ov.title || def.title;
+    setProdSelect(cedProd, cedProdNewWrap, cedProdNew, ov.product || def.product);
     document.getElementById('ced-cat').value = ov.category || def.category;
     cedDateIn.value = ov.dateIso || def.dateIso || new Date().toISOString().slice(0, 10);
     const dt = isoToDates(cedDateIn.value);
@@ -629,11 +670,13 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     btn.disabled = true;
     try{
       const dt = isoToDates(cedDateIn.value);
+      const product = cedProd.value === '__new__' ? (cedProdNew.value.trim() || 'CRM TopFast') : cedProd.value;
       await saveOverrides({
         ...overridesCache,
         [id]: {
           ...(overridesCache[id] || {}),
           title: document.getElementById('ced-title').value.trim(),
+          product,
           category: document.getElementById('ced-cat').value.trim(),
           dateIso: dt.dateIso,
           dateFa: dt.dateFa,
@@ -643,7 +686,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       });
       closeAllDrawers();
       renderPublished();
-      showMsg(pubMsg, 'ok', 'مشخصات و تاریخ کارت ذخیره و بلافاصله روی سایت اعمال شد.');
+      showMsg(pubMsg, 'ok', 'مشخصات، محصول و تاریخ کارت ذخیره و بلافاصله روی سایت اعمال شد.');
     }catch(err){ showMsg(pubMsg, 'err', err.message); }
     finally{ btn.disabled = false; }
   });
@@ -767,6 +810,7 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
     document.getElementById('ed-slug').value = slug;
     document.getElementById('ed-title').value = ov.title || meta.title || '';
     document.getElementById('ed-author').value = meta.author || '';
+    setProdSelect(edProd, edProdNewWrap, edProdNew, ov.product || meta.product || 'CRM TopFast');
     document.getElementById('ed-cat').value = ov.category || meta.category || 'UX Benchmark';
     edDateIn.value = ov.dateIso || meta.dateIso || new Date().toISOString().slice(0, 10);
     const dt = isoToDates(edDateIn.value);
@@ -797,18 +841,19 @@ h1{margin:0 0 8px;font-size:30px;font-weight:800;color:var(--ink)}
       const dt = isoToDates(edDateIn.value);
       const title = document.getElementById('ed-title').value.trim();
       const author = document.getElementById('ed-author').value.trim();
+      const product = edProd.value === '__new__' ? (edProdNew.value.trim() || 'CRM TopFast') : edProd.value;
       const category = document.getElementById('ed-cat').value;
       const summary = document.getElementById('ed-sum').value.trim();
       await api('/admin/update', {
-        slug, title, author, category,
+        slug, title, author, product, category,
         dateIso: dt.dateIso, dateFa: dt.dateFa, dateEn: dt.dateEn,
         summary, markdown: document.getElementById('ed-md').value,
       });
       await saveOverrides({
         ...overridesCache,
-        [slug]: { ...(overridesCache[slug] || {}), title, category, desc: summary, dateIso: dt.dateIso, dateFa: dt.dateFa, dateEn: dt.dateEn }
+        [slug]: { ...(overridesCache[slug] || {}), title, product, category, desc: summary, dateIso: dt.dateIso, dateFa: dt.dateFa, dateEn: dt.dateEn }
       });
-      showMsg(edMsg, 'ok', 'تغییرات و تاریخ گزارش با موفقیت ذخیره و بلافاصله روی سایت اعمال شد.');
+      showMsg(edMsg, 'ok', 'تغییرات، محصول و تاریخ گزارش با موفقیت ذخیره و بلافاصله روی سایت اعمال شد.');
       loadAll();
     }catch(err){ showMsg(edMsg, 'err', err.message); }
     finally{ btn.disabled = false; }
